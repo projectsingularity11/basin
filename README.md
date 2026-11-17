@@ -1,34 +1,34 @@
-# BASIN
+# BASIN v0.2
 
-Stormwater Intelligence Laboratory · v0.1 working research prototype.
+An immersive water experience and geographically grounded, experimental stormwater laboratory.
 
-An account-free Next.js / TypeScript instrument for exploring rainfall, conservative surface-water routing, infiltration, hypothetical interventions, and constrained scenario search. The numerical model is deterministic, synthetic, and uncalibrated. It is not validated for flood forecasting, emergency decisions, or engineering design.
+Production alias: https://basin-sigma.vercel.app/
+Source: https://github.com/projectsingularity11/basin
 
-## Run locally
+## Run
 
-Node.js 24 LTS and npm are recommended.
+Node.js 24 LTS, npm:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. No environment variables, API keys, paid services, or database are required. Fonts and procedural visuals are bundled locally. Scenario and experiment storage lives in the current browser; clearing browser storage removes it. Export JSON for portability. Scenarios include versioned input validation; exported runs can be reimported through their scenario field.
+No API keys, paid map account, database, or sign-in are required. The geographic workflow depends on public USGS, Photon and OpenFreeMap services. If your execution environment requires an outbound proxy, Node 24 supports `NODE_USE_ENV_PROXY=1`; no proxy credentials are stored in this repository.
 
-## Routes and demonstration
+## Use
 
-- `/` — project introduction and interactive synthetic terrain
-- `/lab` — terrain selection/editing, rainfall profiles, infiltration, boundaries, detention/permeability, playback, scientific charts, mass accounting, local scenario save, JSON import/export
-- `/compare` — two independent runs, matching-input warning, time-series overlays, summary table, results export
-- `/optimize` — exhaustive search of nine single-basin candidates subject to budget and capture-footprint constraints; runs in a Web Worker
-- `/case-study` — researched Harvey/library context, explicit separation from synthetic experiments, source registry
-- `/methodology` — equations, algorithms, numerical assumptions and limitations
-- `/experiments` — empty-by-default local measurement records, provenance, uncertainty, export and cautious ratio comparison
-- `/about` — project scope and research roadmap
+Open `/earth`, search a U.S. place, and click to position a 240 / 480 / 960 m region. Choose a 24 / 32-cell grid and load genuine USGS elevation. In `/lab`, set a storm, run, replay, add a hypothetical intervention, and compare independent runs. The source drawer exposes retrieval, resolution, CRS, vertical-reference qualifications, and original request. Synthetic demo mode remains explicit. Saved scenarios and experiment records are local to the browser; export JSON before clearing browser storage.
 
-Demo: launch laboratory → run Valley Catchment → pause/scrub → save baseline → add detention at selected cell → run → compare → optimize with budget/footprint → inspect selected scenario → export → read methods. All model results come from `src/engine/model.ts`, never randomized chart data.
+The homepage uses an animated Three.js ocean, pointer refraction, scroll-linked underwater transition, computed terrain demonstration, and a short sourced historical introduction. It is visual artwork, not an ocean-physics solver. The custom mark and favicon combine a basin boundary and B. Navigation is a keyboard-accessible dialog. The laboratory uses contextual panels instead of permanent dashboard sidebars.
 
-## Verification
+## Routes
+
+`/` ocean experience · `/earth` real-region selection · `/lab` simulation · `/compare` independent scenarios · `/optimize` constrained detention search · `/case-study` Harvey/library evidence · `/methodology` equations and limits · `/experiments` measured records · `/about` project context.
+
+`GET /api/places?q=...` proxies a bounded, validated Photon search. `GET /api/elevation?lon=...&lat=...&side=...&size=...&name=...` acquires a small USGS Float32 raster in local metric UTM coordinates. Errors are explicit, with no fabricated terrain fallback.
+
+## Checks
 
 ```sh
 npm run typecheck
@@ -39,18 +39,14 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Playwright starts a local production server if needed. `BASE_URL` targets an existing deployment. Tests cover the user journey, WebGL canvas initialization, 2D fallback selection, pause/reset, rainfall changes, local persistence, import/export, comparison, worker optimization, historical-source links, experiment entry, automated accessibility, and responsive overflow at 1440 / 1024 / 768 / 390 px. See `docs/VALIDATION.md` for executed results and limits.
-
-## Architecture
-
-Pure TypeScript numerical engine → computed snapshots → React state → dynamic Three.js terrain and SVG charts. Next.js prerenders all routes. Browser storage is accessed through `useSyncExternalStore`; imported data is bounded and validated. No user measurements are transmitted to a server. See `docs/ARCHITECTURE.md` and `docs/METHODOLOGY.md`.
-
-## Delivery
-
-Intended source: https://github.com/projectsingularity11/basin, branch `main`. Vercel project: `basin` in Project Singularity. Deploy through the connected repository or Vercel with Next.js detection, Node 24, `npm run build`, no environment variables. A successful local build is not proof of deployment. See `docs/DELIVERY.md` for actual delivery status.
+`BASE_URL` runs browser tests against an existing deployment. Numerical tests include a provenance-bearing, genuinely retrieved Spring, Texas elevation fixture. Browser tests exercise a separate live-provider workflow. External service failures must be reported separately from fixture results.
 
 ## Scientific limits
 
-Synthetic terrain, illustrative storms and soil capacities, hypothetical costs, and an uncalibrated routing coefficient. No real elevation or rainfall observations are ingested. No pipes, buildings, channel hydraulics, momentum, groundwater, or dynamic soil-moisture state. Constant infiltration and conceptual detention may differ substantially from physical systems. Model invariants are tested; real flood predictions are not validated. The Harvey case study motivates the question and is not reconstructed by the simulation.
+Real elevation does not validate a simplified runoff solver. Rainfall, constant infiltration, routing coefficient, capture footprint, intervention capacity and costs are assumptions. No pipes, buildings, channel hydraulics, soil saturation, groundwater, historical Harvey terrain or validated flood forecasts are implemented. No empirical measurements are preloaded. See `/methodology`, `docs/METHODOLOGY.md`, `docs/DATA_SOURCES.md` and `docs/VALIDATION.md`.
 
-See `THIRD_PARTY.md` for dependencies, licenses, and assets; `docs/SOURCES.md` for research; `docs/ROADMAP.md` for the physical validation plan.
+## Design, performance and delivery
+
+See `docs/DESIGN_REFERENCES.md`, `docs/COPY_AUDIT.md`, `docs/PERFORMANCE.md`, `THIRD_PARTY.md` and `public/licenses`. The cursor is a bounded ripple/refraction effect, not a full fluid solver. 60 FPS is a target requiring hardware profiling, not a universal achieved result. WebGL failure preserves a CSS ocean fallback and selectable 2D terrain.
+
+Deploy to the existing `basin` Vercel project in Project Singularity, linked to GitHub `main`, with Node 24. Local builds alone do not establish deployment success; verify the actual production commit and live geographic journey.

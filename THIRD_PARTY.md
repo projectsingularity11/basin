@@ -25,3 +25,21 @@ Geist © Geist Project Authors and IBM Plex Mono © IBM Corp are self-hosted, un
 ## References evaluated, not incorporated
 
 React Three Fiber and Drei documentation informed the declarative mesh, OrbitControls, buffer-geometry lifecycle, and renderer setup; no external example source was copied. Three.js underlies rendering. MapLibre (BSD-3-Clause) and deck.gl (MIT) were evaluated but not installed because there is no real geospatial dataset. D3 (ISC) and Observable Plot (ISC) were evaluated; lightweight SVG charts suffice. shadcn/ui (MIT), Radix (MIT), and Motion (MIT) were considered; native form controls, details, CSS transitions, and reduced-motion rules avoid unnecessary dependencies. Motion docs retrieval returned 403. Documentation research is recorded in docs/DESIGN_RESEARCH.md.
+
+## v0.2 additions
+
+| Dependency             | Installed version | License                                                                                              |
+| ---------------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
+| MapLibre GL JS         | 6.18.0            | BSD-3-Clause                                                                                         |
+| GeoTIFF.js             | 3.0.5             | MIT                                                                                                  |
+| Proj4js                | 2.23.0            | MIT                                                                                                  |
+| Lenis                  | 1.3.27            | MIT                                                                                                  |
+| GSAP                   | 3.15.1            | GSAP Standard no-charge license, https://gsap.com/standard-license/ (not an open-source MIT license) |
+| Syne via Fontsource    | 5.3.0             | SIL OFL 1.1                                                                                          |
+| Manrope via Fontsource | 5.3.0             | SIL OFL 1.1                                                                                          |
+
+Installed notices are retained in public/licenses. Three.js Water and Sky are imported from its MIT-licensed example modules; their code supplies the reflection, sun-scattering and normal-sampling foundation. Original shader additions and normal texture are implemented in ocean.tsx. No proprietary ocean video, historical photograph or restricted Google imagery was copied. The custom logo is original SVG geometry.
+
+OpenFreeMap/OpenMapTiles and OpenStreetMap credits remain visible on the map. Numerical elevation is USGS 3DEP public-domain data, separately attributed and provenance-bearing. Photon search is OSM-derived. These external providers have independent availability and usage conditions; they do not validate BASIN's hydrology. See docs/DATA_SOURCES.md and docs/DESIGN_REFERENCES.md.
+
+MapLibre v6's official worker bundle is self-hosted unmodified at public/maplibre/maplibre-gl-worker.mjs, with its embedded BSD notice and full license in public/licenses/maplibre-gl.txt. This avoids bundler-relative worker URL failures and external executable CDN dependencies. Update the worker together with MapLibre if upgrading the locked dependency.

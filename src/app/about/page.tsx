@@ -15,7 +15,7 @@ export default function About() {
         <p>
           BASIN · Stormwater Intelligence Laboratory
           <br />
-          v0.1 — Working research prototype
+          v0.2 — Geographic research prototype
         </p>
       </section>
       <section className="article-layout content-width">
@@ -71,7 +71,7 @@ export default function About() {
               <span className="badge muted">PLANNED</span>
               <h3>From synthetic terrain to real context</h3>
               <p>
-                Evaluate official elevation and rainfall sources. Verify coordinate systems and
+                Evaluate additional elevation and rainfall sources. Verify coordinate systems and
                 vertical datums. Establish a suitable hydraulic method and independent observations
                 before making location-specific predictions.
               </p>

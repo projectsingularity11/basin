@@ -1,17 +1,13 @@
-# Research roadmap
+# v0.2 roadmap
 
-## Implemented v0.1
+Implemented: cinematic ocean and underwater transition; pointer refraction in shared renderer; custom mark/icons; floating modal navigation; task-based lab; MapLibre real-region selection; bounded Photon search; genuine USGS Float32 elevation pipeline; metric projection and provenance; retained conservative solver, intervention editing, comparison, Worker optimization, local persistence and JSON roundtrips; explicit synthetic and failure modes.
 
-Deterministic synthetic terrain; conservative rainfall/infiltration/routing; explicit boundaries and mass balance; detention and permeability patches; local elevation edits; 3D and 2D cell selection; computed playback/charts; local scenario storage and JSON interchange; independent comparison; constrained nine-candidate search in a worker; historical research and methodology; local experiment records with honest empty state and normalized-ratio comparison.
+Highest priorities:
 
-## Highest priorities before submission
+1. Hardware profiling on integrated-GPU laptops and real mobile devices. Software WebGL measurements do not establish a universal 60 FPS claim.
+2. Physical watershed experiments with measured geometry, calibrated rainfall, timed outflow, uncertainty and repeated trials. Preserve independent holdouts and report disagreement.
+3. Mentor review of conceptual routing, grid/time-step sensitivity, constant infiltration, detention capture and downstream assumptions before any site-specific interpretation.
+4. Provider capacity monitoring, durable rate limiting and alternative terrain providers before high traffic. Expand coverage only with verified CRS/datum handling.
+5. Improve the visual and numerical distinction among buildings, terrain, channels and drainage infrastructure if suitable verified data and modeling methods are added.
 
-1. Review the numerical model and limitations with a qualified hydrology mentor. Test time-step/grid sensitivity and route coefficient sensitivity; evaluate whether a better conceptual or hydraulic solver is needed.
-2. Build a measured tabletop catchment with known initial conditions and replace all visual/material assumptions with measured dimensions. Verify the water-delivery rate and calibrate collection vessels. Record input losses and collection uncertainty.
-3. Measure outlet flow in timed intervals and photograph/document repeatable geometry. Compare a baseline to one detention/permeability change, holding rainfall, geometry, and initial conditions fixed. Repeat at least three times per condition. Preserve raw observations without invented fill-ins.
-4. Compare model volume, hydrograph timing, peak and storage to measurements with uncertainty. Calibrate on separate runs and retain independent holdout trials. Report disagreement and limitations.
-5. Have an educator review accessibility, source claims and the complete demonstration journey. Avoid claiming geographic forecast accuracy or engineered protection.
-
-## Later, conditional on evidence
-
-Official elevation/rainfall adapters with validated CRS/datum handling; surveyed site geometry and downstream boundaries; stage–storage detention, dynamic infiltration, uncertainty ensembles, pipe/channel coupling, sensor ingestion and camera measurement. None are implemented in v0.1.
+Not implemented: Google Earth photorealistic tiles, paid APIs, global elevation coverage, full fluid cursor solver, certified flood predictions, empirically calibrated forecasts, pipe/channel hydraulic models, or physical validation outcomes. No such feature should be presented as completed.

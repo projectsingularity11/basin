@@ -52,9 +52,9 @@ export default function Compare() {
       <section className="page-heading">
         <div className="eyebrow">02 / SCENARIO COMPARISON</div>
         <h1>
-          Change the landscape.
+          Compare scenarios.
           <br />
-          <span>Measure the difference.</span>
+          <span>See the computed difference.</span>
         </h1>
         <p>
           Two independent runs. The same transparent model.
@@ -116,7 +116,7 @@ export default function Compare() {
         {runs.length === 0 ? (
           <div className="empty-state">
             <GitCompareArrows size={34} />
-            <h2>Give your idea a baseline.</h2>
+            <h2>Choose two scenarios.</h2>
             <p>
               Add a hypothetical intervention in the laboratory, then run both scenarios here.
               <br />

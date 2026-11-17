@@ -35,3 +35,13 @@ Search enumerates three centerline cells (25%, 50%, 75% of grid height) × capac
 No shallow-water momentum, sewer networks, buildings, real channels, groundwater, saturation dynamics, evapotranspiration, site geometry or observed rain. Routing coefficient and infiltration are uncalibrated assumptions. Detention capture and footprint are conceptual. Terrain and water meshes interpolate cell values; color clamps above 0.25 m, opacity fades at low depth, and inspector numbers are authoritative. The library illustration is conceptual artwork, not an observed flood extent.
 
 No empirical experiments are preloaded. User-entered experiment/model outflow ratios are explicitly geometry- and time-unmatched, and do not establish validation. Calibration and independent physical validation are future work.
+
+## v0.2 real terrain
+
+The original conceptual hydrology algorithm is preserved. Geographic scenarios additionally use genuine USGS 3DEP Float32 elevation arrays. The selected center is projected from WGS84 longitude/latitude to its local northern-hemisphere WGS84 UTM zone. Side lengths are defined in meters. USGS resamples into the requested square, with north-to-south row order. Missing or invalid values fail the request. All four projected corners are transformed back for the map footprint and encompassing geographic bounds.
+
+Actual absolute elevations are retained in the engine. Display normalization subtracts a local minimum and uses 3× vertical exaggeration for geographic terrain; water display uses the corresponding scale. Inspector values and computed volumes remain SI. Ground widths are in projected meters; UTM scale distortion is small but not zero. No elevation datum conversion or survey-level precision is claimed. USGS source resolution varies; requested output cell spacing is not an accuracy claim.
+
+Full provenance is exported with scenarios. Source metadata in imported external JSON remains user-supplied and is not independently authenticated. Current terrain, even genuine terrain near Spring, does not reconstruct historical Harvey infrastructure, rainfall, drainage or flooding. Historical library claims remain separate from numerical experiments.
+
+For high-relief selections, the renderer reduces the requested 3× vertical exaggeration to fit relief within one quarter of the displayed domain width. The active factor is shown on the legend; elevation values and numerical routing never change. Synthetic demo relief retains its prior display convention.

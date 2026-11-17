@@ -11,6 +11,9 @@ export default defineConfig({
     viewport: { width: 1440, height: 1000 },
     launchOptions: {
       args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
+      ...(process.env.HTTPS_PROXY
+        ? { proxy: { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } }
+        : {}),
     },
   },
   reporter: 'list',

@@ -4,6 +4,7 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { terrain, patchCells, type Scenario, type Frame } from '@/engine/model';
+import { terrainHeightScale } from '@/lib/terrain-display';
 type Props = {
   scenario: Scenario;
   frame?: Frame;
@@ -16,7 +17,13 @@ type Props = {
   hero?: boolean;
 };
 function Surface({ scenario: s, frame, selected, onSelect, water = true, wire = false }: Props) {
-  const z = useMemo(() => terrain(s), [s]),
+  const heightScale = useMemo(() => terrainHeightScale(s), [s]);
+  const z = useMemo(() => {
+      const raw = terrain(s);
+      if (!s.geographic) return raw;
+      const min = Math.min(...raw);
+      return raw.map((v) => ((v - min) * heightScale) / (0.9 * s.cellSize));
+    }, [s, heightScale]),
     n = s.size;
   const geometry = useMemo(() => {
     const g = new THREE.BufferGeometry(),
@@ -63,7 +70,7 @@ function Surface({ scenario: s, frame, selected, onSelect, water = true, wire = 
           b = Math.max(0, y - 1) * n + Math.max(0, x - 1);
         const depth = water ? ((frame?.depths[a] ?? 0) + (frame?.depths[b] ?? 0)) / 2 : 0;
         const i = y * (n + 1) + x;
-        pos.setY(i, pos.getY(i) + depth * 0.9 + 0.012);
+        pos.setY(i, pos.getY(i) + depth * (s.geographic ? heightScale / s.cellSize : 0.9) + 0.012);
         const c = new THREE.Color().setHSL(
           0.542 + Math.min(depth / 0.25, 1) * 0.069,
           0.65,
@@ -75,7 +82,7 @@ function Surface({ scenario: s, frame, selected, onSelect, water = true, wire = 
     g.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     g.setAttribute('waterDepth', new THREE.Float32BufferAttribute(depths, 1));
     return g;
-  }, [geometry, n, frame, water]);
+  }, [geometry, n, frame, water, s.geographic, s.cellSize, heightScale]);
   useEffect(() => () => waterGeometry.dispose(), [waterGeometry]);
   const skirt = useMemo(() => {
     const vertices: number[] = [],
@@ -252,7 +259,7 @@ function Flat(p: Props) {
       className="terrain-flat"
       viewBox={`-2 -2 ${n + 4} ${n + 4}`}
       role="img"
-      aria-label="Selectable 2D synthetic terrain. Lighter cells are higher; blue cells contain simulated water."
+      aria-label="Selectable 2D terrain. Lighter cells are higher; blue cells contain simulated water."
     >
       {z.map((h, i) => {
         const d = p.water !== false ? (p.frame?.depths[i] ?? 0) : 0;
@@ -299,7 +306,7 @@ export default function Terrain(p: Props) {
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
         role="img"
-        aria-label="Interactive synthetic watershed. Drag to orbit; scroll to zoom."
+        aria-label="Interactive watershed terrain. Drag to orbit; scroll to zoom."
       >
         <ambientLight intensity={1.5} />
         <directionalLight position={[-10, 24, 8]} intensity={3} color="#e4edce" />

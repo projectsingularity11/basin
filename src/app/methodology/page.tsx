@@ -57,15 +57,17 @@ export default function Methodology() {
             </div>
             <p>
               The engine uses SI units internally: seconds, meters, square meters, and cubic meters.
-              The default grid has 24 × 24 cells, each 10 × 10 m, covering 57,600 m². Configurable
-              16- and 32-cell grids change the domain extent while retaining 10 m cells.
+              The synthetic default has 24 × 24 cells, each 10 × 10 m, covering 57,600 m².
+              Real-region grids use 24 or 32 cells per side over 240, 480, or 960 m square
+              selections. Configurable 16- and 32-cell grids change the domain extent while
+              retaining 10 m cells.
             </p>
             <p>
-              The terrain is a deterministic analytical surface. Valley and slope presets include a
-              seeded linear-congruential perturbation of less than 0.08 m. The flat test plane has
-              exactly zero elevation. Elevation edits add specified offsets to individual cells.
-              These are synthetic values without a geographic coordinate reference system or real
-              vertical datum.
+              Synthetic terrain is a deterministic analytical surface. Valley and slope presets
+              include a seeded linear-congruential perturbation of less than 0.08 m. The flat test
+              plane has exactly zero elevation. Elevation edits add specified offsets to individual
+              cells. These are synthetic values without a geographic coordinate reference system or
+              real vertical datum.
             </p>
           </section>
           <section id="conservation">
@@ -254,17 +256,22 @@ export default function Methodology() {
             <span className="eyebrow">08 / PROVENANCE & NEXT STEPS</span>
             <h2>Keep the evidence attached.</h2>
             <p>
-              All model inputs are synthetic demonstration data or user-entered assumptions.
-              Historical source metadata lives separately in the source registry. A typed
-              dataset-provenance interface records provider, retrieval date, units, coordinate
+              Terrain inputs may be genuine USGS 3DEP elevation or an explicitly labeled synthetic
+              demonstration. Rainfall, infiltration, intervention properties and costs remain user
+              assumptions. Historical source metadata lives separately in the source registry. A
+              typed dataset-provenance interface records provider, retrieval date, units, coordinate
               reference system, horizontal resolution, vertical datum, processing, license, and
-              limitations for future adapters. No geographic dataset is integrated today.
+              limitations for future adapters. The Earth workflow requests USGS 3DEP Float32
+              GeoTIFFs in a local WGS84 UTM square and uses bilinear resampling supplied by USGS.
+              Rows run north to south. Missing cells reject the request; they are never fabricated.
+              Output cell spacing is not a claim of native source resolution or accuracy.
             </p>
             <p>
-              The model omits real topography, floodplain hydraulics, channel conveyance, drainage
-              networks, buildings, levees, sediment, changing infiltration, and uncertain downstream
-              conditions. Present runs are deterministic estimates without prediction intervals. Do
-              not use them for emergency response or engineering design.
+              The model may include real bare-earth topography, but omits floodplain hydraulics,
+              channel conveyance, drainage networks, buildings, levees, sediment, changing
+              infiltration, and uncertain downstream conditions. Present runs are deterministic
+              estimates without prediction intervals. Do not use them for emergency response or
+              engineering design.
             </p>
             <p>
               Next, build a measured tabletop catchment, quantify rainfall input and collection

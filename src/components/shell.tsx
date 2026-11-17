@@ -1,82 +1,116 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Waves, ArrowUpRight, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { ArrowUpRight, X, Plus } from 'lucide-react';
+import { Mark } from './logo';
 const links = [
+  ['/', 'Home'],
+  ['/earth', 'Earth'],
   ['/lab', 'Laboratory'],
   ['/compare', 'Compare'],
   ['/optimize', 'Optimize'],
-  ['/case-study', 'Case study'],
-  ['/methodology', 'Methodology'],
+  ['/case-study', 'Harvey'],
+  ['/methodology', 'Method'],
 ];
 export function Header() {
   const path = usePathname(),
-    [open, setOpen] = useState(false);
+    [open, setOpen] = useState(false),
+    dialog = useRef<HTMLDialogElement>(null),
+    toggle = useRef<HTMLButtonElement>(null);
+  function close() {
+    dialog.current?.close();
+    setOpen(false);
+    toggle.current?.focus();
+  }
+  useEffect(() => {
+    if (open) dialog.current?.showModal();
+  }, [open]);
   return (
     <>
       <a className="skip" href="#main">
         Skip to content
       </a>
-      <header className="header">
+      <header className={`floating-header ${path === '/' ? 'over-ocean' : ''}`}>
         <Link className="brand" href="/" aria-label="BASIN home">
-          <Waves size={29} />
-          <span>
-            BASIN<span className="brand-dot">.</span>
-          </span>
-          <small>
-            STORMWATER
-            <br />
-            INTELLIGENCE LABORATORY
-          </small>
+          <Mark size={33} />
+          {path !== '/' && <span>BASIN</span>}
         </Link>
-        <nav aria-label="Main navigation" className={open ? 'nav open' : 'nav'}>
-          {links.map(([href, label]) => (
-            <Link
-              aria-current={path === href ? 'page' : undefined}
-              onClick={() => setOpen(false)}
-              key={href}
-              href={href}
-            >
-              {label}
-              {path === href && <span className="nav-dot" />}
+        <div className="nav-actions">
+          {path !== '/lab' && (
+            <Link className="lab-shortcut" href="/lab">
+              Enter laboratory <ArrowUpRight size={14} />
             </Link>
-          ))}
-          <Link href="/about">
-            About <ArrowUpRight size={12} />
-          </Link>
-        </nav>
-        <span className="version">
-          <i /> RESEARCH PROTOTYPE <b>v0.1</b>
-        </span>
-        <button
-          className="icon-button menu"
-          onClick={() => setOpen(!open)}
-          aria-label={open ? 'Close navigation' : 'Open navigation'}
-          aria-expanded={open}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+          )}
+          <button
+            ref={toggle}
+            className="nav-toggle"
+            aria-label="Open navigation"
+            aria-expanded={open}
+            onClick={() => setOpen(true)}
+          >
+            <Plus size={22} />
+          </button>
+        </div>
       </header>
+      <dialog
+        ref={dialog}
+        className="navigation-dialog"
+        onCancel={(e) => {
+          e.preventDefault();
+          close();
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) close();
+        }}
+      >
+        <div className="nav-overlay">
+          <div className="overlay-top">
+            <Mark size={40} />
+            <button className="nav-toggle" aria-label="Close navigation" onClick={close}>
+              <X />
+            </button>
+          </div>
+          <nav aria-label="Main navigation">
+            {links.map(([href, label], i) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={path === href ? 'page' : undefined}
+                onClick={close}
+              >
+                <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                {label}
+                <ArrowUpRight />
+              </Link>
+            ))}
+          </nav>
+          <div className="overlay-bottom">
+            <span>Stormwater modeling · v0.2</span>
+            <Link href="/experiments" onClick={close}>
+              Experiment records ↗
+            </Link>
+          </div>
+        </div>
+      </dialog>
     </>
   );
 }
 export const disclaimer =
-  'This prototype uses simplified hydrological models for education and exploratory scenario analysis. It is not validated for flood forecasting, emergency decisions, or engineering design.';
+  'Experimental runoff model. Not validated for flood forecasting, emergency decisions, or engineering design.';
 export function Footer() {
   return (
     <footer>
       <Link className="footer-brand" href="/">
-        BASIN.
+        <Mark size={26} />
+        BASIN
       </Link>
-      <p>Understand the water. Question the model.</p>
-      <Link href="/methodology">
-        Methods & limitations <ArrowUpRight size={13} />
-      </Link>
-      <Link href="/experiments">
-        Experiment validation <ArrowUpRight size={13} />
-      </Link>
-      <span>EXPERIMENTAL · SYNTHETIC TERRAIN</span>
+      <Link href="/methodology">Methods & limitations ↗</Link>
+      <Link href="/experiments">Experiments ↗</Link>
+      <a href="https://github.com/projectsingularity11/basin" target="_blank" rel="noreferrer">
+        Source code ↗
+      </a>
+      <span>v0.2</span>
     </footer>
   );
 }

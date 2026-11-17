@@ -4,5 +4,5 @@ import ts from 'eslint-config-next/typescript';
 export default defineConfig([
   ...next,
   ...ts,
-  globalIgnores(['.next/**', 'test-results/**', 'playwright-report/**']),
+  globalIgnores(['.next/**', 'test-results/**', 'playwright-report/**', 'public/maplibre/**']),
 ]);

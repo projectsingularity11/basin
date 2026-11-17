@@ -237,7 +237,7 @@ export default function Experiments() {
                       Measured outflow / input:{' '}
                       {r.input > 0 ? (r.output / r.input).toFixed(3) : 'undefined (zero input)'}
                       <br />
-                      Current synthetic model outflow / rainfall:{' '}
+                      Current model outflow / rainfall:{' '}
                       {model.frames.at(-1)!.rainfall > 0
                         ? (model.frames.at(-1)!.outflow / model.frames.at(-1)!.rainfall).toFixed(3)
                         : 'undefined (zero rain)'}
@@ -251,7 +251,7 @@ export default function Experiments() {
         <div className="text-callout">
           <h3>Compare carefully.</h3>
           <p>
-            Run the current synthetic lab scenario to view its outflow-to-input ratio alongside your
+            Run the current lab scenario to view its outflow-to-input ratio alongside your
             measurements. This normalized comparison does not align geometry, soil, rainfall
             distribution, or time scale, and cannot establish validation. Model initial storage is
             zero. Do not infer a fit without matching the physical setup and uncertainty.

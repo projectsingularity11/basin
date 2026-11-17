@@ -9,7 +9,7 @@ import { Footer } from '@/components/shell';
 export default function Optimize() {
   const { scenario, setScenario, setRun, notify } = useBasin(),
     [budget, setBudget] = useState(15000),
-    [space, setSpace] = useState(2500),
+    [space, setSpace] = useState(25 * scenario.cellSize ** 2),
     [busy, setBusy] = useState(false),
     [result, setResult] = useState<SearchResult | null>(null),
     [error, setError] = useState('');
@@ -43,9 +43,9 @@ export default function Optimize() {
       <section className="page-heading">
         <div className="eyebrow">03 / CONSTRAINED OPTIMIZATION</div>
         <h1>
-          Make room for water.
+          Find a detention option.
           <br />
-          <span>Within your limits.</span>
+          <span>Set budget and space limits.</span>
         </h1>
         <p>
           A small, honest search for a better intervention.
@@ -141,7 +141,7 @@ export default function Optimize() {
           {!result ? (
             <div className="empty-state optimization-empty">
               <span className="search-symbol">∑</span>
-              <h2>Less guesswork. More evidence.</h2>
+              <h2>Evaluate feasible candidates.</h2>
               <p>
                 Set a budget and space constraint. BASIN will enumerate feasible detention
                 alternatives and compare their simulated peak boundary outflow.

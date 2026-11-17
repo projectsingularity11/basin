@@ -1,3 +1,4 @@
+import type { GeographicTerrain } from '../lib/geo/contracts';
 /** BASIN conceptual surface-routing model. SI internally; illustrative, uncalibrated. */
 export type TerrainKind = 'valley' | 'urban' | 'flat';
 export type Intervention = {
@@ -11,6 +12,7 @@ export type Intervention = {
 };
 export type Scenario = {
   version: 1;
+  geographic?: GeographicTerrain;
   name: string;
   terrain: TerrainKind;
   seed: number;
@@ -65,6 +67,10 @@ export const DEFAULT: Scenario = {
 };
 export const sum = (a: ArrayLike<number>) => Array.from(a).reduce((s, v) => s + v, 0);
 export function terrain(s: Scenario): number[] {
+  if (s.geographic)
+    return s.geographic.elevations.map(
+      (v, i) => v + s.edits.filter((e) => e.cell === i).reduce((sum, e) => sum + e.delta, 0),
+    );
   let seed = s.seed >>> 0;
   const random = () => {
     seed = (1664525 * seed + 1013904223) >>> 0;
@@ -283,8 +289,51 @@ export function validateScenario(value: unknown): Scenario {
   });
   if (new Set(interventions.map((i) => i.id)).size !== interventions.length)
     throw new Error('Duplicate intervention IDs.');
+  let geographic: GeographicTerrain | undefined;
+  if (s.geographic !== undefined) {
+    const g = record(s.geographic),
+      p = record(g.provenance);
+    if (
+      g.size !== size ||
+      g.cellSize !== s.cellSize ||
+      !Array.isArray(g.elevations) ||
+      g.elevations.length !== size * size
+    )
+      throw Error('Geographic terrain must match the model grid.');
+    const coords = (v: unknown, len: number) => {
+      if (!Array.isArray(v) || v.length !== len) throw Error('Invalid geographic coordinates.');
+      return v.map((x) => numeric(x, -1e8, 1e8, 'coordinate'));
+    };
+    const str = (v: unknown, max = 3000) => {
+      if (typeof v !== 'string' || v.length > max) throw Error('Invalid provenance metadata.');
+      return v;
+    };
+    geographic = {
+      elevations: g.elevations.map((x) => numeric(x, -500, 9000, 'elevation')),
+      size,
+      cellSize: Number(s.cellSize),
+      center: coords(g.center, 2) as [number, number],
+      bounds: coords(g.bounds, 4) as [number, number, number, number],
+      projectedBounds: coords(g.projectedBounds, 4) as [number, number, number, number],
+      crs: str(g.crs),
+      name: str(g.name, 100),
+      provenance: {
+        provider: str(p.provider),
+        dataset: str(p.dataset),
+        retrievedAt: str(p.retrievedAt),
+        sourceUrl: str(p.sourceUrl),
+        units: 'm',
+        verticalDatum: str(p.verticalDatum),
+        resolution: str(p.resolution),
+        processing: str(p.processing),
+        license: str(p.license),
+        limitations: str(p.limitations),
+      },
+    };
+  }
   return {
     version: 1,
+    ...(geographic ? { geographic } : {}),
     name: s.name,
     terrain: s.terrain as TerrainKind,
     seed: numeric(s.seed, 0, 4294967295, 'seed'),

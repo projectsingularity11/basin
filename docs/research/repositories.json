@@ -1,0 +1,120 @@
+[
+  {
+    "repo": "cortiz2894/mouse-effects",
+    "license": null,
+    "branch": "main",
+    "status": 200,
+    "description": "A collection of interactive mouse effects built with Next.js, Three.js, and GSAP. This project showcases creative cursor interactions including water ripple distortions, image trails, and liquid mask reveals."
+  },
+  {
+    "repo": "dghez/mouse-effects-webgl-water",
+    "license": null,
+    "branch": "main",
+    "status": 200,
+    "description": "A collection of interactive mouse effects built with Next.js, Three.js, and GSAP. This project showcases creative cursor interactions including water ripple distortions, image trails, and liquid mask reveals."
+  },
+  {
+    "repo": "qureshi-shahroz/webgl-fluid-cursor",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "A mouse-reactive GPU fluid simulation background effect, colored liquid swirls and glows wherever your cursor moves. Pure WebGL/three.js, no dependencies."
+  },
+  {
+    "repo": "StarKnightt/liquid-glass",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "Apple-style liquid glass lens for React. Raw WebGL2, zero dependencies, one drop-in shadcn component."
+  },
+  {
+    "repo": "sebastianvasquezechavarria1234/lumina-cursor",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "\ud83c\udf0c\ud83d\udca7 High-performance fluid simulation effect for modern web interfaces, engineered with React and WebGL to deliver an immersive, fluid, and fully interactive visual experience. "
+  },
+  {
+    "repo": "darkroomengineering/lenis",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "Smooth scroll as it should be"
+  },
+  {
+    "repo": "PavelDoGreat/WebGL-Fluid-Simulation",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "master",
+    "status": 200,
+    "description": "Play with fluids in your browser (works even on mobile)"
+  },
+  {
+    "repo": "mrdoob/three.js",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    },
+    "branch": "dev",
+    "status": 200,
+    "description": "JavaScript 3D Library."
+  },
+  {
+    "repo": "maplibre/maplibre-gl-js",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "MapLibre GL JS - Interactive vector tile maps in the browser"
+  },
+  {
+    "repo": "CesiumGS/cesium",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    },
+    "branch": "main",
+    "status": 200,
+    "description": "An open-source JavaScript library for world-class 3D globes and maps :earth_americas:"
+  }
+]

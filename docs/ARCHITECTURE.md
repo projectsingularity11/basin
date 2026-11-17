@@ -1,3 +1,13 @@
 # BASIN architecture
 
 Next.js App Router serves a static, account-free research instrument. The domain engine is pure TypeScript with no React or rendering dependency. All volumes are m³, elevations/depths m, durations seconds, and UI rainfall/infiltration mm/h. Synthetic terrains are deterministic analytical heightfields with a seeded perturbation. Immutable scenarios feed a conservative simultaneous-transfer surface router. Infiltration, detention capture/release, and boundary outflow are separately accounted. Lab, comparison, and exhaustive discrete optimizer use exactly this engine. Rendering receives computed snapshots; playback selects snapshots without changing their values. React context owns current scenario and last run; browser storage owns saved scenarios and experiment records. Import validates schema and bounded parameters. Three.js is lazy-loaded; SVG provides a selectable 2D fallback. Vitest checks numerical invariants and Playwright checks user journeys. GitHub main and Vercel production are delivery targets. No external credentials, database, or paid API is needed at runtime.
+
+## v0.2 extension
+
+The homepage is a separate cinematic client chunk: Three.js Water and Sky, original normal generation, shared pointer disturbance, static sky cube cache, GSAP ticker and Lenis, with teardown on route exit. The independent terrain renderer remains lazy and uses demand frames.
+
+`/earth` owns geographic selection and cancellation. MapLibre renders OpenFreeMap context and a polygon obtained by transforming the actual metric square corners, not by treating degrees as meters. The server's fixed-host USGS adapter requests Float32 GeoTIFF, validates its cells, and returns a typed GeographicTerrain. Photon search is a separate bounded endpoint. GeoTIFF decoding is server-side; no raster decoder is shipped to the browser.
+
+Scenario version 1 is extended additively with optional `geographic` input, preserving old synthetic JSON. Model validation checks raster length, finite values, grid size/cell width agreement and metadata shape. `terrain()` chooses the supplied elevation array when present, with hypothetical edits layered on top; it never invents replacement values. Comparison and the Worker optimizer inherit the same geographic input.
+
+The lab uses full-viewport terrain, task navigation and one contextual drawer at a time. Minute snapshots drive playback, results and charts. Source data remains inspectable. Global navigation uses a native modal dialog with Escape, focus restoration and real links. Fonts, icons and open-source notices are self-hosted. Public provider dependencies and lack of a durable rate limiter are documented in DATA_SOURCES.md.

@@ -1,151 +1,128 @@
 'use client';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import {
-  ArrowUpRight,
-  ArrowRight,
-  MoveUpRight,
-  FlaskConical,
-  Layers,
-  GitCompareArrows,
-  ScanLine,
-} from 'lucide-react';
-import { useMemo } from 'react';
+import { ArrowDown, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import Terrain from '@/components/terrain-view';
-import { DEFAULT, simulate } from '@/engine/model';
-import { Footer, disclaimer } from '@/components/shell';
+import { DEFAULT, simulate, makeIntervention } from '@/engine/model';
+import { Footer } from '@/components/shell';
+const Ocean = dynamic(() => import('@/components/ocean'), { ssr: false });
 export default function Home() {
-  const run = useMemo(() => simulate(DEFAULT), []);
+  const [intervention, setIntervention] = useState(false);
+  const runs = useMemo(
+      () => [
+        simulate(DEFAULT),
+        simulate({ ...DEFAULT, interventions: [makeIntervention(DEFAULT, 420, 'detention', 600)] }),
+      ],
+      [],
+    ),
+    run = runs[intervention ? 1 : 0];
   return (
-    <main id="main">
-      <section className="hero">
-        <div className="hero-grid" />
-        <div className="hero-top mono">
-          <span>
-            <i className="status-dot" /> AN OPEN LABORATORY FOR A CHANGING CLIMATE
-          </span>
-          <span>MODEL 01 / SYNTHETIC CATCHMENT</span>
-        </div>
-        <div className="hero-copy">
-          <div className="eyebrow">EXPLORE. INTERVENE. UNDERSTAND.</div>
-          <h1>
-            Understand
-            <br />
-            where <span>water</span>
-            <br />
-            goes<span className="period">.</span>
-          </h1>
-          <p>
-            Every landscape tells a water story.
-            <br />
-            Explore the forces behind runoff—and test
-            <br className="desktop-break" /> what happens when we change the terrain.
-          </p>
-          <div className="hero-actions">
-            <Link className="button primary" href="/lab">
-              Launch laboratory <ArrowUpRight size={19} />
-            </Link>
-            <Link className="text-link" href="/case-study">
-              The story behind BASIN <ArrowRight size={16} />
+    <main id="main" className="immersive-home">
+      <div id="ocean-story">
+        <Ocean />
+        <section className="ocean-hero">
+          <div className="ocean-wordmark">
+            <h1>BASIN</h1>
+            <p>Model the movement of water.</p>
+            <Link href="/earth" className="ocean-enter">
+              Enter laboratory <ArrowUpRight size={18} />
             </Link>
           </div>
-          <div className="hero-note">
-            <FlaskConical size={15} />
-            <span>
-              Real calculations. Transparent assumptions.
+          <a href="#beneath" className="scroll-cue">
+            Scroll to explore <ArrowDown size={14} />
+          </a>
+        </section>
+        <section id="beneath" className="underwater-section">
+          <div>
+            <span className="scene-number">01 / WATER</span>
+            <h2>
+              Rainfall.
               <br />
-              An experimental research prototype.
-            </span>
+              Storage.
+              <br />
+              <em>Outflow.</em>
+            </h2>
+            <p>Rain becomes infiltration, stored water, or outflow.</p>
           </div>
-        </div>
-        <div className="hero-scene">
-          <Terrain scenario={DEFAULT} frame={run.frames[40]} hero />
-          <div className="scene-tag mono">
-            <span className="cross">+</span> VALLEY CATCHMENT{' '}
-            <small>SYNTHETIC DEMONSTRATION DATA</small>
-          </div>
-          <div className="scene-coordinate mono">
-            240 × 240 m <span>/</span> 576 COMPUTATIONAL CELLS
-          </div>
-          <div className="hero-depth">
+          <div className="depth-rule">
             <i />
-            <span>
-              SURFACE WATER <b>Simulated estimates</b>
-            </span>
-            <ScanLine size={21} />
+            <span>Below the surface</span>
           </div>
+        </section>
+        <section className="terrain-reveal">
+          <div className="reveal-title">
+            <span className="scene-number">02 / LAND</span>
+            <h2>
+              Terrain
+              <br />
+              shapes <em>flow.</em>
+            </h2>
+            <p>Elevation changes the path water takes.</p>
+          </div>
+          <div className="reveal-terrain">
+            <Terrain scenario={run.scenario} frame={run.frames[60]} />
+            <span>Synthetic terrain · computed water depth</span>
+          </div>
+          <div className="intervention-demo">
+            <button aria-pressed={intervention} onClick={() => setIntervention(!intervention)}>
+              <span className={intervention ? 'switch active' : 'switch'} />
+              {intervention ? 'With detention' : 'Add 600 m³ detention'}
+              <ArrowRight size={15} />
+            </button>
+            <p>
+              Peak outflow <strong>{run.peakOutflow.toFixed(3)} m³/s</strong>
+            </p>
+            <Link href="/lab">
+              Try the simulation <ArrowUpRight size={14} />
+            </Link>
+          </div>
+        </section>
+      </div>
+      <section className="earth-invitation">
+        <div className="earth-orbit" aria-hidden="true">
+          <div className="earth-sphere" />
+          <i />
+          <i />
         </div>
-        <div className="hero-bottom">
-          <span className="mono">01 — THE LANDSCAPE IS THE LABORATORY</span>
-          <span>
-            Drag to orbit <span className="muted">/</span> Scroll to zoom
-          </span>
-          <Link href="/methodology">
-            See how the model works <MoveUpRight size={14} />
-          </Link>
-        </div>
-      </section>
-      <section className="intro-strip">
         <div>
-          <span className="eyebrow">A QUESTION WORTH EXPLORING</span>
+          <span className="scene-number">03 / YOUR LOCATION</span>
           <h2>
-            What if we could
+            Select
             <br />
-            make room for water?
+            <em>a region.</em>
           </h2>
-        </div>
-        <p>
-          BASIN brings rainfall, terrain, and stormwater interventions into one explorable
-          environment. Change a variable. Run the model. Follow the water—and the evidence.
-        </p>
-        <Link className="round-link" href="/lab" aria-label="Explore the laboratory">
-          <ArrowUpRight />
-        </Link>
-      </section>
-      <section className="pathways">
-        {[
-          {
-            n: '01',
-            icon: Layers,
-            title: 'Read the landscape',
-            text: 'Watch a conservative numerical model route rainfall across a synthetic watershed.',
-            href: '/lab',
-            link: 'Enter the laboratory',
-          },
-          {
-            n: '02',
-            icon: GitCompareArrows,
-            title: 'Test a different future',
-            text: 'Add hypothetical storage or permeable surfaces. Compare the actual computed outcomes.',
-            href: '/compare',
-            link: 'Compare scenarios',
-          },
-          {
-            n: '03',
-            icon: FlaskConical,
-            title: 'Question every result',
-            text: 'Inspect water balance, understand the assumptions, and see what still needs validation.',
-            href: '/methodology',
-            link: 'Explore the methodology',
-          },
-        ].map((p) => (
-          <Link className="pathway" href={p.href} key={p.n}>
-            <div className="pathway-top">
-              <span className="mono">{p.n}</span>
-              <p.icon size={22} />
-            </div>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-            <span className="text-link">
-              {p.link}
-              <ArrowUpRight size={16} />
-            </span>
+          <p>
+            Choose a region. Load USGS elevation.
+            <br />
+            Test a storm on the resulting terrain.
+          </p>
+          <Link className="button primary" href="/earth">
+            Choose a place <ArrowUpRight size={18} />
           </Link>
-        ))}
+          <small>U.S. elevation coverage · experimental runoff model</small>
+        </div>
       </section>
-      <div className="disclaimer home-disclaimer">
-        <FlaskConical size={18} />
-        <p>{disclaimer}</p>
-        <span className="mono">KNOW THE LIMITS.</span>
+      <section className="harvey-preview">
+        <span className="harvey-year">2017</span>
+        <div>
+          <span className="scene-number">HURRICANE HARVEY / SPRING, TEXAS</span>
+          <h2>
+            Barbara Bush
+            <br />
+            Branch Library.
+          </h2>
+          <p>Flood damage closed the library during Hurricane Harvey.</p>
+          <Link className="text-link" href="/case-study">
+            Read the case study <ArrowUpRight size={16} />
+          </Link>
+        </div>
+      </section>
+      <div className="home-method">
+        <p>Real terrain. Experimental model.</p>
+        <Link href="/methodology">
+          What the model can—and cannot—tell you <ArrowUpRight size={15} />
+        </Link>
       </div>
       <Footer />
     </main>

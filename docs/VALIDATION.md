@@ -32,3 +32,17 @@ See ROADMAP.md: measured geometry, calibrated rainfall input, timed outflow samp
 The overlapping browser runs described during development were terminated; the final four-test result above used one Playwright worker and one server. No statement of manual keyboard-only audit, full WCAG conformance, empirical validation, or non-Chromium testing is made.
 
 The final production build also passed after the terrain legend clarification. The complete user journey was rerun with both browser console-error and uncaught page-error listeners: passed in 14.1 seconds with neither error list populated.
+
+# v0.2 verification
+
+The v0.1 results above are historical. The current suite preserves the original eleven numerical tests and adds six geographic tests (17 total): actual retrieved cell values, local metric projection and coordinate ordering, conservation/determinism on the real grid, geographic serialization and optimizer retention, recoverable source elevations after hypothetical edits, no-data and malformed-grid rejection.
+
+Live local API checks separately returned five Photon search results and 576 USGS cells for Spring, Texas. The browser live-provider journey successfully searched Spring, retrieved a fresh valid raster, ran the model, added detention and compared independent runs. These are integration results, not hydrological validation.
+
+The first browser suite exposed decorative navigation numbers in accessible link names; fixed with aria-hidden. A later error-path assertion collided with Next.js's route-announcer alert; narrowed to the actual elevation error. Explicit service failures remain in the Earth UI and never switch to synthetic data silently. Final execution counts are appended after QA.
+
+Final local gates: TypeScript, lint, all 17 numerical tests and production build passed. The final four-test Playwright suite passed in about one minute. It checked actual non-selection map features (not only a canvas), live Photon and USGS services, real-terrain run/intervention/comparison, synthetic save/export/import and Worker optimization, responsive overflow at 1440/1024/768/390 pixels, keyboard modal/Escape focus behavior, a WCAG A/AA automated scan of the mobile controls, icon serving, reduced-motion rendering, explicit provider error handling and WebGL-unavailable SVG fallback. No manual WCAG certification or physical validation is claimed.
+
+MapLibre 6 initially failed to load its bundled relative worker URL. The official matching worker is now self-hosted, and the strengthened rendered-feature test passed. Public provider availability was tested live, separately from the saved numerical fixture.
+
+The final ocean changes were followed by another successful production build and a targeted visual/navigation/mobile/accessibility test. Performance is separately measured and remains below the 60 FPS target on the available software renderer; see PERFORMANCE.md. This limitation is not hidden by the passing functional tests.
