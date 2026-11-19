@@ -5332,7 +5332,15 @@ footer > span {
   pointer-events: none;
   background: linear-gradient(#28688c 0%, #075679 17%, #07334f 41%, #051a32 67%, #020c15 100%);
 }
-.ocean-world-image { object-fit: cover; object-position: center top; }
+.ocean-world-image {
+  left: 50% !important;
+  right: auto !important;
+  width: auto !important;
+  max-width: none;
+  height: 100%;
+  transform: translateX(-50%);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
 .ocean-backdrop { position: sticky; top: 0; height: 100svh; z-index: -1; overflow: hidden; pointer-events: none; }
 .ocean-life { display: block; width: 100%; height: 100%; opacity: var(--submerged-visibility, 0); }
 .ocean-world-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 28%, #00132229 50%, #00081582 71%, #00040bc9 87%, #020b12 100%); }
