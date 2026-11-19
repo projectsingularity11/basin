@@ -5334,8 +5334,20 @@ footer > span {
 }
 .ocean-world-image { object-fit: fill; }
 .ocean-backdrop { position: sticky; top: 0; height: 100svh; z-index: -1; overflow: hidden; pointer-events: none; }
-.ocean-life { display: block; width: 100%; height: 100%; }
-.ocean-world-shade { position: absolute; inset: 0; background: linear-gradient(180deg, #00122520, transparent 17%, #02142316 60%, transparent 86%, #020c15 100%); }
+.ocean-life { display: block; width: 100%; height: 100%; opacity: var(--submerged-visibility, 0); }
+.ocean-world-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 28%, #00132229 50%, #00081582 71%, #00040bc9 87%, #020b12 100%); }
+.ocean-surface-film {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: 114svh;
+  object-fit: cover;
+  object-position: 50% 32%;
+  opacity: var(--surface-visibility, 1);
+  mask-image: linear-gradient(#000 63%, #000d 78%, transparent 100%);
+  filter: saturate(1.22) brightness(.83);
+}
+.ocean-immersion { position: absolute; inset: 0; opacity: var(--waterline-glow, 0); background: radial-gradient(ellipse at 50% 0%, #c9faff94, #49c9e148 39%, transparent 73%); mix-blend-mode: screen; }
 .ocean-current {
   position: absolute;
   inset: 4% -15% auto;
@@ -5363,57 +5375,83 @@ footer > span {
 .dive-loader-content { display: grid; gap: 16px; justify-items: center; color: #e6f9ff; }
 .dive-loader-content p { margin: 0; font-size: 14px; }
 .dive-loader-content button { color: #b7dae8; border: 0; background: none; padding: 8px; font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-.dive-loader-track { display: block; width: 126px; height: 2px; background: #427185; overflow: hidden; }
-.dive-loader-track::after { content: ''; display: block; width: 45%; height: 100%; background: #b5f5ff; animation: loading-current .8s ease-in-out infinite alternate; }
-.dive-loader[data-loading='false'] .dive-loader-track::after { animation: none; }
-@keyframes loading-current { from { transform: translateX(-60%); } to { transform: translateX(185%); } }
-.flood-hero, .dive-section { min-height: 103svh; display: grid; align-items: center; position: relative; padding: 105px clamp(22px, 9vw, 160px) 76px; }
-.flood-hero { min-height: 100svh; margin-top: -100svh; text-align: center; justify-items: center; }
+.dive-loader-mark { width: 112px; aspect-ratio: 1; display: grid; place-items: center; position: relative; }
+.dive-loader-mark::before, .dive-loader-mark::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid #85def6a8;
+  animation: loading-sonar 1.8s cubic-bezier(.18,.63,.36,1) infinite;
+}
+.dive-loader-mark::after { animation-delay: -.9s; }
+.dive-loader[data-loading='false'] .dive-loader-mark::before,
+.dive-loader[data-loading='false'] .dive-loader-mark::after { animation: none; opacity: 0; }
+@keyframes loading-sonar { from { opacity: .8; transform: scale(.46); } to { opacity: 0; transform: scale(1.25); } }
+.flood-hero, .dive-section { min-height: 96svh; display: grid; align-items: center; position: relative; padding: 105px clamp(22px, 9vw, 160px) 76px; }
+.flood-hero { min-height: 100svh; margin-top: -100svh; text-align: center; justify-items: center; background: radial-gradient(ellipse at 50% 56%, #041f3760, transparent 62%); }
 .flood-hero h1 { font: 500 clamp(82px, 18vw, 278px)/.85 'Manrope', sans-serif; letter-spacing: -.065em; margin: 0 0 24px; padding-right: .065em; text-shadow: 0 6px 54px #0322359c; color: #f5fcff; }
 .flood-hero p, .dive-section p { font: 500 clamp(15px, 1.55vw, 20px)/1.7 'Manrope', sans-serif; color: #e8f7ff; margin: 0 0 24px; }
 .flood-action, .dive-section a { display: inline-flex; align-items: center; gap: 10px; border: 1px solid #c0efff9e; border-radius: 30px; padding: 11px 16px; background: #031b2bde; color: #f1fbff; font-size: 13px; font-weight: 600; transition: background .2s, border-color .2s; }
 .flood-action:hover, .dive-section a:hover { background: #12405a; border-color: #d8fbff; }
-.dive-link { position: absolute; bottom: 24px; left: calc(50% - 22px); border: 1px solid #d7f0ff90; border-radius: 50%; width: 44px; height: 44px; display: grid; place-items: center; background: #02172699; }
+.dive-skip { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; padding: 9px 13px; color: #f0faff; background: #021727d9; border: 1px solid #bdebfa6e; border-radius: 22px; font-size: 13px; }
 .dive-section h2 { font: 400 clamp(54px, 7.5vw, 118px)/.91 'Instrument Serif', Georgia, serif; letter-spacing: -.027em; text-wrap: balance; color: #f5fbff; margin: 0 0 20px; }
 .dive-copy { position: relative; isolation: isolate; max-width: 660px; text-shadow: 0 2px 16px #000; }
 .dive-copy::before { content: ''; position: absolute; z-index: -1; inset: -55% -35%; background: radial-gradient(ellipse, #00111acc 0%, #00111a99 35%, transparent 72%); pointer-events: none; }
 .dive-section p { max-width: 46ch; }
-.dive-right { justify-items: end; text-align: right; }
-.dive-right p { margin-left: auto; }
-.dive-floor { min-height: 106svh; }
-.dive-final { min-height: 94svh; background: linear-gradient(transparent 50%, #020c15); }
-.dive-controls { position: sticky; bottom: 18px; margin: -36px 22px 0 auto; display: flex; align-items: center; gap: 10px; width: fit-content; z-index: 2; }
-.dive-controls button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #ccf0ff67; color: #e7f9ff; background: #031b2be8; border-radius: 50%; cursor: pointer; }
-.dive-instrument {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 6px 12px;
-  align-items: center;
-  padding: 9px 11px;
-  border: 1px solid #c4efff50;
-  border-radius: 8px;
-  background: #031b2bed;
-  color: #ebf9ff;
-  font: 11px var(--mono);
-}
-.dive-percent { text-align: right; min-width: 4ch; font-variant-numeric: tabular-nums; }
-.dive-progress { grid-column: 1 / -1; height: 2px; background: #c4efff55; }
-.dive-progress div { height: 100%; background: #bcfaff; transform: scaleX(var(--dive-progress, 0)); transform-origin: left; }
+.dive-reef .dive-copy { max-width: 555px; }
+.dive-abyss { min-height: 144svh; align-items: end; padding-bottom: 19svh; }
+.dive-abyss .dive-copy { max-width: 590px; }
+.dive-controls { position: sticky; bottom: 20px; margin: -44px 26px 0 auto; display: flex; align-items: center; gap: 9px; width: fit-content; z-index: 2; }
+.dive-controls button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ccf0ff82; color: #f1fbff; background: #031827e8; border-radius: 50%; cursor: pointer; transition: background .2s, border-color .2s; }
+.dive-controls button:hover { background: #15516a; border-color: #d2f4ff; }
+.ocean-sound-status { position: absolute; right: 0; bottom: calc(100% + 8px); width: max-content; color: #f1fbff; background: #031625; padding: 8px 12px; border-radius: 6px; }
 .ocean-descent[data-paused='true'] .ocean-current { animation-play-state: paused; }
+
+.expeditions { position: relative; isolation: isolate; padding: clamp(52px, 9vw, 150px) clamp(22px, 7.5vw, 124px) clamp(65px, 8vw, 120px); background: radial-gradient(ellipse at 51% 77%, #0a2c3b, transparent 62%), #020b12; }
+.expeditions-heading { margin: 0 auto 42px; text-align: center; }
+.expeditions-heading h2 { color: #f0fbff; margin: 0 0 14px; font: 400 clamp(58px, 9vw, 130px)/.93 'Instrument Serif', Georgia, serif; text-wrap: balance; }
+.expeditions-heading p { color: #bedbe6; font-size: clamp(15px, 1.4vw, 18px); margin: 0; }
+.expedition-grid { max-width: 1500px; margin-inline: auto; display: grid; align-items: stretch; grid-template-columns: 1fr 1.16fr 1fr; gap: clamp(10px, 1.4vw, 23px); }
+.expedition-card { position: relative; overflow: hidden; border: 1px solid #5791a768; background: #09212b; border-radius: 8px; min-height: 400px; }
+.expedition-link { display: flex; position: relative; isolation: isolate; height: 100%; flex-direction: column; justify-content: flex-end; color: #f6fcff; }
+.expedition-link:focus-visible { outline-offset: -5px; outline: 2px solid #b5ffff; }
+.expedition-image { position: absolute; z-index: -2; inset: 0; background: var(--expedition-art) center 27% / cover no-repeat; transition: transform .75s cubic-bezier(.18,.75,.28,1), filter .45s; filter: saturate(.78); }
+.expedition-link::before { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, #03121cf7 18%, #03131be1 43%, #03131b1a 76%); }
+.expedition-link:is(:hover,:focus-visible) .expedition-image { transform: scale(1.065); filter: saturate(1); }
+.expedition-terrain { --expedition-art: url(/expeditions/terrain.webp); }
+.expedition-harvey { --expedition-art: url(/expeditions/harvey.webp); }
+.expedition-mitigation { --expedition-art: url(/expeditions/mitigation.webp); }
+.expedition-copy { padding: clamp(17px, 2.4vw, 33px); }
+.expedition-copy h3 { margin: 9px 0 13px; color: #f3fbff; font: 400 clamp(32px, 3.9vw, 58px)/.96 'Instrument Serif', Georgia, serif; }
+.expedition-copy p { color: #e0eff5; font-size: 14px; line-height: 1.55; margin: 0; }
+.expedition-copy .expedition-type { color: #b1f1f6; font: 12px/1.4 var(--mono); }
+.expedition-action { display: flex; gap: 9px; align-items: center; justify-content: space-between; margin-top: 22px; padding-top: 15px; border-top: 1px solid #b9eaf44f; font-weight: 600; color: #d7fcff; font-size: 13px; }
+.expedition-back { display: inline-block; margin-bottom: 14px; color: #c8f2fa; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.case-flood-photo { margin: 28px 0 34px; }
+.case-flood-photo img { width: 100%; height: auto; display: block; border-radius: 6px; }
+.case-flood-photo figcaption { margin-top: 8px; color: var(--muted); font-size: 13px; }
+.expedition-method { display: flex; width: fit-content; align-items: center; gap: 8px; margin: 32px auto 0; color: #b6dbea; text-decoration: underline; text-underline-offset: 5px; font-size: 13px; }
+.expedition-credits { margin-top: 15px; font-size: 12px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .dive-reveal { animation: dive-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    @keyframes dive-reveal { from { opacity: .1; transform: translateY(35px); } to { opacity: 1; transform: translateY(0); } }
+  }
+}
+@media (max-width: 800px) {
+  .expedition-grid { grid-template-columns: 1fr; max-width: 515px; }
+  .expedition-card { min-height: 330px; }
+  .expedition-copy { padding: 24px; }
+}
 @media (max-width: 700px) {
-  .dive-right { text-align: left; justify-items: start; }
-  .dive-right p { margin-left: 0; }
-  .dive-section { align-items: end; padding-bottom: 14svh; }
+  .dive-section { align-items: end; padding-bottom: 18svh; }
   .dive-section h2 { font-size: clamp(47px, 11vw, 80px); }
   .dive-copy::before { inset-inline: -12%; }
   .dive-controls { margin-right: 12px; }
-  .dive-link { bottom: 70px; }
+  .dive-skip { bottom: 76px; }
   .ocean-world-image { width: 140% !important; max-width: none; left: -20% !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .water-pointer, .dive-controls button { display: none; }
-  .ocean-current, .dive-loader-track::after { animation: none; }
-  .dive-loader { transition: none; }
+  .water-pointer, .dive-controls .dive-motion-toggle { display: none; }
+  .ocean-current, .dive-loader-mark::before, .dive-loader-mark::after { animation: none; }
+  .dive-loader, .expedition-image { transition: none; }
 }
 
 .study-layout{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);align-items:start;gap:40px;padding-bottom:72px}

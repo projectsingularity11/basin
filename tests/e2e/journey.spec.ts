@@ -104,11 +104,19 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
   const world = page.locator('.ocean-world-image');
-  const progress = page.locator('[data-dive-percent]');
   const story = page.locator('.ocean-descent');
   await expect(world).toHaveJSProperty('complete', true);
   await expect(page.getByText('Loading ocean', { exact: true })).toBeHidden();
-  await expect(progress).toHaveText('0%');
+  const surface = page.locator('.ocean-surface-film');
+  await expect(surface).toHaveJSProperty('videoWidth', 1920, { timeout: 20_000 });
+  const soundRequests = [
+    page.waitForResponse('**/dive/waves.mp3'),
+    page.waitForResponse('**/dive/hydrophone.mp3'),
+  ];
+  await page.getByRole('button', { name: 'Enable ocean sound' }).click();
+  for (const response of await Promise.all(soundRequests)) expect(response.ok()).toBe(true);
+  await page.getByRole('button', { name: 'Mute ocean sound' }).click();
+  await expect(page.getByRole('button', { name: 'Enable ocean sound' })).toBeVisible();
   await page.getByRole('button', { name: 'Pause ocean animation' }).click();
   await expect(story).toHaveAttribute('data-paused', 'true');
   await page.getByRole('button', { name: 'Resume ocean animation' }).click();
@@ -121,12 +129,26 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
       window.scrollTo({ top: top + travel * position, behavior: 'instant' });
       return travel;
     }, fraction);
-    await expect(progress).toHaveText(`${Math.round(fraction * 100)}%`);
+
     const offset = await world.evaluate((element) => element.getBoundingClientRect().top);
     expect(Math.abs(offset + fraction * travel)).toBeLessThan(3);
     offsets.push(offset);
   }
   expect(offsets).toEqual([...offsets].sort((a, b) => b - a));
+  await expect(surface).toHaveJSProperty('paused', true);
+  const expeditions = page.getByRole('region', { name: 'Choose an expedition' });
+  await expect(expeditions.getByRole('link', { name: 'Open the terrain map' })).toHaveAttribute(
+    'href',
+    '/earth',
+  );
+  await expect(expeditions.getByRole('link', { name: 'Investigate Harvey' })).toHaveAttribute(
+    'href',
+    '/case-study',
+  );
+  await expect(expeditions.getByRole('link', { name: 'Test mitigation options' })).toHaveAttribute(
+    'href',
+    '/study',
+  );
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');
@@ -155,6 +177,8 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.goto('/');
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Pause ocean animation' })).toBeHidden();
+  await expect(surface).toHaveJSProperty('paused', true);
+  await expect(page.getByRole('button', { name: 'Enable ocean sound' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);

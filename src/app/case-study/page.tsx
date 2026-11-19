@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { LibraryStudy } from '@/components/library-study';
 import { Footer } from '@/components/shell';
 import { sources } from '@/data/sources';
@@ -21,6 +22,9 @@ export default function CaseStudy() {
   return (
     <main id="main">
       <section className="case-hero">
+        <Link className="expedition-back" href="/#expeditions">
+          ← Flood expeditions
+        </Link>
         <h1>
           Hurricane Harvey and
           <br />
@@ -47,6 +51,21 @@ export default function CaseStudy() {
             <a href={sources[1].url}>Library recovery coverage ↗</a> ·{' '}
             <a href={sources[2].url}>NOAA rainfall archive ↗</a>
           </p>
+          <figure className="case-flood-photo">
+            <Image
+              src="/expeditions/harvey.webp"
+              alt="Aerial view of floodwater surrounding buildings in Houston after Hurricane Harvey"
+              width={1200}
+              height={760}
+              sizes="(max-width: 700px) 92vw, 700px"
+            />
+            <figcaption>
+              Houston, August 31, 2017.{' '}
+              <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
+                U.S. Air Force photo by Tech. Sgt. Larry E. Reid Jr.
+              </a>
+            </figcaption>
+          </figure>
           <h2 id="analysis">Screening detention near the library</h2>
           <p>
             The study uses 576 USGS 3DEP elevation samples on a 960 m square around 6817 Cypresswood

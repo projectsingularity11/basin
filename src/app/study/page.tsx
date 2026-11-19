@@ -95,6 +95,9 @@ export default function Study() {
   return (
     <main id="main">
       <section className="page-heading">
+        <Link className="expedition-back" href="/#expeditions">
+          ← Flood expeditions
+        </Link>
         <h1>Watershed study</h1>
         <p>Trace drainage paths and test detention sites under two rainfall scenarios.</p>
       </section>

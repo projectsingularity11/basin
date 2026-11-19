@@ -12,6 +12,7 @@ type Creature = {
   faceRight?: boolean;
   pulse?: boolean;
   lure?: boolean;
+  cetacean?: boolean;
 };
 
 const inhabitants: Creature[] = [
@@ -52,6 +53,7 @@ const inhabitants: Creature[] = [
     opacity: 0.83,
     flow: 0.14,
     faceRight: true,
+    cetacean: true,
   },
   {
     image: '/dive/life-orca.webp',
@@ -61,6 +63,7 @@ const inhabitants: Creature[] = [
     opacity: 0.52,
     flow: 0.15,
     faceRight: true,
+    cetacean: true,
   },
   { image: '/wildlife-shark.webp', x: 0.72, y: 0.503, width: 0.39, opacity: 0.62, flow: -0.16 },
   { image: '/dive/life-tiger.webp', x: 0.65, y: 0.556, width: 0.35, opacity: 0.71, flow: -0.17 },
@@ -129,6 +132,7 @@ export function OceanLife({
     const sprite = document.createElement('canvas');
     const warp = sprite.getContext('2d');
     if (!warp) return;
+    const swimTimes = inhabitants.map(() => 0);
     let width = 1;
     let height = 1;
     let worldHeight = 1;
@@ -149,7 +153,8 @@ export function OceanLife({
       const offset = Math.max(0, scrollY - worldTop);
       const visible = offset < worldHeight && scrollY + height > worldTop;
       const moving = !stopped && !motion.matches;
-      if (moving && lastTime) time += Math.min(0.05, (now - lastTime) / 1000);
+      const elapsed = moving && lastTime ? Math.min(0.05, (now - lastTime) / 1000) : 0;
+      time += elapsed;
       lastTime = moving ? now : 0;
       context.clearRect(0, 0, width, height);
       if (!visible) {
@@ -170,7 +175,9 @@ export function OceanLife({
       });
 
       inhabitants.forEach((animal, index) => {
-        const y = animal.y * worldHeight - offset + Math.sin(time * 0.52 + index) * 12;
+        const cruise = swimTimes[index];
+        const glide = cruise * (animal.cetacean ? 0.36 : 0.62) + index;
+        const y = animal.y * worldHeight - offset + Math.sin(glide) * (animal.cetacean ? 28 : 11);
         if (y < -height * 0.7 || y > height * 2.1) return;
 
         let image = images.get(animal.image);
@@ -186,24 +193,31 @@ export function OceanLife({
         const size = Math.min(width * animal.width * (width < 700 ? 1.34 : 1), 850);
         const length = size * (animal.pulse ? 1 + Math.sin(time * 1.7 + index) * 0.04 : 1);
         const tall = (size * image.naturalHeight) / image.naturalWidth;
-        const x =
-          (animal.x + Math.sin(time * animal.flow + index * 0.1) * 0.1) * width - length / 2;
+        if (y > -tall && y < height + tall) swimTimes[index] += elapsed;
+        const margin = length / width / 2 + 0.07;
+        const span = 1 + margin * 2;
+        const pace = animal.flow * (cruise * 0.28 + Math.sin(cruise * 0.6) * 0.11);
+        const track = (animal.x + margin + pace) % span;
+        const heading = ((track + span) % span) - margin;
+        const drift = animal.x + Math.sin(glide * 0.46) * 0.04;
+        const x = (animal.pulse || animal.lure ? drift : heading) * width - length / 2;
         const top = y - tall / 2;
         context.globalAlpha = animal.opacity;
+        if (x + length < -4 || x > width + 4) return;
 
         if (animal.lure) {
           const lightX = x + length * 0.055;
           const lightY = top + tall * 0.15;
-          const glow = 0.83 + Math.sin(time * 2) * 0.17;
+          const glow = 0.88 + Math.sin(time * 1.72) * 0.12;
           const pool = context.createRadialGradient(
             lightX,
-            y + tall * 0.72,
+            y + tall * 0.56,
             0,
             lightX,
-            y + tall * 0.72,
+            y + tall * 0.56,
             size * 0.65,
           );
-          pool.addColorStop(0, 'rgba(90,221,216,.43)');
+          pool.addColorStop(0, 'rgba(124,255,221,.56)');
           pool.addColorStop(0.28, 'rgba(71,182,185,.18)');
           pool.addColorStop(1, 'rgba(41,127,160,0)');
           context.save();
@@ -212,10 +226,15 @@ export function OceanLife({
           context.fillStyle = pool;
           context.fillRect(lightX - size, y - tall, size * 2, size * 2);
           context.restore();
+          context.filter = 'brightness(.58) saturate(.9)';
           drawAnimal();
+          context.filter = 'none';
+          context.globalAlpha = glow;
           const halo = context.createRadialGradient(lightX, lightY, 0, lightX, lightY, size * 0.17);
           halo.addColorStop(0, '#e9fff8');
-          halo.addColorStop(0.12, 'rgba(174,255,242,.82)');
+          halo.addColorStop(0.035, '#effffa');
+          halo.addColorStop(0.12, 'rgba(136,255,228,.78)');
+          halo.addColorStop(0.36, 'rgba(85,222,218,.18)');
           halo.addColorStop(1, 'rgba(61,210,234,0)');
           context.fillStyle = halo;
           context.fillRect(lightX - size * 0.2, lightY - size * 0.2, size * 0.4, size * 0.4);
@@ -245,7 +264,10 @@ export function OceanLife({
           const step = length / strips;
           const bend = (band: number) => {
             const position = (animal.faceRight ? strips - band : band) / strips;
-            return Math.sin(time * 2.1 - position * 4 + index) * tall * 0.075 * position ** 2;
+            const frequency = animal.cetacean ? 1.82 : 2.9;
+            const bend = Math.sin(cruise * frequency - position * 3.3 + index);
+            const power = animal.cetacean ? 3.5 : 2;
+            return bend * tall * (animal.cetacean ? 0.19 : 0.11) * position ** power;
           };
 
           // Join the bands with the same bend at each shared edge.
@@ -268,6 +290,12 @@ export function OceanLife({
           }
           const spriteWidth = Math.ceil(length) + 2;
           const spriteHeight = Math.ceil(tall + margin * 2) + 2;
+          context.save();
+          if (animal.cetacean) {
+            context.translate(x + length / 2, y);
+            context.rotate(Math.cos(glide) * 0.052);
+            context.translate(-x - length / 2, -y);
+          }
           context.drawImage(
             sprite,
             0,
@@ -279,6 +307,7 @@ export function OceanLife({
             spriteWidth,
             spriteHeight,
           );
+          context.restore();
         }
       });
       context.globalAlpha = 1;

@@ -139,39 +139,49 @@ export function WaterMotion() {
   return <canvas className="water-pointer" ref={surface} aria-hidden="true" />;
 }
 
-export function useOceanScroll(story: RefObject<HTMLDivElement | null>) {
+export function oceanSubmersion(top: number, viewport: number) {
+  const depth = Math.min(1, Math.max(0, (-top / viewport - 0.4) / 0.6));
+  return depth * depth * (3 - 2 * depth);
+}
+
+export function useOceanScroll(story: RefObject<HTMLDivElement | null>, paused: boolean) {
+  const control = useRef<(paused: boolean) => void>(null);
   useEffect(() => {
     const element = story.current;
-    if (!element) return;
-    const readout = element.querySelector('[data-dive-percent]');
+    const film = element?.querySelector<HTMLVideoElement>('.ocean-surface-film');
+    if (!element || !film) return;
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     let lenis: Lenis | undefined;
     let animationFrame = 0;
     let scrollFrame = 0;
-    let storyTop = 0;
-    let travel = 1;
-    let previousPercent = -1;
+    let stopped = false;
+    let playing = false;
 
     const update = () => {
       scrollFrame = 0;
-      const depth = Math.min(1, Math.max(0, (scrollY - storyTop) / travel));
-      const percent = Math.round(depth * 100);
-      element.style.setProperty('--dive-progress', String(depth));
-      if (readout && percent !== previousPercent) readout.textContent = `${percent}%`;
-      previousPercent = percent;
+      const top = element.getBoundingClientRect().top;
+      const immersion = oceanSubmersion(top, innerHeight);
+      element.style.setProperty('--surface-visibility', String(1 - immersion));
+      element.style.setProperty('--submerged-visibility', String(immersion));
+      element.style.setProperty('--waterline-glow', String(Math.sin(immersion * Math.PI) * 0.38));
+      const shouldPlay = !stopped && !preference.matches && !document.hidden && immersion < 0.99;
+      if (shouldPlay === playing) return;
+      playing = shouldPlay;
+      if (shouldPlay) {
+        if (!film.getAttribute('src')) film.src = film.dataset.source!;
+        void film.play().catch(() => {});
+      } else {
+        film.pause();
+      }
     };
     const schedule = () => {
       if (!scrollFrame) scrollFrame = requestAnimationFrame(update);
-    };
-    const measure = () => {
-      storyTop = element.getBoundingClientRect().top + scrollY;
-      travel = Math.max(1, element.offsetHeight - innerHeight);
-      schedule();
     };
     const configureScroll = () => {
       cancelAnimationFrame(animationFrame);
       lenis?.destroy();
       lenis = undefined;
+      schedule();
       if (preference.matches) return;
       lenis = new Lenis({
         lerp: 0.075,
@@ -187,21 +197,26 @@ export function useOceanScroll(story: RefObject<HTMLDivElement | null>) {
       animationFrame = requestAnimationFrame(tick);
     };
 
+    control.current = (value) => {
+      stopped = value;
+      schedule();
+    };
     configureScroll();
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(element);
     addEventListener('scroll', schedule, { passive: true });
-    addEventListener('resize', measure);
+    addEventListener('resize', schedule);
+    document.addEventListener('visibilitychange', schedule);
     preference.addEventListener('change', configureScroll);
     return () => {
+      control.current = null;
       cancelAnimationFrame(animationFrame);
       cancelAnimationFrame(scrollFrame);
       lenis?.destroy();
-      observer.disconnect();
+      film.pause();
       removeEventListener('scroll', schedule);
-      removeEventListener('resize', measure);
+      removeEventListener('resize', schedule);
+      document.removeEventListener('visibilitychange', schedule);
       preference.removeEventListener('change', configureScroll);
     };
   }, [story]);
+  useEffect(() => control.current?.(paused), [paused]);
 }

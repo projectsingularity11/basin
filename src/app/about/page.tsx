@@ -77,6 +77,33 @@ export default function About() {
               </p>
             </div>
           </div>
+          <h2 id="media">Media credits</h2>
+          <ul>
+            <li>
+              <a href="https://commons.wikimedia.org/wiki/File:Waves_of_the_sea_(Video).webm">
+                Waves of the sea by Amada44
+              </a>
+              . BASIN uses a trimmed video, a looped surf track, and filtered surf in the underwater
+              mix. These adaptations are licensed under{' '}
+              <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+            </li>
+            <li>
+              <a href="https://www.pmel.noaa.gov/acoustics/multimedia.html">
+                American Samoa hydrophone recording, NOAA Pacific Marine Environmental Laboratory
+              </a>
+              . The damselfish recording is edited and mixed into the underwater ambience.
+            </li>
+            <li>
+              <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
+                Hurricane Harvey flooding in Houston, August 31, 2017
+              </a>
+              . U.S. Air Force photo by Tech. Sgt. Larry E. Reid Jr.
+            </li>
+          </ul>
+          <p>
+            The terrain image uses USGS 3DEP elevation data. The mitigation image shows a BASIN
+            screening result. The underwater creatures are animated illustrations.
+          </p>
           <div className="button-row">
             <Link className="button primary" href="/lab">
               Launch laboratory <ArrowRight size={15} />
