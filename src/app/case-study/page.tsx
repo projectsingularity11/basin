@@ -21,14 +21,10 @@ export default function CaseStudy() {
   return (
     <main id="main">
       <section className="case-hero">
-        <Link className="expedition-back" href="/classic#expeditions">
+        <Link className="expedition-back" href="/journeys">
           ← Flood expeditions
         </Link>
-        <h1>
-          Hurricane Harvey and
-          <br />
-          the Barbara Bush Branch Library
-        </h1>
+        <h1>Hurricane Harvey and the Barbara Bush Branch Library</h1>
         <p>Spring, Texas · August 2017</p>
       </section>
       <section className="article-layout content-width">

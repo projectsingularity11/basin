@@ -86,22 +86,13 @@ export default function Experiments() {
   return (
     <main id="main">
       <section className="page-heading">
-        <div className="eyebrow">07 / EXPERIMENT VALIDATION</div>
-        <h1>
-          Bring the model
-          <br />
-          <span>back to the bench.</span>
-        </h1>
-        <p>
-          Record measurements. Preserve provenance.
-          <br />
-          Find out where the model disagrees with the world.
-        </p>
+        <h1>Experiment records</h1>
+        <p>Record physical measurements and compare them with the current model run.</p>
       </section>
       <section className="content-width">
         <div className="section-toolbar">
           <div>
-            <h2>Experiment records</h2>
+            <h2>Measurements</h2>
             <span className="tiny">
               Local to this browser · user-entered measurements · independently unverified
             </span>

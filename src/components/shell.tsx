@@ -4,17 +4,19 @@ import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { ArrowUpRight, X, Plus } from 'lucide-react';
 import { Mark } from './logo';
+const primary = [
+  ['/journeys', 'Expeditions'],
+  ['/earth', 'Terrain'],
+  ['/lab', 'Experiment runner'],
+];
 const links = [
-  ['/', 'Home'],
-  ['/classic#expeditions', 'Flood expeditions'],
-  ['/earth', 'Earth'],
-  ['/lab', 'Laboratory'],
+  ...primary,
+  ['/study', 'Watershed study'],
   ['/compare', 'Compare'],
   ['/optimize', 'Optimize'],
-  ['/study', 'Watershed study'],
-  ['/case-study', 'Harvey'],
+  ['/experiments', 'Experiment records'],
   ['/methodology', 'Methods'],
-  ['/about', 'About'],
+  ['/about', 'About BASIN'],
 ];
 export function Header() {
   const path = usePathname(),
@@ -37,14 +39,16 @@ export function Header() {
       <header className={`floating-header ${path === '/' ? 'over-ocean' : ''}`}>
         <Link className="brand" href="/" aria-label="BASIN home">
           <Mark size={33} />
-          {path !== '/' && <span>BASIN</span>}
+          <span>BASIN</span>
         </Link>
         <div className="nav-actions">
-          {path !== '/lab' && (
-            <Link className="lab-shortcut" href="/lab">
-              Enter laboratory <ArrowUpRight size={14} />
-            </Link>
-          )}
+          <nav className="primary-nav" aria-label="BASIN tools">
+            {primary.map(([href, label]) => (
+              <Link key={href} href={href} aria-current={path === href ? 'page' : undefined}>
+                {label}
+              </Link>
+            ))}
+          </nav>
           <button
             ref={toggle}
             className="nav-toggle"
@@ -59,6 +63,7 @@ export function Header() {
       <dialog
         ref={dialog}
         className="navigation-dialog"
+        aria-label="BASIN navigation"
         onCancel={(e) => {
           e.preventDefault();
           close();
@@ -87,12 +92,6 @@ export function Header() {
               </Link>
             ))}
           </nav>
-          <div className="overlay-bottom">
-            <span>Flood mitigation studies</span>
-            <Link href="/experiments" onClick={close}>
-              Experiment records ↗
-            </Link>
-          </div>
         </div>
       </dialog>
     </>

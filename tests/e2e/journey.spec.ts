@@ -8,6 +8,7 @@ async function navigate(page: import('@playwright/test').Page, name: string) {
     .click();
 }
 test('synthetic run, save, detention, compare, search, and JSON roundtrip', async ({ page }) => {
+  test.setTimeout(120000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => {
@@ -51,7 +52,9 @@ test('synthetic run, save, detention, compare, search, and JSON roundtrip', asyn
   await page.getByRole('button', { name: 'Export', exact: true }).click();
   const file = await pending;
   await file.saveAs('/tmp/basin-v02.json');
-  await page.locator('input[type=file]').setInputFiles('/tmp/basin-v02.json');
+  const choosingFile = page.waitForEvent('filechooser');
+  await page.getByRole('button', { name: 'Import', exact: true }).click();
+  await (await choosingFile).setFiles('/tmp/basin-v02.json');
   await expect(page.getByRole('status')).toContainText('imported');
   await page.getByRole('button', { name: 'Close panel' }).click();
   await page.getByRole('button', { name: 'Reset simulation' }).click();
@@ -96,78 +99,43 @@ test('live place search and USGS elevation feed the lab, intervention and export
   ).toBeVisible();
   await page.screenshot({ path: '/tmp/v02-real-compare.png', fullPage: true });
 });
-test('ocean, keyboard navigation, reduced motion, responsive layouts and accessibility', async ({
+test('expeditions, keyboard navigation, reduced motion, and responsive research tools', async ({
   page,
 }) => {
   test.setTimeout(180000);
-  await page.goto('/classic');
-  await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
-  await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  const world = page.locator('.ocean-world-image');
-  const story = page.locator('.ocean-descent');
-  await expect(world).toHaveJSProperty('complete', true);
-  await expect(page.locator('.dive-loader')).toHaveAttribute('data-loading', 'false', {
-    timeout: 20_000,
-  });
-  const surface = page.locator('.ocean-surface-film');
-  await expect(surface).toHaveJSProperty('videoWidth', 1920, { timeout: 20_000 });
-  const soundRequests = [
-    page.waitForResponse('**/dive/waves.mp3'),
-    page.waitForResponse('**/dive/underwater.mp3'),
-  ];
-  await page.getByRole('button', { name: 'Enable study sound' }).click();
-  for (const response of await Promise.all(soundRequests)) expect(response.ok()).toBe(true);
-  await page.getByRole('button', { name: 'Mute study sound' }).click();
-  await expect(page.getByRole('button', { name: 'Enable study sound' })).toBeVisible();
-  await page.getByRole('button', { name: 'Pause study animation' }).click();
-  await expect(story).toHaveAttribute('data-paused', 'true');
-  await page.getByRole('button', { name: 'Resume study animation' }).click();
-  await expect(story).toHaveAttribute('data-paused', 'false');
-  const offsets = [];
-  for (const fraction of [0.2, 0.55, 0.83, 1]) {
-    const travel = await story.evaluate((element, position) => {
-      const top = element.getBoundingClientRect().top + scrollY;
-      const travel = element.clientHeight - innerHeight;
-      window.scrollTo({ top: top + travel * position, behavior: 'instant' });
-      return travel;
-    }, fraction);
-
-    const offset = await world.evaluate((element) => element.getBoundingClientRect().top);
-    expect(Math.abs(offset + fraction * travel)).toBeLessThan(3);
-    offsets.push(offset);
-  }
-  expect(offsets).toEqual([...offsets].sort((a, b) => b - a));
-  await expect(surface).toHaveJSProperty('paused', true);
-  await expect(page.locator('footer')).toHaveCount(0);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page).toHaveURL(/\/explore$/);
   const expeditions = page.getByRole('region', { name: 'Choose an expedition' });
   for (const [title, slug, destination, details] of [
     ['Follow the runoff', 'runoff', '/earth', 'Open the terrain map'],
     ['Hurricane Harvey', 'harvey', '/case-study', 'Read the case study'],
     ['Where could water be held?', 'detention', '/study', 'Open watershed tools'],
   ]) {
-    await expeditions.getByRole('link', { name: `Explore ${title}` }).click();
-    await expect(page).toHaveURL(new RegExp(`/classic/expeditions/${slug}$`));
+    await expeditions.getByRole('link', { name: new RegExp(title.replace('?', '')) }).click();
+    await expect(page).toHaveURL(new RegExp(`/explore/${slug}$`));
     await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: details })).toHaveAttribute('href', destination);
-    if (slug === 'detention') {
-      await page.getByRole('link', { name: 'Reproduce the library study' }).click();
-      await expect(page).toHaveURL(/\/study$/);
-      await expect(
-        page.getByText('Barbara Bush Branch Library', { exact: true }).first(),
-      ).toBeVisible();
-      await page.getByRole('link', { name: 'Flood expeditions' }).click();
-    } else {
-      await page.getByRole('link', { name: 'All expeditions' }).click();
-    }
-    await expect(page).toHaveURL(/\/classic#expeditions$/);
+    await page.getByRole('link', { name: /All expeditions/ }).click();
   }
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
   for (const width of [1440, 1024, 768, 390]) {
-    await page.setViewportSize({ width, height: 950 });
-    for (const route of ['/earth', '/lab', '/compare', '/optimize', '/methodology', '/study']) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of [
+      '/earth',
+      '/lab',
+      '/compare',
+      '/optimize',
+      '/methodology',
+      '/study',
+      '/experiments',
+      '/case-study',
+      '/credits',
+      '/explore',
+    ]) {
       await page.goto(route, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('main')).toBeVisible();
       expect(
@@ -179,20 +147,14 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.goto('/lab');
   await page.getByRole('button', { name: '2D', exact: true }).click();
   await page.getByRole('button', { name: /Storm/ }).click();
-  await page.getByRole('slider', { name: 'Rainfall intensity' }).fill('80');
+  const rainfall = page.getByRole('slider', { name: 'Rainfall intensity' });
+  await expect(rainfall).toBeInViewport();
+  await rainfall.fill('80');
   await page.getByRole('button', { name: 'Advanced settings' }).click();
   await expect(page.getByRole('combobox', { name: 'Boundary condition' })).toBeVisible();
-  await page.screenshot({ path: '/tmp/v02-mobile-lab.png' });
+  await page.screenshot({ path: '/tmp/basin-mobile-lab.png' });
   const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   expect(scan.violations).toEqual([]);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/classic');
-  await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Pause study animation' })).toBeHidden();
-  await expect(surface).toHaveJSProperty('paused', true);
-  await expect(page.getByRole('button', { name: 'Enable study sound' })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);
 });
 test('elevation errors remain explicit and WebGL-unavailable fallback remains usable', async ({

@@ -16,21 +16,9 @@ const routes = {
 const config: NextConfig = {
   async redirects() {
     return [
-      {
-        source: '/journeys/marine-protected-areas',
-        destination: '/journeys/runoff',
-        permanent: true,
-      },
-      {
-        source: '/journeys/sustainable-fisheries',
-        destination: '/journeys/harvey',
-        permanent: true,
-      },
-      {
-        source: '/journeys/blue-carbon-habitats',
-        destination: '/journeys/detention',
-        permanent: true,
-      },
+      { source: '/classic', destination: '/explore', permanent: true },
+      { source: '/classic/expeditions/:slug', destination: '/explore/:slug', permanent: true },
+      { source: '/project-about', destination: '/about', permanent: true },
     ];
   },
   async rewrites() {

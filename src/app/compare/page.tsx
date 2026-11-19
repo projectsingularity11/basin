@@ -49,17 +49,8 @@ export default function Compare() {
   return (
     <main id="main">
       <section className="page-heading">
-        <div className="eyebrow">02 / SCENARIO COMPARISON</div>
-        <h1>
-          Compare scenarios.
-          <br />
-          <span>See the computed difference.</span>
-        </h1>
-        <p>
-          Two independent runs. The same transparent model.
-          <br />
-          See what your intervention actually changes.
-        </p>
+        <h1>Compare scenarios</h1>
+        <p>Run two scenarios side by side with the same model.</p>
       </section>
       <section className="content-width">
         <div className="compare-controls">

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>About BASIN · BASIN</title><link rel="icon" href="/icon.svg"><link rel="stylesheet" href="/reference/css/style.css"><link rel="stylesheet" href="/reference/css/basin.css"></head>
 <body class="wp-singular page page-id-38 wp-embed-responsive wp-theme-bmf has-asscroll page-template-about">
-<div class="basin-access"><a href="/classic" data-router-disabled="">Use accessible BASIN</a><a href="/lab" data-router-disabled="">Experiment runner</a></div><div class="site-loader | js-site-loader">
+<div class="basin-access"><a href="/explore/about" data-router-disabled="">Explore without animation</a><a href="/lab" data-router-disabled="">Experiment runner</a></div><div class="site-loader | js-site-loader">
 <div class="site-loader__background | js-site-loader-background"></div>
 <div class="site-loader__content | js-site-loader-intro-container">
 <div class="site-loader__content__inner">
@@ -143,39 +143,15 @@ Loading
 <span class="sr">Return to homepage</span>
 <svg class="header__logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 719 251">
 <g class="opacity-0 visibility-hidden | js-logo-text js-reveal-on-load">
-<text x="280" y="162" fill="#94e6fb" font-size="118">BASIN</text></g>
+<text x="280" y="162" fill="#fff" font-size="118" font-weight="600">BASIN</text></g>
 <g class="opacity-0 visibility-hidden | js-logo-shield js-reveal-on-load-mobile">
 <image href="/icon.svg" x="0" y="0" width="250" height="250"></image></g>
 </svg>
 </a>
 <div class="d-flex items-center">
-<div class="lang-selector lang-selector--mob mr-1 d-none@md | js-site-loader-lang">
-<button class="lang-selector__btn js-lang" aria-controls="lang-selector">
-EN
-<svg class="fill">
-<use xlink:href="/reference/images/svgsprite.svg#caret"></use>
-</svg>
-</button>
-<div id="lang-selector" class="lang-selector__div d-none">
-<div class="btn btn--cutout">
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<ul>
-<li>
-English
-</li>
-
-
-
-
-
-
-
-</ul>
-</div>
-</div>
-</div>
+<div id="lang-selector" class="js-site-loader-lang" hidden></div>
 <div class="d-none@md relative z-1 | js-menu-toggle opacity-0 visibility-hidden | js-reveal-on-load">
-<button class="btn btn--circle">
+<button class="btn btn--circle" aria-label="Open navigation" aria-expanded="false" aria-controls="basin-primary-nav">
 <svg class="header__menu-icon | js-icon-open" width="15" height="10" viewbox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="15" height="1.5" fill="#D6F7FF"></rect>
 <rect y="4" width="15" height="1.5" fill="#D6F7FF"></rect>
@@ -191,146 +167,15 @@ English
 </button>
 </div>
 </div>
-<nav class="header__navigation | js-header-nav">
+<nav id="basin-primary-nav" class="header__navigation | js-header-nav" aria-label="Main navigation">
 <ul class="header__navigation__list list-unstyled">
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Journeys" href="/journeys">Journeys</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="About" href="/about#about-content">About</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Get Involved" href="/about#get-involved-content">Get Involved</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Education" href="/about#education-content">Education</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Experiment runner" href="/lab" data-router-disabled="">Experiment runner</a>
-</li>
-<li class="header__share mr-2@sm d-none d-block@md  js-reveal-on-load">
-<button class="header__share__btn | js-header-share" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<span class="js-scramble-hover" data-text="Share">Share</span>
-<svg class="header__share__plus" viewbox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path class="header__share__plus__vertical" fill-rule="evenodd" clip-rule="evenodd" d="M5.29687 0L5.29688 9H3.79688L3.79687 6.49879e-08L5.29687 0Z" fill="#94E6FB"></path>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M9 5.25H0V3.75H9V5.25Z" fill="#94E6FB"></path>
-</svg>
-</button>
-<div class="header__share__links">
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social mr-1 mr-0@md | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-</div>
-</li>
-<li class="lang-selector d-none d-block@md ">
-<button class="lang-selector__btn js-lang" aria-controls="lang-selector2">
-EN
-<svg class="fill">
-<use xlink:href="/reference/images/svgsprite.svg#caret"></use>
-</svg>
-</button>
-<div id="lang-selector2" class="lang-selector__div d-none">
-<div class="btn btn--cutout">
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<ul>
-<li>
-English
-</li>
-
-
-
-
-
-
-
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Expeditions" href="/journeys">Expeditions</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Terrain" href="/earth" data-router-disabled="">Terrain</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Methods" href="/methodology" data-router-disabled="">Methods</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="About BASIN" href="/about">About BASIN</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Experiment runner" href="/lab" data-router-disabled="">Experiment runner</a></li>
 </ul>
-</div>
-</div>
-</li>
-</ul>
-<div class="mb-1 d-none@md">
-<hr class="footer__rule footer__rule--light mb-1.5">
-<div class="t-uppercase t-8 t-center t-white px-2 t-ls-0.2 t-lh-1.6 | js-header-share-intro">Spread the word by sharing this experience with your friends &amp; family.</div>
-<div class="mt-1 d-flex justify-center overflow-hidden | js-header-share-links">
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social mr-1 mr-0@md | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-</div>
-</div>
+<div hidden class="basin-engine-hooks" aria-hidden="true"><hr class="footer__rule"><div class="js-header-share-intro"></div><button tabindex="-1" class="js-header-share"><svg><path class="header__share__plus__vertical"></path></svg></button></div>
 </nav>
 </header>
 <div class="audio-btn-container js-reveal-on-load opacity-0 visibility-hidden">
@@ -503,17 +348,10 @@ English
 <use xlink:href="/reference/images/svgsprite.svg#about-rectangle"></use>
 </svg>
 </li>
-<li class="mr-1"><a class="no-underline | js-scramble-hover js-scramble-left" href="/project-about" data-audio-enter="ui.hover" data-text="Facebook" target="_blank" data-router-disabled="">Project information</a></li>
-<li class="mr-1"><a class="no-underline | js-scramble-hover js-scramble-left" href="/project-about" data-audio-enter="ui.hover" data-text="Twitter" target="_blank" data-router-disabled="">Project information</a></li>
-<li class="mr-1"><a class="no-underline | js-scramble-hover js-scramble-left" href="/project-about" data-audio-enter="ui.hover" data-text="TikTok" target="_blank" data-router-disabled="">Project information</a></li>
-<li><a class="no-underline | js-scramble-hover js-scramble-left" href="/project-about" data-audio-enter="ui.hover" data-text="Instagram" target="_blank" data-router-disabled="">Project information</a></li>
 </ul>
 </div>
 <div>
 <ul class="d-flex list-unstyled t-uppercase t-10 t-12@md t-ls-0.2">
-<li class="ml-1"><a class="no-underline | js-scramble-hover js-scramble-right" href="/project-about#media" data-audio-enter="ui.hover" data-text="Donate" target="_blank" data-router-disabled="">Project credits</a></li>
-<li class="ml-1"><a class="no-underline | js-scramble-hover js-scramble-right" href="/project-about#media" data-audio-enter="ui.hover" data-text="BASIN study area" target="_blank" data-router-disabled="">Project credits</a></li>
-<li class="ml-1"><a class="no-underline | js-scramble-hover js-scramble-right" href="/project-about#media" data-audio-enter="ui.hover" data-text="Partner with us" target="_blank" data-router-disabled="">Project credits</a></li>
 <li class="ml-1 d-none d-block@md" aria-hidden="true">
 <svg class="icon icon--rectangle icon--glow | js-rectangle-right" aria-hidden="true">
 <use xlink:href="/reference/images/svgsprite.svg#about-rectangle"></use>
@@ -528,9 +366,9 @@ English
 <nav class="js-accordion" data-accordion-collapsable="false" aria-label="toggle content">
 <ul class="list-unstyled d-flex flex-wrap justify-center justify-between@sm d-block@md mt-2@md | js-sidebar">
 <li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="about-content"><span>01</span> About</button></li>
-<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="get-involved-content"><span>02</span> Get Involved</button></li>
-<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="projects-content"><span>03</span> Journeys</button></li>
-<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="education-content"><span>04</span> Education</button></li>
+<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="get-involved-content"><span>02</span> Research tools</button></li>
+<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="projects-content"><span>03</span> Expeditions</button></li>
+<li class="mb-1 mb-1.5@sm mx-0.5 mx-1@xs mx-0@sm w-1/1 w-auto@xs w-1/1@md t-center t-left@sm overflow-hidden"><button class="about-btn t-nowrap y-100 | js-toggle" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-5" aria-controls="education-content"><span>04</span> Sources</button></li>
 </ul>
 </nav>
 </div>
@@ -830,7 +668,7 @@ English
 </span>
 </button>
 <div id="education_7ri5hmo9nHaV" class="d-none relative">
-<div class="offset-1/12 offset-2/12@md w-11/12 w-10/12@sm w-9/12@md pt-1 pb-3 pb-4@sm pt-2@md pb-6@md t-light-blue"><h3 class="t-uppercase t-16 t-18@sm t-subtitle t-ls-0.02 t-500">Reproduce the library study</h3><div class="t-14 t-base@sm trim-vertical"><p>Use measured terrain around the library to compare detention candidates.</p><a href="/classic/expeditions/detention" data-router-disabled="">Open the detention guide</a></div></div>
+<div class="offset-1/12 offset-2/12@md w-11/12 w-10/12@sm w-9/12@md pt-1 pb-3 pb-4@sm pt-2@md pb-6@md t-light-blue"><h3 class="t-uppercase t-16 t-18@sm t-subtitle t-ls-0.02 t-500">Reproduce the library study</h3><div class="t-14 t-base@sm trim-vertical"><p>Use measured terrain around the library to compare detention candidates.</p><a href="/journeys/detention" data-router-disabled="">Open the detention guide</a></div></div>
 </div>
 </div>
 <div class="about-accordion-separator about-accordion-separator--before"></div>
@@ -854,7 +692,7 @@ English
 </span>
 </button>
 <div id="education_xfJoolGaiyGJ" class="d-none relative">
-<div class="offset-1/12 offset-2/12@md w-11/12 w-10/12@sm w-9/12@md pt-1 pb-3 pb-4@sm pt-2@md pb-6@md t-light-blue"><h3 class="t-uppercase t-16 t-18@sm t-subtitle t-ls-0.02 t-500">Review sources</h3><div class="t-14 t-base@sm trim-vertical"><p>Check the project’s data sources, case evidence and media credits.</p><a href="/project-about#media" data-router-disabled="">See project credits</a></div></div>
+<div class="offset-1/12 offset-2/12@md w-11/12 w-10/12@sm w-9/12@md pt-1 pb-3 pb-4@sm pt-2@md pb-6@md t-light-blue"><h3 class="t-uppercase t-16 t-18@sm t-subtitle t-ls-0.02 t-500">Review sources</h3><div class="t-14 t-base@sm trim-vertical"><p>Check the project’s data sources, case evidence and media credits.</p><a href="/credits#media" data-router-disabled="">See project credits</a></div></div>
 </div>
 </div>
 <div class="about-accordion-separator"></div>
@@ -864,60 +702,9 @@ English
 </div>
 <div class="container">
 <footer class="footer pb-4 | js-footer">
-<hr class="footer__rule mt-4 mt-6@md mt-10@lg mb-2 mb-3@sm mb-4@md | js-clip-x">
+<hr class="footer__rule mt-4 mt-6@md mb-2 | js-clip-x">
 <div class="d-flex flex-column items-center">
-<svg class="footer__mark | js-footer__stagger">
-<image href="/icon.svg" width="100%" height="100%"></image></svg>
-<div class="my-2">
-<a href="/project-about" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">Project information</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">Project information</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="/project-about" target="_blank" class="btn btn--cutout btn--social mx-0.5 | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">Project information</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">Project information</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="/project-about" target="_blank" class="btn btn--cutout btn--social mr-0.5 | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">Project information</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">Project information</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="/project-about" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">Project information</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">Project information</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-</div>
-<div class="js-footer__stagger">
-<a href="/project-about#media" target="_blank" class="t-10 t-12@sm t-uppercase ml-2 t-ls-0.1" data-router-disabled="">Project credits</a>
-<a href="/project-about#media" class="t-10 t-12@sm t-uppercase ml-2 t-ls-0.1" data-router-disabled="">Project credits</a>
-</div>
-<div class="t-10 t-12@sm t-light-blue my-1 t-center | js-footer__stagger">BASIN · Student flood research project</div>
-<div class="t-10 t-12@sm t-light-blue | js-footer__stagger">
-Experience designed &amp; developed by <a href="https://unseen.co/" target="_blank" class="t-uppercase d-inline-block t-ls-0.1" data-router-disabled="">Unseen</a>
-</div>
+<a href="/credits#media" class="t-12 t-uppercase t-ls-0.1 | js-footer__stagger" data-router-disabled="">Media credits</a>
 </div>
 </footer>
 </div>
@@ -983,15 +770,15 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Use measured elevation to explore routes water could take.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="15.9650° S / 5.7089° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -1076,7 +863,7 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 <p><span style="font-weight: 400;">Use measured elevation to explore routes water could take.</span></p>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">
@@ -1201,15 +988,15 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Read the Harvey case study and the library’s closure and recovery record.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="55.8989° S / 2.1385° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -1304,7 +1091,7 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 </ul>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">
@@ -1463,15 +1250,15 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Compare temporary stormwater storage scenarios under two storms.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="3.202778° S / 73.220680° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -1553,7 +1340,7 @@ Experience designed &amp; developed by <a href="https://unseen.co/" target="_bla
 <p><span data-contrast="none">Compare temporary stormwater </span><span data-contrast="none">storage scenarios </span><span data-contrast="none">under two storms.</span><span data-ccp-props='{"335559738":240,"335559739":240}'> </span></p>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">

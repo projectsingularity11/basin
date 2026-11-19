@@ -3,3 +3,31 @@
 .basin-access a { display: inline-block; color: #94e6fb; background: #071c2e; padding: 9px 13px; text-decoration: underline; text-underline-offset: 3px; font: 600 13px 'TT Lakes', sans-serif; }
 @font-face { font-family: Rajdhani; font-weight: 500; font-display: swap; src: url('/reference/fonts/rajdhani-500.woff2') format('woff2'); }
 @font-face { font-family: Rajdhani; font-weight: 600; font-display: swap; src: url('/reference/fonts/rajdhani-600.woff2') format('woff2'); }
+
+/* BASIN navigation and safe areas */
+.basin-engine-hooks, #lang-selector { display: none !important; }
+.header__navigation .header__link { white-space: nowrap; }
+.header__navigation .header__link[href="/lab"] {
+  border: 1px solid #94e6fb91;
+  padding: .62em .78em;
+  display: inline-flex;
+}
+.header__navigation .header__link[href="/lab"]:hover { background: #174967; color: #fff; }
+.header__logo text { font-family: 'TT Lakes', sans-serif; letter-spacing: .045em; }
+@media (max-width: 1023px) {
+  .header__navigation {
+    max-height: 100dvh;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .header__navigation__list { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+}
+@media (max-width: 420px) {
+  .header__navigation .header__link { white-space: normal; }
+}
+.hud-container, .modal__location, .site-loader__detail { display: none !important; }
+.js-breathe-text { display: none !important; }
+body.home .central-text .section__inner { width: min(92vw, 42rem); }
+body.home .central-text h1 { font-size: clamp(3.6rem, 13vw, 10rem); line-height: .95; }
+body.home .central-text .js-narration-text { text-wrap: balance; }
+.basin-access { bottom: max(16px, env(safe-area-inset-bottom)); max-width: calc(100vw - 32px); }

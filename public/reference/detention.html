@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Make Room for Water · BASIN</title><link rel="icon" href="/icon.svg"><link rel="stylesheet" href="/reference/css/style.css"><link rel="stylesheet" href="/reference/css/basin.css"></head>
 <body class="wp-singular page page-id-9 page-child parent-pageid-12 wp-embed-responsive wp-theme-bmf webgl-page page-template-bch" data-bg-audio="bg.underwater,bg.loop">
-<div class="basin-access"><a href="/classic" data-router-disabled="">Use accessible BASIN</a><a href="/lab" data-router-disabled="">Experiment runner</a></div><div class="site-loader | js-site-loader">
+<div class="basin-access"><a href="/explore/detention" data-router-disabled="">Explore without animation</a><a href="/lab" data-router-disabled="">Experiment runner</a></div><div class="site-loader | js-site-loader">
 <div class="site-loader__background | js-site-loader-background"></div>
 <div class="site-loader__content | js-site-loader-intro-container">
 <div class="site-loader__content__inner">
@@ -143,39 +143,15 @@ Loading
 <span class="sr">Return to homepage</span>
 <svg class="header__logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 719 251">
 <g class="opacity-0 visibility-hidden | js-logo-text js-reveal-on-load">
-<text x="280" y="162" fill="#94e6fb" font-size="118">BASIN</text></g>
+<text x="280" y="162" fill="#fff" font-size="118" font-weight="600">BASIN</text></g>
 <g class="opacity-0 visibility-hidden | js-logo-shield js-reveal-on-load-mobile">
 <image href="/icon.svg" x="0" y="0" width="250" height="250"></image></g>
 </svg>
 </a>
 <div class="d-flex items-center">
-<div class="lang-selector lang-selector--mob mr-1 d-none@md | js-site-loader-lang">
-<button class="lang-selector__btn js-lang" aria-controls="lang-selector">
-EN
-<svg class="fill">
-<use xlink:href="/reference/images/svgsprite.svg#caret"></use>
-</svg>
-</button>
-<div id="lang-selector" class="lang-selector__div d-none">
-<div class="btn btn--cutout">
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<ul>
-<li>
-English
-</li>
-
-
-
-
-
-
-
-</ul>
-</div>
-</div>
-</div>
+<div id="lang-selector" class="js-site-loader-lang" hidden></div>
 <div class="d-none@md relative z-1 | js-menu-toggle opacity-0 visibility-hidden | js-reveal-on-load">
-<button class="btn btn--circle">
+<button class="btn btn--circle" aria-label="Open navigation" aria-expanded="false" aria-controls="basin-primary-nav">
 <svg class="header__menu-icon | js-icon-open" width="15" height="10" viewbox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="15" height="1.5" fill="#D6F7FF"></rect>
 <rect y="4" width="15" height="1.5" fill="#D6F7FF"></rect>
@@ -191,146 +167,15 @@ English
 </button>
 </div>
 </div>
-<nav class="header__navigation | js-header-nav">
+<nav id="basin-primary-nav" class="header__navigation | js-header-nav" aria-label="Main navigation">
 <ul class="header__navigation__list list-unstyled">
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Journeys" href="/journeys">Journeys</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="About" href="/about#about-content">About</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Get Involved" href="/about#get-involved-content">Get Involved</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Education" href="/about#education-content">Education</a>
-</li>
-<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Experiment runner" href="/lab" data-router-disabled="">Experiment runner</a>
-</li>
-<li class="header__share mr-2@sm d-none d-block@md  js-reveal-on-load">
-<button class="header__share__btn | js-header-share" data-audio-enter="ui.hover" data-audio-click="ui.click">
-<span class="js-scramble-hover" data-text="Share">Share</span>
-<svg class="header__share__plus" viewbox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path class="header__share__plus__vertical" fill-rule="evenodd" clip-rule="evenodd" d="M5.29687 0L5.29688 9H3.79688L3.79687 6.49879e-08L5.29687 0Z" fill="#94E6FB"></path>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M9 5.25H0V3.75H9V5.25Z" fill="#94E6FB"></path>
-</svg>
-</button>
-<div class="header__share__links">
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social mr-1 mr-0@md | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-</div>
-</li>
-<li class="lang-selector d-none d-block@md ">
-<button class="lang-selector__btn js-lang" aria-controls="lang-selector2">
-EN
-<svg class="fill">
-<use xlink:href="/reference/images/svgsprite.svg#caret"></use>
-</svg>
-</button>
-<div id="lang-selector2" class="lang-selector__div d-none">
-<div class="btn btn--cutout">
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<ul>
-<li>
-English
-</li>
-
-
-
-
-
-
-
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Expeditions" href="/journeys">Expeditions</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Terrain" href="/earth" data-router-disabled="">Terrain</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Methods" href="/methodology" data-router-disabled="">Methods</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="About BASIN" href="/about">About BASIN</a></li>
+<li class="d-block my-1 my-0@md mr-2@md overflow-hidden overflow-visible@md js-reveal-on-load" data-audio-enter="ui.hover" data-audio-click="ui.click"><a class="header__link no-underline t-light-blue | js-scramble-hover" data-text="Experiment runner" href="/lab" data-router-disabled="">Experiment runner</a></li>
 </ul>
-</div>
-</div>
-</li>
-</ul>
-<div class="mb-1 d-none@md">
-<hr class="footer__rule footer__rule--light mb-1.5">
-<div class="t-uppercase t-8 t-center t-white px-2 t-ls-0.2 t-lh-1.6 | js-header-share-intro">Spread the word by sharing this experience with your friends &amp; family.</div>
-<div class="mt-1 d-flex justify-center overflow-hidden | js-header-share-links">
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social mr-1 mr-0@md | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on facebook</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#facebook"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-<a href="https://basin-sigma.vercel.app/" target="_blank" class="btn btn--cutout btn--social  | js-secondary-btn" data-router-disabled="">
-<span class="btn__text">
-<span class="btn__text-default fill-light-blue | js-btn-text">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-<span class="btn__text-hover fill-deep-blue  | js-btn-text-hover" aria-hidden="true">
-<span class="sr">Share the current page on twitter</span>
-<svg class="icon icon--social" aria-hidden="true">
-<use xlink:href="/reference/images/svgsprite.svg#twitter"></use>
-</svg>
-</span>
-</span>
-<span class="btn__border absolute fill" aria-hidden="true"></span>
-<span class="btn__fill absolute fill | js-secondary-button-fill" aria-hidden="true">
-<span class="btn__fill-inner absolute fill bg-ui-blue"></span>
-</span>
-</a>
-</div>
-</div>
+<div hidden class="basin-engine-hooks" aria-hidden="true"><hr class="footer__rule"><div class="js-header-share-intro"></div><button tabindex="-1" class="js-header-share"><svg><path class="header__share__plus__vertical"></path></svg></button></div>
 </nav>
 </header>
 <div class="audio-btn-container js-reveal-on-load opacity-0 visibility-hidden">
@@ -566,10 +411,10 @@ Sound controls are available during the study.
 <button data-audio-enter="ui.hover-alt" data-audio-click="ui.click-alt" class="btn btn--action  opacity-0 visibility-hidden  | js-enter-site">
 <span class="btn__text">
 <span class="btn__text-default | js-btn-text">
-Enter Site
+Begin expedition
 </span>
 <span class="btn__text-hover | js-btn-text-hover" aria-hidden="true">
-Enter Site
+Begin expedition
 </span>
 </span>
 <div class="btn__line btn__line--top-left js-btn-corner-top-left"></div>
@@ -622,16 +467,16 @@ Enter Site
 </div>
 <div class="pl-1.5">
 <h3 class="t-title t-24 t-40@sm  t-50@md  t-500 t-uppercase t-lh-1.1 t-light-blue mb-1 mb-2@md | js-text-image-title" data-highlight-start="2" data-highlight-end="3">What is stormwater detention?</h3>
-<p class="t-body t-400 t-12 t-base@sm t-19@md t-light-blue mb-0 | js-text-image-paragraph">Detention temporarily stores water <span>and releases it over <span style="vertical-align: sub;" class="t-9">may ease pressure downstream.</span></span>time. A lower modeled peak </p>
+<p class="t-body t-400 t-12 t-base@sm t-19@md t-light-blue mb-0 | js-text-image-paragraph">Detention releases stored runoff over time. A lower flow peak can ease pressure downstream.</p>
 <div class="mt-1 mt-1.5@sm mt-2@md">
 <button class="btn btn--cutout btn--modal | js-modal-btn" data-modal="#modal--the-maldives" aria-controls="modal-container" data-audio-enter="ui.hover-alt" data-audio-click="ui.click-alt">
 <span class="d-block overflow-hidden">
 <span class="btn__text | js-btn-text">
 <span class="btn__text-default">
-Project Info
+Study details
 </span>
 <span class="btn__text-hover | js-btn-text-hover" aria-hidden="true">
-Project Info
+Study details
 </span>
 </span>
 </span>
@@ -1144,7 +989,7 @@ Skip Video
 </div>
 </div>
 <div class="pinned-content__body ml-1 ml-2@sm ml-4@md | js-pinned-content-body">
-<p class="pinned-content__subtitle t-uppercase t-ui-blue t-10 t-14@sm t-base@md t-subtitle t-ls-0.12 t-500 t-lh-1 mb-1 t-overflow-split-fix | js-pinned-content-subtitle">The two baseline runs produced modeled boundary peaks of 3.307 and 4.242 m³/s. These are simulation outputs, not measured flows.</p>
+<p class="pinned-content__subtitle t-uppercase t-ui-blue t-10 t-14@sm t-base@md t-subtitle t-ls-0.12 t-500 t-lh-1 mb-1 t-overflow-split-fix | js-pinned-content-subtitle">The watershed study reports modeled boundary peaks for both baseline storms.</p>
 <h3 class="t-title t-30 t-36@sm t-50@md t-uppercase t-500 t-light-blue t-lh-1 mb-1  t-overflow-split-fix--top t-overflow-split-fix--top--fr | js-pinned-content-title" data-highlight-start="0,15" data-highlight-end="1,19">Look at modeled peak flow under both storms and the amount of storage required.</h3>
 </div>
 </div>
@@ -1153,7 +998,7 @@ Skip Video
 <div class="section__inner t-center">
 <p class="t-uppercase t-light-blue t-10 t-14@sm t-base@md t-subtitle t-ls-0.12 t-500 t-lh-1 mb-1 t-overflow-split-fix | js-before-after-subtitle">Screening is the first step</p>
 <h3 class="t-title t-30 t-36@sm t-60@md t-uppercase t-500 t-light-blue t-lh-1 mb-3  | js-before-after-title">Candidate cells are options for further investigation.</h3>
-<p class="t-body t-400 t-12 t-base@sm t-19@md t-light-blue mb-2  | js-before-after-text">The 600 m³ option at model cell 461 lowered the two modeled peaks by 0.005 and 0.009 m³/s. Check local conditions before considering a site.</p>
+<p class="t-body t-400 t-12 t-base@sm t-19@md t-light-blue mb-2  | js-before-after-text">Check drainage connections, ownership, and available space before considering a site.</p>
 <div class="w-1/1 w-1/2@md w-1/3@lg mx-auto">
 <div class="drag-slider js-drag-slider">
 <div class="drag-slider__thumb js-drag-slider-thumb">
@@ -1167,15 +1012,15 @@ Skip Video
 <div class="drag-slider__thumb__circle js-drag-slider-thumb-circle"></div>
 </div>
 <div class="drag-slider__thumb__end">
-<span class="js-drag-slider-thumb-end">+2°C</span>
+<span class="js-drag-slider-thumb-end">After</span>
 </div>
 </div>
 </div>
 <div class="drag-slider__start js-drag-slider-start ">
-0°C
+Before
 </div>
 <div class="drag-slider__end js-drag-slider-end">
-+2°C
+After
 </div>
 </div>
 </div>
@@ -1463,7 +1308,7 @@ Open study
 </div>
 <div class="pl-1.5">
 <h3 class="t-title t-24 t-40@sm  t-50@md  t-500 t-uppercase t-lh-1.1 t-light-blue mb-1 mb-2@md | js-text-image-title">
-Just 100 yards of mangroves can reduce wave height by up to 66%, which helps reduce erosion and flood risk.
+Where would you put the storage?
 </h3>
 <p class="t-body t-400 t-12 t-base@sm t-19@md t-light-blue mb-0 | js-text-image-paragraph">Compare model results under the same assumptions.</p>
 <div class="mt-1 mt-1.5@sm mt-2@md">
@@ -1546,7 +1391,7 @@ Just 100 yards of mangroves can reduce wave height by up to 66%, which helps red
 </div>				</div>
 <div class="pl-1.5">
 <p class="t-uppercase t-ui-blue t-10 t-base@sm t-subtitle t-ls-0.12 t-500 t-lh-1 mb-0.6 pt-0.5 | js-text-image-subtitle">
-See if you can get this one right...
+Check your understanding
 </p>
 <h3 class="t-title t-20 t-34@sm t-40@md t-500 t-uppercase t-lh-1.1 t-light-blue mb-1.5 | js-text-image-title">What can affect modeled detention performance?</h3>
 <div class="quiz | js-quiz" data-answer="4">
@@ -1787,7 +1632,7 @@ See if you can get this one right...
 </div>				</div>
 <div class="pl-1.5">
 <p class="t-uppercase t-ui-blue t-10 t-base@sm t-subtitle t-ls-0.12 t-500 t-lh-1 mb-0.6 pt-0.5 | js-text-image-subtitle">
-See if you can get this one right...
+Check your understanding
 </p>
 <h3 class="t-title t-20 t-34@sm t-40@md t-500 t-uppercase t-lh-1.1 t-light-blue mb-1.5 | js-text-image-title">What should happen after screening a candidate?</h3>
 <div class="quiz | js-quiz" data-answer="3">
@@ -2018,15 +1863,15 @@ See if you can get this one right...
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Use measured elevation to explore routes water could take.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="15.9650° S / 5.7089° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -2111,7 +1956,7 @@ See if you can get this one right...
 <p><span style="font-weight: 400;">Use measured elevation to explore routes water could take.</span></p>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">
@@ -2236,15 +2081,15 @@ See if you can get this one right...
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Read the Harvey case study and the library’s closure and recovery record.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="55.8989° S / 2.1385° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -2339,7 +2184,7 @@ See if you can get this one right...
 </ul>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">
@@ -2498,15 +2343,15 @@ See if you can get this one right...
 <div class="modal__title absolute" data-modal-title="">
 <h3>
 <span class="t-subtitle t-12 t-22@sm t-uppercase t-ui-blue t-500 d-block t-ls-0.02 | js-modal-subtitle">Compare temporary stormwater storage scenarios under two storms.</span>
-<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text="BASIN study area"></span>
+<span class="t-body t-8 t-10@sm t-600 t-ui-blue d-block t-ls-0.06 | js-scramble-text" data-scramble-text=""></span>
 </h3>
 </div>
 <div class="modal__location absolute d-none d-block@md">
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text="BASIN study area"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" data-scramble-text=""></p>
 </div>
 <div>
-<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text="3.202778° S / 73.220680° E"></p>
+<p class="t-copy mb-0 t-10 t-ls-0.06 t-ui-blue t-500 | js-scramble-text" dir="ltr" data-scramble-text=""></p>
 </div>
 </div>
 <div class="modal__inner w-1/1 h-1/1@lg pt-4 pt-8@sm pt-0@md pr-2@lg overflow-auto z-50 | js-modal-inner">
@@ -2588,7 +2433,7 @@ See if you can get this one right...
 <p><span data-contrast="none">Compare temporary stormwater </span><span data-contrast="none">storage scenarios </span><span data-contrast="none">under two storms.</span><span data-ccp-props='{"335559738":240,"335559739":240}'> </span></p>
 </div>
 <div class="modal__copy-col w-1/1 w-1/2@lg order-3 order-0@lg">
-<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Key Statistics</h4>
+<h4 class="t-subtitle t-500 t-16 t-22@sm t-uppercase t-light-blue mb-1.5 | js-modal-subtitle">Study notes</h4>
 <div class="summary-point d-flex items-center mb-0.5 mb-1@lg mb-1  | js-summary-point">
 <div class="mr-1 | js-summary-point-icon">
 <div class="icon icon--small relative">

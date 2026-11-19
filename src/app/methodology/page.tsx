@@ -16,17 +16,8 @@ export default function Methodology() {
   return (
     <main id="main">
       <section className="page-heading">
-        <div className="eyebrow">05 / METHODS & LIMITATIONS</div>
-        <h1>
-          The mathematics.
-          <br />
-          <span>And its boundaries.</span>
-        </h1>
-        <p>
-          A useful model should explain itself.
-          <br />
-          Here is what BASIN calculates, assumes, and has yet to prove.
-        </p>
+        <h1>Model methods</h1>
+        <p>Read the equations, assumptions, and validation limits behind BASIN’s results.</p>
       </section>
       <section className="article-layout content-width">
         <aside className="article-aside method-toc">

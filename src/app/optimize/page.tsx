@@ -40,17 +40,8 @@ export default function Optimize() {
   return (
     <main id="main">
       <section className="page-heading">
-        <div className="eyebrow">03 / CONSTRAINED OPTIMIZATION</div>
-        <h1>
-          Find a detention option.
-          <br />
-          <span>Set budget and space limits.</span>
-        </h1>
-        <p>
-          A small, honest search for a better intervention.
-          <br />
-          Every candidate is evaluated by the same numerical engine.
-        </p>
+        <h1>Detention search</h1>
+        <p>Set budget and space limits to find which tested design reduces peak outflow most.</p>
       </section>
       <section className="content-width optimize-layout">
         <aside className="optimization-controls">
