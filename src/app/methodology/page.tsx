@@ -256,15 +256,16 @@ export default function Methodology() {
             <span className="eyebrow">08 / PROVENANCE & NEXT STEPS</span>
             <h2>Keep the evidence attached.</h2>
             <p>
-              Terrain inputs may be genuine USGS 3DEP elevation or an explicitly labeled synthetic
-              demonstration. Rainfall, infiltration, intervention properties and costs remain user
-              assumptions. Historical source metadata lives separately in the source registry. A
-              typed dataset-provenance interface records provider, retrieval date, units, coordinate
-              reference system, horizontal resolution, vertical datum, processing, license, and
-              limitations for future adapters. The Earth workflow requests USGS 3DEP Float32
-              GeoTIFFs in a local WGS84 UTM square and uses bilinear resampling supplied by USGS.
-              Rows run north to south. Missing cells reject the request; they are never fabricated.
-              Output cell spacing is not a claim of native source resolution or accuracy.
+              Terrain inputs may be USGS 3DEP bare-earth elevation, Copernicus GLO-30 surface
+              elevation, or an explicitly labeled synthetic demonstration. Rainfall, infiltration,
+              intervention properties and costs remain user assumptions. Historical source metadata
+              lives separately in the source registry. A typed dataset-provenance interface records
+              provider, retrieval date, units, coordinate reference system, horizontal resolution,
+              vertical datum, processing, license, and limitations for future adapters. The Earth
+              workflow requests USGS 3DEP Float32 GeoTIFFs in a local WGS84 UTM square and uses
+              bilinear resampling supplied by USGS. Rows run north to south. Missing cells reject
+              the request; they are never fabricated. Output cell spacing is not a claim of native
+              source resolution or accuracy.
             </p>
             <p>
               The model may include real bare-earth topography, but omits floodplain hydraulics,

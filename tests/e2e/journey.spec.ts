@@ -99,30 +99,26 @@ test('live place search and USGS elevation feed the lab, intervention and export
 test('ocean, keyboard navigation, reduced motion, responsive layouts and accessibility', async ({
   page,
 }) => {
-  test.setTimeout(100000);
+  test.setTimeout(180000);
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
-  await expect(page.locator('.ocean-canvas canvas')).toBeVisible();
+  await expect(page.locator('.ocean-backdrop')).toBeVisible();
   await page.waitForTimeout(2000);
-  await page.screenshot({ path: '/tmp/v02-hero.png' });
-  console.log(
-    'Ocean software-renderer observed FPS:',
-    await page.locator('.ocean-canvas').getAttribute('data-fps'),
-  );
+  await page.screenshot({ path: '/tmp/basin-final-hero.png' });
   await page.evaluate(() => window.scrollTo(0, 1450));
   await page.waitForTimeout(600);
-  await page.screenshot({ path: '/tmp/v02-under.png' });
+  await page.screenshot({ path: '/tmp/basin-final-under.png' });
   await page.evaluate(() => window.scrollTo(0, 2500));
   await page.waitForTimeout(600);
-  await page.screenshot({ path: '/tmp/v02-terrain-story.png' });
+  await page.screenshot({ path: '/tmp/basin-final-deep.png' });
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
   for (const width of [1440, 1024, 768, 390]) {
     await page.setViewportSize({ width, height: 950 });
-    for (const route of ['/earth', '/lab', '/compare', '/optimize', '/methodology']) {
-      await page.goto(route);
+    for (const route of ['/earth', '/lab', '/compare', '/optimize', '/methodology', '/study']) {
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('main')).toBeVisible();
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
@@ -141,7 +137,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   expect(scan.violations).toEqual([]);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.locator('.ocean-canvas canvas')).toBeVisible();
+  await expect(page.locator('.ocean-backdrop')).toBeVisible();
   await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);
 });
@@ -179,4 +175,26 @@ test('elevation errors remain explicit and WebGL-unavailable fallback remains us
   await expect(page.getByRole('img', { name: /Selectable 2D terrain/ })).toBeVisible();
   await page.getByRole('button', { name: 'Run simulation', exact: true }).click();
   await expect(page.getByText(/Mass balance accounted/)).toBeVisible();
+});
+
+test('reproduces and reopens the library mitigation investigation', async ({ page }) => {
+  await page.goto('/case-study');
+  await page.getByRole('link', { name: 'Reproduce the library study' }).click();
+  await expect(page.getByRole('heading', { name: 'Barbara Bush Branch Library' })).toBeVisible();
+  await page.getByRole('button', { name: 'Run watershed study' }).click();
+  await expect(page.getByRole('heading', { name: 'Detention tradeoffs' })).toBeVisible({
+    timeout: 20000,
+  });
+  await expect(page.getByRole('img', { name: /Drainage screening grid/ })).toBeVisible();
+  await page.screenshot({ path: '/tmp/basin-final-study.png', fullPage: true });
+  await page.getByRole('button', { name: 'Save on this device' }).click();
+  await expect(page.getByRole('status')).toContainText('Study saved');
+  await page.reload();
+  await page.getByRole('button', { name: 'Reopen saved study' }).click();
+  await expect(page.getByRole('heading', { name: 'Detention tradeoffs' })).toBeVisible({
+    timeout: 20000,
+  });
+  const file = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export hydrographs CSV' }).click();
+  expect((await file).suggestedFilename()).toBe('basin-hydrographs.csv');
 });

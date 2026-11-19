@@ -62,7 +62,7 @@ describe('real USGS terrain contract', () => {
     expect(() =>
       validateScenario({ ...s, geographic: { ...geographic, elevations: [2] } }),
     ).toThrow();
-    expect(() => gridBounds(0, 50, 480)).toThrow();
+    expect(() => gridBounds(0, 89, 480)).toThrow();
     expect(() => gridBounds(-95, 30, 100000)).toThrow();
   });
 });

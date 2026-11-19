@@ -1,8 +1,41 @@
-import {chromium} from 'playwright';
-import {writeFileSync} from 'node:fs';
-const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'],...(process.env.HTTPS_PROXY?{proxy:{server:process.env.HTTPS_PROXY,bypass:'localhost,127.0.0.1'}}:{})});
-try{
- const page=await browser.newPage({viewport:{width:1440,height:1000}});await page.goto(process.env.BASE_URL||'http://localhost:3000');await page.locator('.ocean-canvas canvas').waitFor();await page.waitForTimeout(8000);
- const result=await page.evaluate(async()=>{const canvas=document.querySelector('.ocean-canvas canvas'),host=document.querySelector('.ocean-canvas');const gl=canvas?.getContext?.('webgl2'),debug=gl?.getExtension('WEBGL_debug_renderer_info');const gpu=debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'Unavailable';const intervals=[];let last=performance.now(),start=last;await new Promise(resolve=>{function frame(now){intervals.push(now-last);last=now;if(now-start<6000)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});const sorted=[...intervals].sort((a,b)=>a-b);return {viewport:[innerWidth,innerHeight],gpu,samples:intervals.length,averageFps:1000/(intervals.reduce((a,b)=>a+b,0)/intervals.length),p95FrameMs:sorted[Math.floor(sorted.length*.95)],renderDpr:host?.dataset.quality||'Initial',renderCounter:host?.dataset.fps,measurement:'Chromium headless SwiftShader, 8-second warmup and 6-second sample; no universal hardware claim.'};});
- writeFileSync('docs/performance-measurement.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));await page.screenshot({path:'/tmp/v02-hero-final.png'});await page.evaluate(()=>window.scrollTo(0,1300));await page.waitForTimeout(1500);await page.screenshot({path:'/tmp/v02-under-final.png'});
-}finally{await browser.close();}
+import { chromium } from 'playwright';
+
+const browser = await chromium.launch({ headless: true });
+try {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(process.env.BASE_URL || 'http://localhost:3000');
+  await page.locator('.ocean-backdrop').waitFor();
+  await page.evaluate(() => window.scrollTo({ top: innerHeight, behavior: 'instant' }));
+  await page.waitForTimeout(1500);
+  const samples = await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const start = performance.now();
+        const intervals = [];
+        let previous = start;
+        function sample(now) {
+          intervals.push(now - previous);
+          previous = now;
+          if (now - start < 3000) requestAnimationFrame(sample);
+          else resolve(intervals);
+        }
+        requestAnimationFrame(sample);
+      }),
+  );
+  const sorted = [...samples].sort((a, b) => a - b);
+  console.log(
+    JSON.stringify(
+      {
+        viewport: page.viewportSize(),
+        renderer: 'Headless Chromium, animation callback timing',
+        samples: samples.length,
+        averageFps: 1000 / (samples.reduce((sum, value) => sum + value, 0) / samples.length),
+        p95FrameMs: sorted[Math.floor(sorted.length * 0.95)],
+      },
+      null,
+      2,
+    ),
+  );
+} finally {
+  await browser.close();
+}

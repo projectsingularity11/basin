@@ -43,3 +43,5 @@ Installed notices are retained in public/licenses. Three.js Water and Sky are im
 OpenFreeMap/OpenMapTiles and OpenStreetMap credits remain visible on the map. Numerical elevation is USGS 3DEP public-domain data, separately attributed and provenance-bearing. Photon search is OSM-derived. These external providers have independent availability and usage conditions; they do not validate BASIN's hydrology. See docs/DATA_SOURCES.md and docs/DESIGN_REFERENCES.md.
 
 MapLibre v6's official worker bundle is self-hosted unmodified at public/maplibre/maplibre-gl-worker.mjs, with its embedded BSD notice and full license in public/licenses/maplibre-gl.txt. This avoids bundler-relative worker URL failures and external executable CDN dependencies. Update the worker together with MapLibre if upgrading the locked dependency.
+
+Instrument Serif is distributed under the SIL Open Font License in public/licenses/fontsource-instrument-serif.txt. The ocean plates and animal artwork were generated for BASIN and are artistic illustrations. Copernicus GLO-30 attribution is retained in the source manifest and in the terrain details.

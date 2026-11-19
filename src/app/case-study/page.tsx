@@ -1,139 +1,126 @@
 import Link from 'next/link';
-import { ArrowUpRight, BookOpen, Waves, ArrowRight } from 'lucide-react';
+import { LibraryStudy } from '@/components/library-study';
 import { Footer } from '@/components/shell';
 import { sources } from '@/data/sources';
-export const metadata = { title: 'Hurricane Harvey case study' };
+import library from '@/data/library-usgs.json';
+import { DEFAULT } from '@/engine/model';
+import { investigate } from '@/engine/watershed';
+import type { GeographicTerrain } from '@/lib/geo/contracts';
+export const metadata = { title: 'Hurricane Harvey and the Barbara Bush Branch Library' };
 export default function CaseStudy() {
+  const result = investigate(
+    {
+      ...DEFAULT,
+      name: 'Barbara Bush Branch Library',
+      geographic: library as GeographicTerrain,
+      size: 24,
+      cellSize: 40,
+    },
+    { maxFootprint: 40000, maxCapacity: 600, stormMultiplier: 1.25 },
+  );
   return (
     <main id="main">
       <section className="case-hero">
-        <div className="eyebrow">04 / THE HUMAN CONTEXT</div>
-        <div className="case-columns">
-          <div>
-            <h1>
-              More than
-              <br />a building.
-              <br />
-              <span>
-                A community
-                <br />
-                resource.
-              </span>
-            </h1>
-            <p>
-              Barbara Bush Branch Library
-              <br />
-              Spring, Texas · Hurricane Harvey, 2017
-            </p>
-          </div>
-          <div className="case-graphic" aria-hidden="true">
-            <div className="library-illustration">
-              <BookOpen strokeWidth={0.7} />
-              <span>
-                BARBARA BUSH
-                <br />
-                BRANCH LIBRARY
-              </span>
-              <Waves strokeWidth={0.6} />
-            </div>
-            <span className="mono">CONCEPTUAL ILLUSTRATION · NOT A FLOOD RECORD</span>
-          </div>
-        </div>
+        <h1>
+          Hurricane Harvey and
+          <br />
+          the Barbara Bush Branch Library
+        </h1>
+        <p>Spring, Texas · August 2017</p>
       </section>
       <section className="article-layout content-width">
         <aside className="article-aside">
-          <span className="eyebrow">HISTORICAL CONTEXT</span>
-          <p>Evidence before inference.</p>
-          <a className="text-link" href="#sources">
-            View the source registry <ArrowUpRight size={13} />
-          </a>
+          <a href="#analysis">Runoff study ↗</a>
+          <br />
+          <a href="#sources">Sources ↗</a>
         </aside>
         <article className="prose">
-          <h2>When water interrupts everyday life.</h2>
+          <h2>Flooding interrupted library services</h2>
           <p>
-            Hurricane Harvey brought severe flooding to the Houston region in 2017. NOAA’s rainfall
-            archive documents the regional event. Those regional measurements are context; they are
-            not a measurement of rainfall at this library.{' '}
-            <a href={sources[2].url} target="_blank" rel="noreferrer">
-              [NOAA / WPC ↗]
-            </a>
+            Harvey flooded parts of the Houston region and damaged the Barbara Bush Branch Library.
+            The branch reopened in May 2018. Harris County libraries also provided internet access
+            and helped residents find recovery information. A closure can interrupt the services
+            people depend on after a storm.
           </p>
           <p>
-            The Barbara Bush Branch Library in Spring was severely damaged during Harvey. A May 14,
-            2018 KPRC report described the library’s reopening following the storm-related closure.
-            BASIN uses this documented disruption as a motivation for studying public infrastructure
-            resilience.{' '}
-            <a href={sources[0].url} target="_blank" rel="noreferrer">
-              [KPRC, May 2018 ↗]
-            </a>
+            <a href={sources[0].url}>KPRC, May 2018 ↗</a> ·{' '}
+            <a href={sources[1].url}>Library recovery coverage ↗</a> ·{' '}
+            <a href={sources[2].url}>NOAA rainfall archive ↗</a>
           </p>
-          <h2>Access is part of resilience.</h2>
+          <h2 id="analysis">Screening detention near the library</h2>
           <p>
-            A library connects people with books, computers, information, and shared space. American
-            Libraries’ coverage of Harvey describes Harris County library branches supporting
-            residents with internet access and recovery paperwork. Flood disruption therefore raises
-            a question beyond property damage: how can essential community services remain
-            accessible?{' '}
-            <a href={sources[1].url} target="_blank" rel="noreferrer">
-              [American Libraries ↗]
-            </a>
+            The study uses 576 USGS 3DEP elevation samples on a 960 m square around 6817 Cypresswood
+            Drive. The map point comes from OpenStreetMap via Photon. The two model storms apply
+            uniform rainfall at 60 and 75 mm/h for one hour with assumed infiltration of 5 mm/h and
+            open model edges.
           </p>
-          <blockquote>
-            Can a transparent, accessible model help people explore the trade-offs of making room
-            for stormwater?
-          </blockquote>
-          <h2>Historical motivation. Synthetic experiment.</h2>
           <p>
-            The BASIN laboratory is an illustrative watershed experiment, not a validated
-            reconstruction of the historical event. It uses no surveyed library elevations, building
-            coordinates, observed flood boundary, or site-specific rainfall series. The model cannot
-            establish whether any proposed intervention would have protected this library.
+            The largest drainage area inside the square covers{' '}
+            {((result.grid.catchment.length * 1600) / 10000).toFixed(1)} hectares. The solver
+            evaluates the entire square. {result.evaluatedRuns} runs cover the two baselines and{' '}
+            {result.candidates.length} detention configurations. Combined boundary peak discharge
+            for the two baselines is{' '}
+            {result.baseline.map((r) => r.peakDischarge.toFixed(3)).join(' and ')} m³/s.
           </p>
-          <div className="text-callout">
-            <h3>What the evidence does not establish</h3>
-            <p>
-              This prototype does not report a measured library flood depth, a damage estimate, an
-              engineering remedy, or a calibrated Harvey simulation. These would require
-              site-specific primary records, field data, and a suitable validated model. No
-              first-person experience or community interviews are claimed.
-            </p>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Site cell</th>
+                  <th>Storage (m³)</th>
+                  <th>Peak change, 60 mm/h (m³/s)</th>
+                  <th>Peak change, 75 mm/h (m³/s)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.pareto.map((c) => (
+                  <tr key={c.cell + ':' + c.capacity}>
+                    <td>{c.cell}</td>
+                    <td>{c.capacity}</td>
+                    <td>{(-c.peakReduction[0]).toFixed(3)}</td>
+                    <td>{(-c.peakReduction[1]).toFixed(3)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <h2>From a real question to a testable model.</h2>
           <p>
-            Start with a synthetic catchment. Keep rainfall and terrain fixed. Add hypothetical
-            detention or permeability. Measure the computed change, inspect conservation, and ask
-            which assumptions matter. The next research step is a repeatable physical watershed
-            experiment.
+            A negative change indicates a lower modeled peak. The results apply to the selected
+            square and the stated storms. Historical hourly rainfall, surveyed drainage connections,
+            creek stages, building entry elevations, and validation observations are needed to
+            assess library flood impacts.
           </p>
           <div className="button-row">
-            <Link className="button primary" href="/lab">
-              Explore the laboratory <ArrowRight size={15} />
-            </Link>
-            <Link className="button ghost" href="/experiments">
-              Experiment validation <ArrowUpRight size={15} />
+            <LibraryStudy geographic={library as GeographicTerrain} />
+            <Link className="button" href="/methodology">
+              Model methods
             </Link>
           </div>
+          <h2 id="sources">Sources</h2>
+          <ul>
+            <li>
+              <a href="https://hcpl.net/locations/cc/">
+                Harris County Public Library branch address
+              </a>
+            </li>
+            <li>
+              <a href="https://photon.komoot.io/api/?q=Barbara%20Bush%20Branch%20Library">
+                Photon place record
+              </a>
+            </li>
+            <li>
+              <a href={library.provenance.sourceUrl}>USGS elevation request</a>
+            </li>
+            <li>
+              <a href="https://www.hcfcd.org/">Harris County Flood Control District</a>
+            </li>
+            {sources.slice(0, 4).map((s) => (
+              <li key={s.id}>
+                <a href={s.url}>{s.title}</a>
+              </li>
+            ))}
+          </ul>
         </article>
-      </section>
-      <section className="content-width source-section" id="sources">
-        <div className="eyebrow">SOURCE REGISTRY</div>
-        <h2>Trace every claim.</h2>
-        <p className="muted">
-          Retrieved November 15, 2026. External source data is not used as simulation input.
-        </p>
-        {sources.map((s, i) => (
-          <a href={s.url} key={s.id} className="source-row" target="_blank" rel="noreferrer">
-            <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-            <div>
-              <span className="eyebrow">
-                {s.provider} · {s.date}
-              </span>
-              <h3>{s.title}</h3>
-              <p>{s.note}</p>
-            </div>
-            <ArrowUpRight size={18} />
-          </a>
-        ))}
       </section>
       <Footer />
     </main>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { copernicus } from '@/lib/geo/copernicus';
 import { usgs } from '@/lib/geo/usgs';
 export const maxDuration = 30;
 export async function GET(req: NextRequest) {
@@ -9,7 +10,9 @@ export async function GET(req: NextRequest) {
       side = Number(p.get('side')),
       size = Number(p.get('size'));
     if (!p.has('lon') || !p.has('lat')) throw Error('Choose a location first.');
-    const data = await usgs.load(
+    const regional = lon >= -125 && lon <= -66 && lat >= 24 && lat <= 50;
+    const provider = p.get('source') === 'copernicus' || !regional ? copernicus : usgs;
+    const data = await provider.load(
       [lon, lat],
       side,
       size,

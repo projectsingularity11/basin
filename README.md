@@ -50,3 +50,7 @@ Real elevation does not validate a simplified runoff solver. Rainfall, constant 
 See `docs/DESIGN_REFERENCES.md`, `docs/COPY_AUDIT.md`, `docs/PERFORMANCE.md`, `THIRD_PARTY.md` and `public/licenses`. The cursor is a bounded ripple/refraction effect, not a full fluid solver. 60 FPS is a target requiring hardware profiling, not a universal achieved result. WebGL failure preserves a CSS ocean fallback and selectable 2D terrain.
 
 Deploy to the existing `basin` Vercel project in Project Singularity, linked to GitHub `main`, with Node 24. Local builds alone do not establish deployment success; verify the actual production commit and live geographic journey.
+
+## Flood mitigation study
+
+The [watershed study](https://basin-sigma.vercel.app/study) traces drainage and compares modeled detention alternatives across two storms. The [Harvey case study](https://basin-sigma.vercel.app/case-study) includes a reproducible screening study based on USGS terrain near the Barbara Bush Branch Library. Copernicus GLO-30 adds terrain screening where public tiles are available. See [methods and limits](docs/FLOOD_STUDY.md).

@@ -1,3 +1,4 @@
+import { validateRainSeries, type RainSeries } from './rainfall';
 import type { GeographicTerrain } from '../lib/geo/contracts';
 /** BASIN conceptual surface-routing model. SI internally; illustrative, uncalibrated. */
 export type TerrainKind = 'valley' | 'urban' | 'flat';
@@ -13,6 +14,7 @@ export type Intervention = {
 export type Scenario = {
   version: 1;
   geographic?: GeographicTerrain;
+  rainSeries?: RainSeries;
   name: string;
   terrain: TerrainKind;
   seed: number;
@@ -41,6 +43,16 @@ export type Frame = {
   detentionVolumes: number[];
 };
 export type Run = {
+  modelVersion: string;
+  diagnostics: {
+    status: 'completed';
+    solverStepSeconds: number;
+    snapshotSeconds: number;
+    cellSizeMeters: number;
+    rainfallSource: string;
+    terrainSource: string;
+    limitations: string[];
+  };
   scenario: Scenario;
   elevations: number[];
   frames: Frame[];
@@ -93,6 +105,8 @@ export function terrain(s: Scenario): number[] {
   });
 }
 export function rainAt(s: Scenario, time: number) {
+  if (s.rainSeries)
+    return s.rainSeries.rates[Math.floor(time / (s.rainSeries.stepMinutes * 60))] ?? 0;
   if (s.profile === 'constant') return s.rain;
   const phase = Math.min(5, Math.floor((time / s.duration) * 6));
   return s.profile === 'custom' ? s.customRain[phase] : s.rain * [0.1, 0.5, 1, 1, 0.3, 0.1][phase];
@@ -225,6 +239,20 @@ export function simulate(input: Scenario): Run {
     if (t % 60 === 0 || t === s.duration) snapshot(t, stepOut / dt);
   }
   return {
+    modelVersion: 'BASIN surface routing v1',
+    diagnostics: {
+      status: 'completed',
+      solverStepSeconds: 10,
+      snapshotSeconds: 60,
+      cellSizeMeters: s.cellSize,
+      rainfallSource: s.rainSeries?.source ?? 'User-configured or default scenario',
+      terrainSource: s.geographic?.provenance.dataset ?? 'Synthetic demonstration',
+      limitations: [
+        'Constant infiltration assumptions.',
+        'Open boundaries represent free discharge at the grid edge.',
+        'No calibration or uncertainty intervals.',
+      ],
+    },
     scenario: s,
     elevations: z,
     frames,
@@ -258,6 +286,9 @@ export function validateScenario(value: unknown): Scenario {
   const size = numeric(s.size, 12, 32, 'grid size');
   if (!Number.isInteger(size)) throw new Error('Grid size must be an integer.');
   const duration = numeric(s.duration, 60, 7200, 'duration');
+  const rainSeries = s.rainSeries === undefined ? undefined : validateRainSeries(s.rainSeries);
+  if (rainSeries && duration !== rainSeries.stepMinutes * rainSeries.rates.length * 60)
+    throw Error('Rainfall intervals must span the full event.');
   if (duration % 60 !== 0) throw new Error('Duration must use whole minutes.');
   const cell = (v: unknown) => {
     const n = numeric(v, 0, size * size - 1, 'cell');
@@ -334,11 +365,12 @@ export function validateScenario(value: unknown): Scenario {
   return {
     version: 1,
     ...(geographic ? { geographic } : {}),
+    ...(rainSeries ? { rainSeries } : {}),
     name: s.name,
     terrain: s.terrain as TerrainKind,
     seed: numeric(s.seed, 0, 4294967295, 'seed'),
     size,
-    cellSize: numeric(s.cellSize, 5, 50, 'cell size'),
+    cellSize: numeric(s.cellSize, 5, 160, 'cell size'),
     rain: numeric(s.rain, 0, 200, 'rainfall'),
     duration,
     infiltration: numeric(s.infiltration, 0, 200, 'infiltration'),

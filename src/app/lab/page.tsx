@@ -93,7 +93,16 @@ export default function Lab() {
     frame = run?.frames[Math.min(index, run.frames.length - 1)],
     active = s.interventions.find((i) => i.cell === cell);
   function update(p: Partial<Scenario>) {
-    setScenario({ ...s, ...p });
+    setScenario({
+      ...s,
+      ...(p.duration !== undefined ||
+      p.rain !== undefined ||
+      p.profile !== undefined ||
+      p.customRain !== undefined
+        ? { rainSeries: undefined }
+        : {}),
+      ...p,
+    });
     setRun(null);
     setIndex(0);
     setPlaying(false);
@@ -185,8 +194,15 @@ export default function Lab() {
           <ArrowUpRight size={12} />
         </Link>
         <h1>{s.name}</h1>
+        <Link className="location-back" href="/study">
+          Trace drainage and test sites <ArrowUpRight size={12} />
+        </Link>
         <button className="source-chip" onClick={() => toggle('source')}>
-          {s.geographic ? 'USGS 3DEP' : 'Synthetic demo'}
+          {s.geographic
+            ? s.geographic.provenance.provider === 'USGS'
+              ? 'USGS 3DEP'
+              : s.geographic.provenance.provider
+            : 'Synthetic demo'}
           <span> · </span>
           {s.size * s.cellSize} × {s.size * s.cellSize} m
         </button>
@@ -255,7 +271,11 @@ export default function Lab() {
         <div className="run-summary">
           <button onClick={() => toggle('storm')}>
             <CloudRain size={15} />
-            {s.profile === 'custom' ? 'Custom rain' : `${s.rain} mm/h`}
+            {s.rainSeries
+              ? 'Imported rainfall'
+              : s.profile === 'custom'
+                ? 'Custom rain'
+                : `${s.rain} mm/h`}
             <span> · {s.duration / 60} min</span>
             <SlidersHorizontal size={13} />
           </button>
@@ -853,7 +873,7 @@ export default function Lab() {
                     <h3>{s.geographic.provenance.dataset}</h3>
                     <dl className="source-details">
                       <dt>Provider</dt>
-                      <dd>USGS 3DEP</dd>
+                      <dd>{s.geographic.provenance.provider}</dd>
                       <dt>Retrieved</dt>
                       <dd>{s.geographic.provenance.retrievedAt}</dd>
                       <dt>Grid</dt>

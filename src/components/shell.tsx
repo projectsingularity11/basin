@@ -10,6 +10,7 @@ const links = [
   ['/lab', 'Laboratory'],
   ['/compare', 'Compare'],
   ['/optimize', 'Optimize'],
+  ['/study', 'Watershed study'],
   ['/case-study', 'Harvey'],
   ['/methodology', 'Method'],
 ];
@@ -72,21 +73,20 @@ export function Header() {
             </button>
           </div>
           <nav aria-label="Main navigation">
-            {links.map(([href, label], i) => (
+            {links.map(([href, label]) => (
               <Link
                 key={href}
                 href={href}
                 aria-current={path === href ? 'page' : undefined}
                 onClick={close}
               >
-                <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 {label}
                 <ArrowUpRight />
               </Link>
             ))}
           </nav>
           <div className="overlay-bottom">
-            <span>Stormwater modeling · v0.2</span>
+            <span>Flood mitigation studies</span>
             <Link href="/experiments" onClick={close}>
               Experiment records ↗
             </Link>

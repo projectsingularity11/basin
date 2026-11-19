@@ -1,3 +1,4 @@
+@import "@fontsource/instrument-serif/400.css";
 @import '@fontsource/syne/500.css';
 @import '@fontsource/syne/600.css';
 @import '@fontsource/manrope/400.css';
@@ -5316,3 +5317,51 @@ footer > span {
     transform: translateY(0);
   }
 }
+
+/* Continuous ocean descent */
+.water-pointer{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:95}
+.flood-home{background:#020c15}
+.ocean-descent{position:relative;isolation:isolate}
+.ocean-backdrop{position:sticky;top:0;height:100svh;z-index:-1;overflow:hidden;background:#020c15}
+.ocean-art,.ocean-film{position:absolute;inset:-2%;background-size:cover;background-position:center;will-change:opacity,transform}
+.ocean-day{background-image:url(/ocean-surface.webp);background-position:center 56%;animation:ocean-swell 22s ease-in-out infinite alternate}
+.ocean-shallow{background-image:url(/ocean-reef.webp);opacity:var(--layer-1,0);transform:scale(calc(1 + var(--descent,0)*.018))}
+.ocean-pelagic{background-image:url(/ocean-open.webp);opacity:var(--layer-2,0)}
+.ocean-deep{background-image:url(/ocean-floor.webp);opacity:var(--layer-3,0);background-position:68% center}
+.ocean-film{background:linear-gradient(90deg,#00142190,transparent 75%),linear-gradient(0deg,#020c1599,transparent 65%);pointer-events:none}
+.flood-hero,.dive-section{min-height:100svh;display:grid;align-items:center;position:relative;padding:110px clamp(22px,8vw,150px) 70px}
+.flood-hero{margin-top:-100svh;text-align:center;justify-items:center}
+.flood-hero h1{font:400 clamp(130px,27vw,400px)/.75 'Instrument Serif',Georgia,serif;letter-spacing:-.06em;margin:0 0 35px;text-shadow:0 6px 48px #03223578;color:#f2fbff}
+.flood-hero p,.dive-section p{font-size:clamp(15px,1.55vw,20px);line-height:1.6;color:#e3f5ff;margin:0 0 24px}
+.flood-action,.dive-section a{display:inline-flex;align-items:center;gap:12px;border:1px solid #b8e8f7a0;border-radius:30px;padding:12px 17px;background:#031b2bdc;color:#f1fbff;font-size:14px}
+.dive-link{position:absolute;bottom:24px;left:calc(50% - 22px);border:1px solid #d7f0ff90;border-radius:50%;width:44px;height:44px;display:grid;place-items:center}
+.dive-section{min-height:104svh;scroll-margin-top:0}
+.dive-section h2{font:400 clamp(62px,9vw,140px)/.88 'Instrument Serif',Georgia,serif;letter-spacing:-.025em;color:#f1faff;margin:0 0 25px}
+.dive-section>div{max-width:750px;text-shadow:0 2px 15px #000}
+.dive-section p{max-width:440px}
+.dive-right{justify-items:end;text-align:right}
+.dive-right p{margin-left:auto}
+.dive-final{background:linear-gradient(transparent 55%,#020c15)}
+.swimmer{position:absolute;display:block;background-repeat:no-repeat;background-position:center;background-size:contain;pointer-events:none;filter:drop-shadow(0 5px 12px #062a48a3)}
+.school{background-image:url(/wildlife-school.webp);width:40%;height:35%;left:45%;top:18%;animation:swim 19s ease-in-out infinite alternate}
+.whale{background-image:url(/wildlife-whale.webp);width:48%;height:43%;left:2%;top:12%;animation:swim 27s ease-in-out infinite alternate}
+.shark{background-image:url(/wildlife-shark.webp);width:37%;height:29%;left:22%;top:42%;animation:swim 15s ease-in-out infinite alternate-reverse}
+.angler,.angler-light{display:none}
+@keyframes swim{from{transform:translate(-18%,4%) rotate(-2deg)}to{transform:translate(18%,-5%) rotate(2deg)}}
+@keyframes ocean-swell{from{transform:scale(1.03) translateY(-.6%)}to{transform:scale(1.08) translateY(.6%)}}
+.study-layout{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);align-items:start;gap:40px;padding-bottom:72px}
+.study-controls{padding:24px}.study-controls label{margin-top:15px}.study-controls .button-row{margin-top:12px}
+.study-grid{display:block;width:min(100%,420px);margin:16px 0;background:#081e2a;border:1px solid #325d73}
+.study-layout .table-wrap{overflow:auto}.study-layout p{line-height:1.6}
+@media(max-width:700px){.study-layout{grid-template-columns:1fr}.dive-right{text-align:left;justify-items:start}.dive-right p{margin-left:0}.swimmer{width:65%}.dive-section h2{font-size:clamp(57px,12vw,85px)}}
+@media(prefers-reduced-motion:reduce){.ocean-art,.swimmer{animation:none!important;transform:none}.water-pointer{display:none}}
+.earth-case{display:block;color:#c8efff;margin:0 0 10px}
+.angler{display:block;background-image:url(/wildlife-angler.webp);width:16%;height:15%;left:65%;top:71%;opacity:.76;animation:angler-drift 18s ease-in-out infinite alternate}
+.angler-light{display:block;position:absolute;left:67%;top:81%;width:12%;height:12%;background:radial-gradient(ellipse,#9bbdd840,transparent 67%);mix-blend-mode:screen;animation:angler-drift 18s ease-in-out infinite alternate}
+@keyframes angler-drift{from{transform:translate(-8%,-5%)}to{transform:translate(8%,5%)}}
+
+.earth-page .region-card .field{margin-top:12px;margin-bottom:0}.earth-page .region-card .field select{min-height:36px;padding:6px 9px}
+.region-upload{font-size:11px;color:#bdd8e3;margin:12px 0;max-width:100%}
+.region-upload input{max-width:100%}
+.earth-page .region-card{max-height:calc(100% - 150px);overflow:auto}
+@media(max-width:700px){.earth-page .region-card{max-height:475px}}

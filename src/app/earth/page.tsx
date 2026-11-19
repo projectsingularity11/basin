@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, ArrowRight, ArrowUpRight, LocateFixed, LoaderCircle, X } from 'lucide-react';
 import { useBasin } from '@/components/provider';
+import { selectGeoJson } from '@/lib/geo/selection';
 import { DEFAULT } from '@/engine/model';
 import type { Place, GeographicTerrain } from '@/lib/geo/contracts';
 const Map = dynamic(() => import('@/components/earth-map'), {
@@ -19,6 +20,7 @@ export default function Earth() {
     [query, setQuery] = useState(''),
     [places, setPlaces] = useState<Place[]>([]),
     [side, setSide] = useState(480),
+    [source, setSource] = useState('auto'),
     [size, setSize] = useState(24),
     [searching, setSearching] = useState(false),
     [loading, setLoading] = useState(false),
@@ -37,6 +39,7 @@ export default function Earth() {
     request.current?.abort();
     setLoading(false);
     setCenter(c);
+    if ((c[0] < -125 || c[0] > -66 || c[1] < 24 || c[1] > 50) && side / size < 30) setSide(1920);
     setName(label || `${c[1].toFixed(4)}, ${c[0].toFixed(4)}`);
     setError('');
     setPlaces([]);
@@ -77,6 +80,7 @@ export default function Earth() {
             side: String(side),
             size: String(size),
             name: name.slice(0, 100),
+            source,
           }),
         { signal: controller.signal },
       );
@@ -104,13 +108,21 @@ export default function Earth() {
     <main id="main" className="earth-page">
       <Map center={center} side={side} onSelect={choose} onError={setMapError} />
       <div className="earth-heading">
-        <span className="step-label">1. Place</span>
         <h1>
           Where are
           <br />
           we testing?
         </h1>
         <p>Search, then click the map to position your region.</p>
+        <button
+          className="earth-case text-button"
+          onClick={() => {
+            choose([-95.5096256, 30.0123615], 'Barbara Bush Branch Library');
+            setSide(960);
+          }}
+        >
+          Select the Barbara Bush Branch Library ↗
+        </button>
         <form onSubmit={search} className="place-search">
           <Search size={18} />
           <input
@@ -180,6 +192,8 @@ export default function Earth() {
               <option value={240}>240 m</option>
               <option value={480}>480 m</option>
               <option value={960}>960 m</option>
+              <option value={1920}>1.92 km</option>
+              <option value={3840}>3.84 km</option>
             </select>
           </label>
           <label>
@@ -198,10 +212,51 @@ export default function Earth() {
             </select>
           </label>
         </div>
+        <label className="field">
+          Elevation source
+          <select
+            value={source}
+            onChange={(event) => {
+              request.current?.abort();
+              setLoading(false);
+              setSource(event.target.value);
+              if (event.target.value === 'copernicus' && side / size < 30) setSide(1920);
+            }}
+          >
+            <option value="auto">Automatic</option>
+            <option value="copernicus">Copernicus GLO-30</option>
+          </select>
+        </label>
+        <details className="region-upload">
+          <summary>Fit region to a GeoJSON polygon</summary>
+          <label className="field">
+            Upload WGS84 GeoJSON
+            <input
+              type="file"
+              accept=".geojson,.json,application/geo+json"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = '';
+                if (!file) return;
+                try {
+                  if (file.size > 500000) throw Error('Choose a GeoJSON file smaller than 500 KB.');
+                  const selection = selectGeoJson(JSON.parse(await file.text()));
+                  choose(selection.center, 'Imported polygon bounds');
+                  setSide(selection.side);
+                  setSize(24);
+                } catch (error) {
+                  setError((error as Error).message);
+                }
+              }}
+            />
+          </label>
+          <p>The model uses the enclosing square.</p>
+        </details>
         <p className="region-detail">
-          {side / size} m output cells · USGS 3DEP
+          {side / size} m output cells
           <br />
-          U.S. coverage · source resolution varies
+          USGS in the contiguous U.S. where available. Copernicus elsewhere, with cells of at least
+          30 m.
         </p>
         {error && (
           <div role="alert" className="geo-error">
@@ -247,7 +302,7 @@ export default function Earth() {
         target="_blank"
         rel="noreferrer"
       >
-        Elevation: USGS 3DEP ↗
+        U.S. elevation source ↗
       </a>
     </main>
   );
