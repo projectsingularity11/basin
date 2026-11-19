@@ -1,10 +1,28 @@
 (() => {
   const fallback = document.querySelector('.basin-access');
-  const entry = document.querySelector('.js-site-loader-enter-alt .js-enter-site');
+  const entry =
+    document.querySelector('.js-site-loader-enter-alt .js-enter-site') ||
+    document.querySelector('.js-enter-site');
   const loader = document.querySelector('.site-loader');
   if (!fallback) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    window.location.replace('/classic');
+    const path = window.location.pathname.replace(/\/$/, '');
+    const expedition =
+      path.match(/^\/expeditions\/(runoff|harvey|detention)$/)?.[1] ??
+      {
+        '/journeys/marine-protected-areas': 'runoff',
+        '/journeys/sustainable-fisheries': 'harvey',
+        '/journeys/blue-carbon-habitats': 'detention',
+      }[path];
+    window.location.replace(
+      expedition
+        ? `/classic/expeditions/${expedition}`
+        : path === '/about'
+          ? '/project-about'
+          : path === '/journeys' || path === '/expeditions'
+            ? '/classic#expeditions'
+            : '/classic',
+    );
     return;
   }
   const observer = new MutationObserver(() => {

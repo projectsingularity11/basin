@@ -110,7 +110,7 @@ export default function Home() {
               Harvey closed the Barbara Bush Branch Library in Spring, Texas. Its story shows which
               evidence a local flood investigation needs.
             </p>
-            <Link href="/expeditions/harvey">
+            <Link href="/classic/expeditions/harvey">
               Explore the Harvey story <ArrowUpRight size={16} />
             </Link>
           </div>
@@ -148,7 +148,7 @@ export default function Home() {
           {expeditions.map(({ slug, title, label, text, art }) => (
             <article key={slug} className={`expedition-card expedition-${art} dive-reveal`}>
               <Link
-                href={`/expeditions/${slug}`}
+                href={`/classic/expeditions/${slug}`}
                 className="expedition-link"
                 aria-label={`Explore ${title}`}
               >
@@ -168,7 +168,7 @@ export default function Home() {
         <Link className="expedition-method" href="/methodology">
           Methods and limitations <ArrowUpRight size={15} />
         </Link>
-        <Link className="expedition-method expedition-credits" href="/about#media">
+        <Link className="expedition-method expedition-credits" href="/project-about#media">
           Media credits <ArrowUpRight size={13} />
         </Link>
       </section>

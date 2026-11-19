@@ -146,7 +146,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
     ['Where could water be held?', 'detention', '/study', 'Open watershed tools'],
   ]) {
     await expeditions.getByRole('link', { name: `Explore ${title}` }).click();
-    await expect(page).toHaveURL(new RegExp(`/expeditions/${slug}$`));
+    await expect(page).toHaveURL(new RegExp(`/classic/expeditions/${slug}$`));
     await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: details })).toHaveAttribute('href', destination);
     if (slug === 'detention') {

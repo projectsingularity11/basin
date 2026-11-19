@@ -77,4 +77,6 @@ The current surf loop derives from [Luftrum's Kalundborg Fjord recording as dist
 
 ## Authorized visual-reference edition
 
-The homepage uses the original visual runtime, layout, fonts, models, textures, ambient audio and clips from the user-authorized reference. BASIN replaces the written narrative, quiz prompts, and study destinations. Original spoken narration is disabled. The earlier BASIN homepage is available at /classic. Runtime bundle license notices are included in public/reference/scripts, and the Rajdhani OFL is in public/reference/fonts.
+The English homepage, journey picker, About page and three expeditions use the user-authorized original markup, visual runtime, fonts, models, textures, narration, ambient audio and clips. Internal destinations are mapped to BASIN routes so the original client transitions can run locally. The Experiment runner menu link opens BASIN’s existing /lab. Source analytics and consent scripts are omitted. Other languages and linked educational downloads continue to use their source URLs.
+
+The earlier BASIN experience is available at /classic, with accessible expedition pages under /classic/expeditions. Runtime bundle license notices are in public/reference/scripts, and the Rajdhani OFL is in public/reference/fonts.
