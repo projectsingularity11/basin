@@ -103,13 +103,44 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  await page.waitForTimeout(2000);
+  const surface = page.locator('.ocean-surface video');
+  await expect
+    .poll(() => surface.evaluate((video) => (video as HTMLVideoElement).currentTime))
+    .toBeGreaterThan(0);
+  await expect(surface).toHaveJSProperty('videoWidth', 1920);
+  await page.getByRole('button', { name: 'Pause ocean footage' }).click();
+  await expect(surface).toHaveJSProperty('paused', true);
+  await page.getByRole('button', { name: 'Play ocean footage' }).click();
+  await expect(surface).toHaveJSProperty('paused', false);
   await page.screenshot({ path: '/tmp/basin-final-hero.png' });
-  await page.evaluate(() => window.scrollTo(0, 1450));
-  await page.waitForTimeout(600);
+  await page.locator('.dive-reef').evaluate((section) => {
+    window.scrollTo({
+      top: window.scrollY + section.getBoundingClientRect().top + 60,
+      behavior: 'instant',
+    });
+  });
+  await expect
+    .poll(() =>
+      page
+        .locator('.ocean-reef video')
+        .evaluate((video) => (video as HTMLVideoElement).currentTime),
+    )
+    .toBeGreaterThan(0);
+  await expect(surface).toHaveJSProperty('paused', true);
   await page.screenshot({ path: '/tmp/basin-final-under.png' });
-  await page.evaluate(() => window.scrollTo(0, 2500));
-  await page.waitForTimeout(600);
+  await page.locator('.dive-floor').evaluate((section) => {
+    window.scrollTo({
+      top: window.scrollY + section.getBoundingClientRect().top + 60,
+      behavior: 'instant',
+    });
+  });
+  await expect
+    .poll(() =>
+      page
+        .locator('.ocean-floor video')
+        .evaluate((video) => (video as HTMLVideoElement).currentTime),
+    )
+    .toBeGreaterThan(0);
   await page.screenshot({ path: '/tmp/basin-final-deep.png' });
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -138,6 +169,9 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
+  await expect(surface).toHaveJSProperty('paused', true);
+  await expect(page.getByRole('button', { name: 'Pause ocean footage' })).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);
 });

@@ -1,3 +1,10 @@
+const contours = [
+  'M8 16c4 0 7-5 16-5s12 5 16 5',
+  'M8 23c5 0 8 6 16 6s11-6 16-6',
+  'M8 30c5 0 8 7 16 7s11-7 16-7',
+  'M14 20c3 0 5 3 10 3s7-3 10-3',
+];
+
 export function Mark({ className = '', size = 36 }: { className?: string; size?: number }) {
   return (
     <svg
@@ -8,19 +15,21 @@ export function Mark({ className = '', size = 36 }: { className?: string; size?:
       fill="none"
       aria-hidden="true"
     >
-      <path
-        d="M9 8v32h15c10 0 16-6 16-13 0-5-3-9-8-11M9 8h15c6 0 10 3 10 7 0 5-5 8-11 8H9"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <rect
+        x="1"
+        y="1"
+        width="46"
+        height="46"
+        rx="13"
+        fill="#082638"
+        stroke="#a2e8fc"
+        strokeOpacity=".35"
       />
-      <path
-        d="M16 30c4 0 5 4 9 4s5-4 9-4M16 15h8"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <g stroke="#bbf1ff" strokeWidth="2.2" strokeLinecap="round">
+        {contours.map((path) => (
+          <path key={path} d={path} />
+        ))}
+      </g>
     </svg>
   );
 }

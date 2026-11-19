@@ -1,117 +1,263 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import Lenis from 'lenis';
+
+const vertex = `attribute vec2 position;
+void main() { gl_Position = vec4(position, 0., 1.); }`;
+
+// Traveling wave and displacement adapted from Sakuga's WaterSurface.
+const fragment = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2 size;
+uniform float time;
+uniform vec4 drops[8];
+void main() {
+  vec2 p = vec2(gl_FragCoord.x, size.y - gl_FragCoord.y);
+  vec2 shift = vec2(0.);
+  float light = 0.;
+  for (int i = 0; i < 8; i++) {
+    float age = time - drops[i].z;
+    vec2 offset = p - drops[i].xy;
+    float d = length(offset);
+    if (drops[i].w > 0. && age >= 0. && age < 2.2) {
+      float envelope = exp(-age * 2.) * exp(-abs(d - age * 100.) * .018);
+      float wave = sin(d * .09 - age * 11.) * envelope * drops[i].w;
+      shift += normalize(offset + vec2(.01)) * wave * 18.;
+      light += wave;
+    }
+  }
+  vec2 uv = (p + shift) / size;
+  float glint = .65 + .35 * sin(uv.x * 25. - uv.y * 32.);
+  vec3 color = light > 0. ? vec3(.61, .88, 1.) : vec3(.02, .13, .23);
+  gl_FragColor = vec4(color, min(abs(light) * .27 * glint, .24));
+}`;
 
 export function WaterMotion() {
   const surface = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
-    const canvas = surface.current,
-      context = canvas?.getContext('2d');
-    if (!canvas || !context) return;
-    const motion = matchMedia('(prefers-reduced-motion: reduce)');
-    const pointer = matchMedia('(pointer: fine)');
-    const ripples: { x: number; y: number; time: number; strength: number }[] = [];
-    let frame = 0,
-      last = 0;
-    const resize = () => {
-      canvas.width = Math.round(innerWidth * 0.75);
-      canvas.height = Math.round(innerHeight * 0.75);
-    };
-    function move(event: PointerEvent) {
-      if (motion.matches || !pointer.matches || event.pointerType === 'touch') return;
-      const time = performance.now();
-      if (time - last < 36) return;
-      last = time;
-      ripples.push({
-        x: event.clientX * 0.75,
-        y: event.clientY * 0.75,
-        time,
-        strength: Math.min(1, Math.hypot(event.movementX, event.movementY) / 16 + 0.15),
-      });
-      if (ripples.length > 12) ripples.shift();
-      if (!frame) frame = requestAnimationFrame(draw);
+    const canvas = surface.current;
+    const preference = matchMedia('(prefers-reduced-motion: reduce)');
+    const fine = matchMedia('(pointer: fine)');
+    if (!canvas || !fine.matches || preference.matches) return;
+    const gl = canvas.getContext('webgl', {
+      alpha: true,
+      antialias: false,
+      premultipliedAlpha: false,
+    });
+    if (!gl) return;
+
+    const program = gl.createProgram();
+    const buffer = gl.createBuffer();
+    const shaders = [
+      [gl.VERTEX_SHADER, vertex],
+      [gl.FRAGMENT_SHADER, fragment],
+    ] as const;
+    if (!program || !buffer) return;
+    for (const [kind, source] of shaders) {
+      const shader = gl.createShader(kind);
+      if (!shader) return;
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      gl.attachShader(program, shader);
+      gl.deleteShader(shader);
     }
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      gl.deleteBuffer(buffer);
+      gl.deleteProgram(program);
+      return;
+    }
+    gl.useProgram(program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const position = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(position);
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+    const size = gl.getUniformLocation(program, 'size');
+    const time = gl.getUniformLocation(program, 'time');
+    const dropUniform = gl.getUniformLocation(program, 'drops[0]');
+    const drops = new Float32Array(32);
+    const origin = performance.now();
+    let frame = 0;
+    let last = -Infinity;
+    let index = 0;
+    let until = 0;
+
     function draw(now: number) {
       frame = 0;
-      if (!canvas || !context || document.hidden || (!ripples.length && !last)) return;
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      if (motion.matches || !pointer.matches) ripples.length = 0;
-      while (ripples.length && now - ripples[0].time > 900) ripples.shift();
-      if (!ripples.length) {
-        last = 0;
-        return;
-      }
-      frame = requestAnimationFrame(draw);
-      for (const ripple of ripples) {
-        const progress = Math.max(0, (now - ripple.time) / 900);
-        for (let ring = 0; ring < 2; ring++) {
-          const radius = 3 + progress * 75 - ring * 6;
-          if (radius <= 0) continue;
-          context.strokeStyle = `rgba(161,235,255,${((1 - progress) ** 2 * ripple.strength * 0.42) / (ring + 1)})`;
-          context.lineWidth = 1.3;
-          context.beginPath();
-          context.ellipse(ripple.x, ripple.y, radius, radius * 0.69, -0.2, 0, Math.PI * 2);
-          context.stroke();
-        }
-      }
+      if (!gl || document.hidden || gl.isContextLost()) return;
+      gl.uniform1f(time, (now - origin) / 1000);
+      gl.uniform4fv(dropUniform, drops);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      if (now < until && !preference.matches) frame = requestAnimationFrame(draw);
     }
+
+    function disturb(event: PointerEvent) {
+      if (!canvas || event.pointerType === 'touch' || preference.matches) return;
+      const now = performance.now();
+      if (event.type === 'pointermove' && now - last < 55) return;
+      last = now;
+      until = now + 2200;
+      drops.set(
+        [
+          (event.clientX * canvas.width) / innerWidth,
+          (event.clientY * canvas.height) / innerHeight,
+          (now - origin) / 1000,
+          event.type === 'pointerdown' ? 1.9 : 0.8,
+        ],
+        index * 4,
+      );
+      index = (index + 1) % 8;
+      if (!frame) frame = requestAnimationFrame(draw);
+    }
+
+    const resize = () => {
+      const scale = Math.min(0.8, 1200 / innerWidth, 1000 / innerHeight);
+      canvas.width = Math.max(1, Math.round(innerWidth * scale));
+      canvas.height = Math.max(1, Math.round(innerHeight * scale));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(size, canvas.width, canvas.height);
+    };
     resize();
     addEventListener('resize', resize);
-    addEventListener('pointermove', move, { passive: true });
+    addEventListener('pointermove', disturb, { passive: true });
+    addEventListener('pointerdown', disturb, { passive: true });
     return () => {
       cancelAnimationFrame(frame);
       removeEventListener('resize', resize);
-      removeEventListener('pointermove', move);
+      removeEventListener('pointermove', disturb);
+      removeEventListener('pointerdown', disturb);
+      gl.deleteBuffer(buffer);
+      gl.deleteProgram(program);
     };
   }, []);
+
   return <canvas className="water-pointer" ref={surface} aria-hidden="true" />;
 }
 
-export function useOceanScroll(story: React.RefObject<HTMLDivElement | null>) {
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+const ease = (value: number) => {
+  const t = clamp(value);
+  return t * t * (3 - 2 * t);
+};
+
+export function useOceanScroll(story: RefObject<HTMLDivElement | null>, paused: boolean) {
+  const controller = useRef<(paused: boolean) => void>(null);
   useEffect(() => {
     const element = story.current;
     if (!element) return;
+    const scenes = Array.from(element.querySelectorAll<HTMLElement>('[data-ocean-scene]'));
+    const videos = scenes.map((scene) => scene.querySelector('video')!);
+    const chapters = Array.from(element.querySelectorAll<HTMLElement>('[data-dive-chapter]'));
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
+    const playback = videos.map(() => false);
     let lenis: Lenis | undefined;
-    let frame = 0;
+    let scrollFrame = 0;
+    let animationFrame = 0;
+    let isPaused = false;
+    let viewportHeight = innerHeight;
+    let stops: number[] = [];
+
     const update = () => {
-      const height = element.clientHeight - innerHeight;
-      const depth = Math.max(
-        0,
-        Math.min(3, (-element.getBoundingClientRect().top / Math.max(1, height)) * 3),
-      );
-      const set = (key: string, value: number) => element.style.setProperty(key, String(value));
-      for (let i = 1; i <= 3; i++) {
-        const progress = Math.max(0, Math.min(1, (depth - i + 0.86) / 0.73));
-        set('--layer-' + i, progress * progress * (3 - 2 * progress));
-      }
-      set('--descent', depth);
+      scrollFrame = 0;
+      const bounds = element.getBoundingClientRect();
+      const y = -bounds.top;
+      const inView = bounds.bottom > 0 && bounds.top < viewportHeight;
+      const still = isPaused || preference.matches;
+      const transitions = stops.map((stop) => ease((y - stop) / (viewportHeight * 0.8) + 0.5));
+
+      scenes.forEach((scene, index) => {
+        const entering = index === 0 ? 1 : transitions[index - 1];
+        const leaving = transitions[index] ?? 0;
+        const visibility = leaving >= 1 ? 0 : entering;
+        scene.style.setProperty('--visibility', String(visibility));
+        scene.style.setProperty('--rise', `${(1 - entering) * 7 - leaving * 7}%`);
+        const video = videos[index];
+        const approaching = index === 0 || y > stops[index - 1] - viewportHeight * 0.95;
+        if (inView && approaching && leaving < 1 && !still && !video.hasAttribute('src')) {
+          video.preload = 'auto';
+          video.src = video.dataset.source!;
+        }
+        const shouldPlay = inView && approaching && leaving < 1 && !still && !document.hidden;
+        if (playback[index] !== shouldPlay) {
+          playback[index] = shouldPlay;
+          if (shouldPlay) void video.play().catch(() => {});
+          else video.pause();
+        }
+      });
+
+      const surface = transitions[0] ?? 0;
+      const depth = clamp(y / Math.max(1, bounds.height - viewportHeight));
+      element.style.setProperty('--waterline', `${126 - surface * 152}%`);
+      element.style.setProperty('--glare', String(Math.sin(surface * Math.PI) * 0.8));
+      element.style.setProperty('--silt', String(surface * (0.08 + depth * 0.2)));
+      element.style.setProperty('--dive-progress', String(depth));
+      element.dataset.paused = String(still);
     };
-    const start = () => {
-      cancelAnimationFrame(frame);
+
+    const schedule = () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(update);
+    };
+    const measure = () => {
+      viewportHeight = innerHeight;
+      const top = element.getBoundingClientRect().top;
+      stops = chapters.map(
+        (chapter) => chapter.getBoundingClientRect().top - top - viewportHeight * 0.26,
+      );
+      schedule();
+    };
+    const configureScroll = () => {
+      cancelAnimationFrame(animationFrame);
       lenis?.destroy();
       lenis = preference.matches
         ? undefined
-        : new Lenis({ lerp: 0.072, smoothWheel: true, anchors: true });
+        : new Lenis({
+            lerp: 0.052,
+            wheelMultiplier: 0.84,
+            smoothWheel: true,
+            anchors: true,
+            prevent: (node) => Boolean(node.closest('dialog')),
+          });
       if (lenis) {
         const tick = (time: number) => {
           lenis?.raf(time);
-          frame = requestAnimationFrame(tick);
+          animationFrame = requestAnimationFrame(tick);
         };
-        frame = requestAnimationFrame(tick);
+        animationFrame = requestAnimationFrame(tick);
       }
-      update();
+      measure();
     };
-    start();
-    addEventListener('scroll', update, { passive: true });
-    addEventListener('resize', update);
-    preference.addEventListener('change', start);
+
+    controller.current = (value) => {
+      isPaused = value;
+      schedule();
+    };
+    configureScroll();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', measure);
+    document.addEventListener('visibilitychange', schedule);
+    preference.addEventListener('change', configureScroll);
     return () => {
-      cancelAnimationFrame(frame);
+      controller.current = null;
+      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(scrollFrame);
       lenis?.destroy();
-      removeEventListener('scroll', update);
-      removeEventListener('resize', update);
-      preference.removeEventListener('change', start);
+      observer.disconnect();
+      videos.forEach((video) => video.pause());
+      removeEventListener('scroll', schedule);
+      removeEventListener('resize', measure);
+      document.removeEventListener('visibilitychange', schedule);
+      preference.removeEventListener('change', configureScroll);
     };
   }, [story]);
+
+  useEffect(() => {
+    controller.current?.(paused);
+  }, [paused]);
 }

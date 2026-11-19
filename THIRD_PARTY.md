@@ -45,3 +45,16 @@ OpenFreeMap/OpenMapTiles and OpenStreetMap credits remain visible on the map. Nu
 MapLibre v6's official worker bundle is self-hosted unmodified at public/maplibre/maplibre-gl-worker.mjs, with its embedded BSD notice and full license in public/licenses/maplibre-gl.txt. This avoids bundler-relative worker URL failures and external executable CDN dependencies. Update the worker together with MapLibre if upgrading the locked dependency.
 
 Instrument Serif is distributed under the SIL Open Font License in public/licenses/fontsource-instrument-serif.txt. The ocean plates and animal artwork were generated for BASIN and are artistic illustrations. Copernicus GLO-30 attribution is retained in the source manifest and in the terrain details.
+
+## Ocean footage
+
+The homepage uses these trimmed, muted 1920×1080 excerpts. Color and framing are adjusted in the browser.
+
+- [Waves of the sea](https://commons.wikimedia.org/wiki/File:Waves_of_the_sea_(Video).webm) by Amada44, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The trimmed, muted video and its poster retain this license.
+- [Coral reef](https://www.pexels.com/video/underwater-school-of-fish-swimming-in-coral-reef-33009956/) by JUN HO LEE, [Pexels License](https://www.pexels.com/license/).
+- [Humpbacks](https://www.pexels.com/video/view-from-above-on-humpbacks-11279748/) by Stockfilm.com, [Pexels License](https://www.pexels.com/license/).
+- [Swimming with a whale shark](https://commons.wikimedia.org/wiki/File:Swimming_with_a_whale_shark_(Rhincodon_typus)_(no_audio).webm) by David Rojo, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+- [Deepwater Exploration of the Marianas jellyfish](https://commons.wikimedia.org/wiki/File:Jellyfish_-_Deepwater_Exploration_of_the_Marianas_expedition_-_April_24,_2016.webm) by NOAA Ocean Exploration, [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+- [Poisson et fonds abyssaux](https://commons.wikimedia.org/wiki/File:Poisson_et_fonds_abyssaux_(Ifremer_00701-81286).webm) from Ifremer, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+The anglerfish and its illumination are an animated composite. Pointer waves adapt the traveling-wave shader from the project owner's Sakuga site.
