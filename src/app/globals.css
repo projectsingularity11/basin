@@ -5548,3 +5548,61 @@ footer > span {
 @media (prefers-reduced-motion: reduce) {
   .route-entry, .expedition-opening::before { animation: none; }
 }
+
+/* Full-screen ocean story */
+.cinematic-dive { --dive-ink: #adddec; --dive-dark: #03131e; background: var(--dive-dark); }
+.cinematic-dive .flood-hero {
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  padding-top: 112px;
+  padding-bottom: max(58px, 8svh);
+  background: linear-gradient(180deg, #00203648, #061b3375 53%, transparent);
+}
+.dive-intro { align-self: center; }
+.cinematic-dive .flood-hero h1 {
+  color: #d8f5f7;
+  font-weight: 600;
+  font-size: clamp(96px, 19vw, 290px);
+  letter-spacing: -.09em;
+  padding-right: .09em;
+  margin-bottom: 18px;
+}
+.cinematic-dive .flood-hero p { margin: 0; color: #effaff; font-size: clamp(17px, 2vw, 25px); }
+.dive-entry { display: grid; justify-items: center; gap: 13px; text-transform: uppercase; letter-spacing: .15em; color: #effaff; font: 600 11px var(--font); letter-spacing: .15em; }
+.dive-entry-icon { display: grid; place-items: center; width: 53px; aspect-ratio: 1; border-radius: 50%; border: 1px solid #d1f3fa99; background: #071e2c58; transition: background .25s; }
+.dive-entry:hover .dive-entry-icon { background: #154c64; }
+.cinematic-dive .dive-skip { left: auto; right: clamp(22px, 5vw, 84px); top: 118px; bottom: auto; transform: none; border-radius: 0; padding: 5px 0; background: none; border: 0; border-bottom: 1px solid #b9e4ef9e; text-shadow: 0 1px 6px #002235; }
+.cinematic-dive :is(.dive-section h2,.expeditions-heading h2,.expedition-copy h3),
+.expedition-landing .expedition-opening h1 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 550;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+  color: #bee9f2;
+}
+.cinematic-dive .dive-section h2 { font-size: clamp(43px, 6.35vw, 102px); line-height: .98; }
+.cinematic-dive .dive-copy p { color: #e0f1f7; }
+.cinematic-dive .dive-reef { justify-items: center; align-items: center; text-align: center; isolation: isolate; min-height: 108svh; }
+.reef-film { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; pointer-events: none; object-fit: cover; filter: brightness(.70) saturate(.94); mask-image: linear-gradient(transparent, #000 19%, #000 81%, transparent); }
+.cinematic-dive .dive-reef::before { content: ''; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, #001724bb, transparent 77%); }
+.cinematic-dive .dive-reef .dive-copy { max-width: 940px; }
+.cinematic-dive .dive-reef p { margin: 0 auto 28px; }
+.dive-harvey { background: #041823ac; grid-template-columns: minmax(0, 1.35fr) minmax(0, .85fr); gap: clamp(32px, 6vw, 108px); padding-inline: clamp(22px, 6vw, 124px); }
+.dive-harvey .dive-copy::before { display: none; }
+.cinematic-dive .dive-harvey h2 { font-size: clamp(37px, 4.6vw, 75px); }
+.dive-evidence { min-width: 0; margin: 0; }
+.dive-evidence img { display: block; width: 100%; height: auto; aspect-ratio: 1.45; object-fit: cover; border-radius: 2px; }
+.dive-evidence figcaption { margin-top: 12px; color: #b3d2df; font-size: 12px; line-height: 1.45; }
+.cinematic-dive .dive-abyss { min-height: 110svh; }
+.cinematic-dive .expeditions { padding-inline: clamp(22px, 6vw, 124px); background: linear-gradient(#020b12, #092737); }
+.cinematic-dive .expeditions-heading h2 { font-size: clamp(44px, 7vw, 108px); line-height: 1; }
+.cinematic-dive .expedition-card { border-radius: 2px; min-height: min(585px, 70svh); }
+.cinematic-dive .expedition-copy h3 { font-size: clamp(29px, 3.2vw, 51px); line-height: 1; }
+.cinematic-dive .expedition-link::before { background: linear-gradient(0deg, #041725 7%, #041725cd 43%, transparent 77%); }
+.expedition-landing .expedition-opening h1 { font-size: clamp(56px, 8vw, 141px); line-height: .96; }
+@media (max-width: 720px) {
+  .cinematic-dive .dive-skip { top: 82px; right: 23px; }
+  .dive-harvey { grid-template-columns: 1fr; min-height: auto; padding-block: 68px 88px; }
+  .cinematic-dive .dive-abyss { min-height: 105svh; }
+  .cinematic-dive .expedition-card { min-height: 365px; }
+}

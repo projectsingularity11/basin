@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Mark } from '@/components/logo';
 import { OceanLife } from '@/components/ocean-life';
 import { OceanSound } from '@/components/ocean-sound';
+import { ReefScene } from '@/components/reef-scene';
 import { expeditions } from '@/data/expeditions';
 import { useOceanScroll } from '@/components/water-motion';
 
@@ -22,7 +23,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main id="main" className="flood-home">
+    <main id="main" className="flood-home cinematic-dive">
       <div className="dive-loader" data-loading={loading} aria-hidden={!loading} inert={!loading}>
         <div className="dive-loader-content">
           <div className="dive-loader-mark">
@@ -65,24 +66,53 @@ export default function Home() {
           <div className="ocean-immersion" />
         </div>
         <section className="flood-hero">
-          <div>
+          <div className="dive-intro">
             <h1>BASIN</h1>
-            <p>Trace floodwater. Test ways to slow it down.</p>
-            <a className="flood-action" href="#runoff">
-              Begin the dive <ArrowDown size={17} />
-            </a>
+            <p>Follow the path of floodwater.</p>
           </div>
+          <a className="dive-entry" href="#runoff">
+            <span>Begin the dive</span>
+            <span className="dive-entry-icon">
+              <ArrowDown size={20} />
+            </span>
+          </a>
           <a href="#expeditions" className="dive-skip">
-            Explore the expeditions <ArrowUpRight size={14} />
+            Expeditions <ArrowUpRight size={14} />
           </a>
         </section>
         <section id="runoff" className="dive-section dive-reef">
+          <ReefScene paused={paused} />
           <div className="dive-copy dive-reveal">
-            <h2>Where does the rain go?</h2>
+            <h2>Rain follows the shape of the land.</h2>
             <p>
-              Runoff follows the shape of the land. When too much water reaches the same low ground
-              too quickly, roads, homes, and public buildings can flood.
+              Runoff collects in low ground. When it arrives faster than it can drain, roads, homes,
+              and public buildings can flood.
             </p>
+            <a href="#harvey-intro">
+              See what happened in Houston <ArrowDown size={16} />
+            </a>
+          </div>
+        </section>
+        <section id="harvey-intro" className="dive-section dive-harvey">
+          <figure className="dive-evidence dive-reveal">
+            <Image
+              src="/expeditions/harvey.webp"
+              alt="Aerial view of neighborhoods surrounded by floodwater in Houston after Hurricane Harvey"
+              width={1200}
+              height={760}
+              sizes="(max-width: 720px) 90vw, 54vw"
+            />
+            <figcaption>Houston after Hurricane Harvey, August 2017 · U.S. Air Force</figcaption>
+          </figure>
+          <div className="dive-copy dive-reveal">
+            <h2>After the water rose.</h2>
+            <p>
+              Harvey closed the Barbara Bush Branch Library in Spring, Texas. Its story shows which
+              evidence a local flood investigation needs.
+            </p>
+            <Link href="/expeditions/harvey">
+              Explore the Harvey story <ArrowUpRight size={16} />
+            </Link>
           </div>
         </section>
         <section className="dive-section dive-abyss">
@@ -113,7 +143,6 @@ export default function Home() {
       <section id="expeditions" className="expeditions" aria-labelledby="expeditions-title">
         <header className="expeditions-heading dive-reveal">
           <h2 id="expeditions-title">Choose an expedition</h2>
-          <p>Start with a place, a documented flood, or a mitigation scenario.</p>
         </header>
         <div className="expedition-grid">
           {expeditions.map(({ slug, title, label, text, art }) => (
