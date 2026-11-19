@@ -28,7 +28,7 @@ export default function Home() {
           <div className="dive-loader-mark">
             <Mark size={52} />
           </div>
-          <p role="status">Loading ocean</p>
+          <p role="status">Loading BASIN</p>
           <button onClick={() => setLoading(false)}>Continue to BASIN</button>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default function Home() {
             <p>Follow the path of floodwater.</p>
           </div>
           <a className="dive-entry" href="#runoff">
-            <span>Begin the dive</span>
+            <span>Explore flood studies</span>
             <span className="dive-entry-icon">
               <ArrowDown size={20} />
             </span>
@@ -129,8 +129,8 @@ export default function Home() {
             type="button"
             className="dive-motion-toggle"
             onClick={() => setPaused((value) => !value)}
-            aria-label={paused ? 'Resume ocean animation' : 'Pause ocean animation'}
-            title={paused ? 'Resume ocean animation' : 'Pause ocean animation'}
+            aria-label={paused ? 'Resume study animation' : 'Pause study animation'}
+            title={paused ? 'Resume study animation' : 'Pause study animation'}
           >
             {paused ? <Play size={15} /> : <Pause size={15} />}
           </button>

@@ -70,7 +70,7 @@ export function OceanSound({ story }: { story: RefObject<HTMLDivElement | null> 
         await sound.current.context.resume();
         setEnabled(true);
       } catch {
-        setMessage('Ocean sound is unavailable.');
+        setMessage('Study sound is unavailable.');
       }
       return;
     }
@@ -118,7 +118,7 @@ export function OceanSound({ story }: { story: RefObject<HTMLDivElement | null> 
       }
       sound.current = null;
       setEnabled(false);
-      setMessage('Ocean sound is unavailable.');
+      setMessage('Study sound is unavailable.');
     }
   }
 
@@ -127,8 +127,8 @@ export function OceanSound({ story }: { story: RefObject<HTMLDivElement | null> 
       <button
         type="button"
         onClick={() => void toggle()}
-        aria-label={enabled ? 'Mute ocean sound' : 'Enable ocean sound'}
-        title={enabled ? 'Mute ocean sound' : 'Enable ocean sound'}
+        aria-label={enabled ? 'Mute study sound' : 'Enable study sound'}
+        title={enabled ? 'Mute study sound' : 'Enable study sound'}
       >
         {enabled ? <Volume2 size={17} /> : <VolumeX size={17} />}
       </button>

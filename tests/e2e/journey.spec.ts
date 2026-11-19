@@ -115,13 +115,13 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
     page.waitForResponse('**/dive/waves.mp3'),
     page.waitForResponse('**/dive/underwater.mp3'),
   ];
-  await page.getByRole('button', { name: 'Enable ocean sound' }).click();
+  await page.getByRole('button', { name: 'Enable study sound' }).click();
   for (const response of await Promise.all(soundRequests)) expect(response.ok()).toBe(true);
-  await page.getByRole('button', { name: 'Mute ocean sound' }).click();
-  await expect(page.getByRole('button', { name: 'Enable ocean sound' })).toBeVisible();
-  await page.getByRole('button', { name: 'Pause ocean animation' }).click();
+  await page.getByRole('button', { name: 'Mute study sound' }).click();
+  await expect(page.getByRole('button', { name: 'Enable study sound' })).toBeVisible();
+  await page.getByRole('button', { name: 'Pause study animation' }).click();
   await expect(story).toHaveAttribute('data-paused', 'true');
-  await page.getByRole('button', { name: 'Resume ocean animation' }).click();
+  await page.getByRole('button', { name: 'Resume study animation' }).click();
   await expect(story).toHaveAttribute('data-paused', 'false');
   const offsets = [];
   for (const fraction of [0.2, 0.55, 0.83, 1]) {
@@ -188,9 +188,9 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/classic');
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Pause ocean animation' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Pause study animation' })).toBeHidden();
   await expect(surface).toHaveJSProperty('paused', true);
-  await expect(page.getByRole('button', { name: 'Enable ocean sound' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Enable study sound' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);
