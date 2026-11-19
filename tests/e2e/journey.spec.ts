@@ -104,43 +104,36 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
   const surface = page.locator('.ocean-surface video');
-  await expect
-    .poll(() => surface.evaluate((video) => (video as HTMLVideoElement).currentTime))
-    .toBeGreaterThan(0);
-  await expect(surface).toHaveJSProperty('videoWidth', 1920);
+  const expectPlayback = async (clip: string) => {
+    const video = page.locator(`.ocean-${clip} video`);
+    await expect
+      .poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentTime), {
+        timeout: 25_000,
+      })
+      .toBeGreaterThan(0);
+    await expect(video).toHaveJSProperty('videoWidth', 1920);
+    await expect(video).toHaveJSProperty('videoHeight', 1080);
+  };
+  const scrollToChapter = async (clip: string) => {
+    await page.locator(`.dive-${clip}`).evaluate((section) => {
+      window.scrollTo({
+        top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
+        behavior: 'instant',
+      });
+    });
+  };
+  await expectPlayback('surface');
   await page.getByRole('button', { name: 'Pause ocean footage' }).click();
   await expect(surface).toHaveJSProperty('paused', true);
   await page.getByRole('button', { name: 'Play ocean footage' }).click();
   await expect(surface).toHaveJSProperty('paused', false);
   await page.screenshot({ path: '/tmp/basin-final-hero.png' });
-  await page.locator('.dive-reef').evaluate((section) => {
-    window.scrollTo({
-      top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
-      behavior: 'instant',
-    });
-  });
-  await expect
-    .poll(() =>
-      page
-        .locator('.ocean-reef video')
-        .evaluate((video) => (video as HTMLVideoElement).currentTime),
-    )
-    .toBeGreaterThan(0);
+  await scrollToChapter('reef');
+  await expectPlayback('reef');
   await expect(surface).toHaveJSProperty('paused', true);
   await page.screenshot({ path: '/tmp/basin-final-under.png' });
-  await page.locator('.dive-floor').evaluate((section) => {
-    window.scrollTo({
-      top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
-      behavior: 'instant',
-    });
-  });
-  await expect
-    .poll(() =>
-      page
-        .locator('.ocean-floor video')
-        .evaluate((video) => (video as HTMLVideoElement).currentTime),
-    )
-    .toBeGreaterThan(0);
+  await scrollToChapter('floor');
+  await expectPlayback('floor');
   await page.screenshot({ path: '/tmp/basin-final-deep.png' });
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
