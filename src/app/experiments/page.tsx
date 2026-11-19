@@ -164,14 +164,11 @@ export default function Experiments() {
         {records.length === 0 ? (
           <div className="empty-state">
             <FlaskConical size={38} />
-            <h2>No experimental results. Yet.</h2>
+            <h2>No measurements yet</h2>
             <p>
-              There are no real measurements preloaded in BASIN.
-              <br />
-              Start with a measured catchment, a known water input, and repeatable outflow
-              collection. Add your first record when evidence is available.
+              To add a measurement, record the catchment area, the water applied, and the outflow
+              collected.
             </p>
-            <span className="badge amber">PHYSICAL VALIDATION IS PLANNED</span>
           </div>
         ) : (
           <div className="experiment-records">
@@ -222,24 +219,17 @@ export default function Experiments() {
                 </dl>
                 {r.notes && <p>{r.notes}</p>}
                 {model && (
-                  <div className="comparison-status">
-                    <p>
-                      Measured outflow / input:{' '}
-                      {r.input > 0 ? (r.output / r.input).toFixed(3) : 'undefined (zero input)'}
-                      <br />
-                      Current model outflow / rainfall:{' '}
-                      {model.frames.at(-1)!.rainfall > 0
-                        ? (model.frames.at(-1)!.outflow / model.frames.at(-1)!.rainfall).toFixed(3)
-                        : 'undefined (zero rain)'}
-                    </p>
-                  </div>
+                  <p className="comparison-status">
+                    Measured outflow / input:{' '}
+                    {r.input > 0 ? (r.output / r.input).toFixed(3) : 'undefined (zero input)'}
+                  </p>
                 )}
               </article>
             ))}
           </div>
         )}
         <div className="text-callout">
-          <h3>Compare carefully.</h3>
+          <h3>Compare with the current scenario</h3>
           <p>
             Run the current lab scenario to view its outflow-to-input ratio alongside your
             measurements. This normalized comparison does not align geometry, soil, rainfall
@@ -262,7 +252,7 @@ export default function Experiments() {
             <p className="mono">
               Model outflow / rainfall:{' '}
               {model.frames.at(-1)!.rainfall > 0
-                ? (model.frames.at(-1)!.outflow / model.frames.at(-1)!.rainfall).toFixed(4)
+                ? (model.frames.at(-1)!.outflow / model.frames.at(-1)!.rainfall).toFixed(3)
                 : 'undefined (zero rainfall)'}
             </p>
           )}

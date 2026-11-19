@@ -39,7 +39,7 @@
       }
     });
   }
-  const entries = [...document.querySelectorAll('.site-loader .js-enter-site')];
+  const entries = [...document.querySelectorAll('.js-enter-site')];
   const visible = (element) => element && getComputedStyle(element).visibility === 'visible';
   const ready = () => !visible(loader) || entries.some(visible);
   const observer = new MutationObserver(() => {
