@@ -106,7 +106,9 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   const world = page.locator('.ocean-world-image');
   const story = page.locator('.ocean-descent');
   await expect(world).toHaveJSProperty('complete', true);
-  await expect(page.getByText('Loading ocean', { exact: true })).toBeHidden();
+  await expect(page.locator('.dive-loader')).toHaveAttribute('data-loading', 'false', {
+    timeout: 20_000,
+  });
   const surface = page.locator('.ocean-surface-film');
   await expect(surface).toHaveJSProperty('videoWidth', 1920, { timeout: 20_000 });
   const soundRequests = [

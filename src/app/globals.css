@@ -5371,6 +5371,8 @@ footer > span {
   background: radial-gradient(ellipse at 50% 10%, #10364d, #03131f 72%);
   transition: opacity .35s ease, visibility .35s ease;
 }
+.dive-loader[data-loading='true'] { animation: loader-release .35s 2.6s forwards; }
+@keyframes loader-release { to { opacity: 0; visibility: hidden; } }
 .dive-loader[data-loading='false'] { opacity: 0; visibility: hidden; pointer-events: none; }
 .dive-loader-content { display: grid; gap: 16px; justify-items: center; color: #e6f9ff; }
 .dive-loader-content p { margin: 0; font-size: 14px; }
@@ -5451,6 +5453,7 @@ footer > span {
 @media (prefers-reduced-motion: reduce) {
   .water-pointer, .dive-controls .dive-motion-toggle { display: none; }
   .ocean-current, .dive-loader-mark::before, .dive-loader-mark::after { animation: none; }
+  .dive-loader[data-loading='true'] { animation-duration: .01s; }
   .dive-loader, .expedition-image { transition: none; }
 }
 
