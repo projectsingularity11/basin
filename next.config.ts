@@ -8,12 +8,31 @@ const routes = {
   '/expeditions/runoff': 'runoff',
   '/expeditions/harvey': 'harvey',
   '/expeditions/detention': 'detention',
-  '/journeys/marine-protected-areas': 'runoff',
-  '/journeys/sustainable-fisheries': 'harvey',
-  '/journeys/blue-carbon-habitats': 'detention',
+  '/journeys/runoff': 'runoff',
+  '/journeys/harvey': 'harvey',
+  '/journeys/detention': 'detention',
 };
 
 const config: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/journeys/marine-protected-areas',
+        destination: '/journeys/runoff',
+        permanent: true,
+      },
+      {
+        source: '/journeys/sustainable-fisheries',
+        destination: '/journeys/harvey',
+        permanent: true,
+      },
+      {
+        source: '/journeys/blue-carbon-habitats',
+        destination: '/journeys/detention',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return {
       beforeFiles: Object.entries(routes).map(([source, page]) => ({

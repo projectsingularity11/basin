@@ -10,9 +10,9 @@
     const expedition =
       path.match(/^\/expeditions\/(runoff|harvey|detention)$/)?.[1] ??
       {
-        '/journeys/marine-protected-areas': 'runoff',
-        '/journeys/sustainable-fisheries': 'harvey',
-        '/journeys/blue-carbon-habitats': 'detention',
+        '/journeys/runoff': 'runoff',
+        '/journeys/harvey': 'harvey',
+        '/journeys/detention': 'detention',
       }[path];
     window.location.replace(
       expedition

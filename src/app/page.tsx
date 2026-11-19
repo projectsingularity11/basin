@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Pause, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Mark } from '@/components/logo';
-import { OceanLife } from '@/components/ocean-life';
 import { OceanSound } from '@/components/ocean-sound';
 import { ReefScene } from '@/components/reef-scene';
 import { expeditions } from '@/data/expeditions';
@@ -37,7 +36,7 @@ export default function Home() {
         <div className="ocean-world" aria-hidden="true">
           <Image
             className="ocean-world-image"
-            src="/ocean-world.webp"
+            src="/dive/open-horizon.webp"
             alt=""
             fill
             unoptimized
@@ -47,8 +46,6 @@ export default function Home() {
             onError={() => setLoading(false)}
           />
           <div className="ocean-current" />
-          <div className="ocean-coral ocean-coral-left" />
-          <div className="ocean-coral ocean-coral-right" />
           <div className="ocean-world-shade" />
           <video
             className="ocean-surface-film"
@@ -62,7 +59,6 @@ export default function Home() {
           />
         </div>
         <div className="ocean-backdrop" aria-hidden="true">
-          <OceanLife story={story} paused={paused} />
           <div className="ocean-immersion" />
         </div>
         <section className="flood-hero">

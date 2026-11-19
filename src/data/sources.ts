@@ -43,8 +43,8 @@ export const sources = [
     id: 'usgs',
     title: '3D Elevation Program',
     provider: 'United States Geological Survey',
-    date: 'Future data source',
+    date: 'Retrieved November 18, 2026',
     url: 'https://www.usgs.gov/3d-elevation-program',
-    note: 'Candidate for future geospatial work. No 3DEP elevations have been ingested in v0.1.',
+    note: 'Source for the library study’s measured elevation grid and the U.S. terrain workflow. The 40 m output spacing is not survey accuracy.',
   },
 ];

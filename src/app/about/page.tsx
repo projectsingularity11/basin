@@ -100,7 +100,7 @@ export default function About() {
           </ul>
           <p>
             The terrain image uses USGS 3DEP elevation data. The mitigation image shows a BASIN
-            screening result. The underwater creatures are animated illustrations.
+            screening result.
           </p>
           <div className="button-row">
             <Link className="button primary" href="/lab">

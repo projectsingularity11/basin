@@ -12,7 +12,7 @@ export function ReefScene({ paused }: { paused: boolean }) {
     let visible = false;
     const update = () => {
       if (visible && !paused && !reduced.matches && !document.hidden) {
-        if (!video.hasAttribute('src')) video.src = '/dive/reef.mp4';
+        if (!video.hasAttribute('src')) video.src = '/expeditions/motion/terrain-desktop.mp4';
         void video.play().catch(() => {});
       } else {
         video.pause();
@@ -44,7 +44,7 @@ export function ReefScene({ paused }: { paused: boolean }) {
       loop
       playsInline
       preload="none"
-      poster="/dive/reef.webp"
+      poster="/expeditions/terrain.webp"
       aria-hidden="true"
     />
   );
