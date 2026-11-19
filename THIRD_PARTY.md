@@ -74,3 +74,7 @@ The [August 31, 2017 Houston flood photograph](https://commons.wikimedia.org/wik
 The current hero uses a cropped and trimmed excerpt of [Beautiful Ocean Horizon with Blue Sky by Marianna Sigov](https://www.pexels.com/video/beautiful-ocean-horizon-with-blue-sky-34863578/) under the Pexels License.
 
 The current surf loop derives from [Luftrum's Kalundborg Fjord recording as distributed by OpenAlarm](https://github.com/gretzke/open-alarm/blob/main/OpenAlarm/Resources/Ringtones/SOURCES.md) under CC BY 3.0. The underwater loop uses [Tim_Verberne's Underwater Ambience](https://freesound.org/s/482167/) under CC0, discovered in the CozyWave GitHub credits. Both were trimmed, leveled, and crossfaded for looping.
+
+## Authorized visual-reference edition
+
+The homepage uses the original visual runtime, layout, fonts, models, textures, ambient audio and clips from the user-authorized reference. BASIN replaces the written narrative, quiz prompts, and study destinations. Original spoken narration is disabled. The earlier BASIN homepage is available at /classic. Runtime bundle license notices are included in public/reference/scripts, and the Rajdhani OFL is in public/reference/fonts.

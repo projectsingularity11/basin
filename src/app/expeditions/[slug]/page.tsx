@@ -27,7 +27,7 @@ export default async function ExpeditionPage({ params }: ExpeditionPageProps) {
     <main id="main" className={`expedition-landing expedition-${expedition.art}`}>
       <section className="expedition-opening">
         <div className="expedition-opening-content">
-          <Link className="expedition-back" href="/#expeditions">
+          <Link className="expedition-back" href="/classic#expeditions">
             <ArrowLeft size={15} /> All expeditions
           </Link>
           <p className="expedition-type">{expedition.label}</p>

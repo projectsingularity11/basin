@@ -21,7 +21,7 @@ export default function CaseStudy() {
   return (
     <main id="main">
       <section className="case-hero">
-        <Link className="expedition-back" href="/#expeditions">
+        <Link className="expedition-back" href="/classic#expeditions">
           ← Flood expeditions
         </Link>
         <h1>

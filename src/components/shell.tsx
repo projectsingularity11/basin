@@ -6,7 +6,7 @@ import { ArrowUpRight, X, Plus } from 'lucide-react';
 import { Mark } from './logo';
 const links = [
   ['/', 'Home'],
-  ['/#expeditions', 'Flood expeditions'],
+  ['/classic#expeditions', 'Flood expeditions'],
   ['/earth', 'Earth'],
   ['/lab', 'Laboratory'],
   ['/compare', 'Compare'],

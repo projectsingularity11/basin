@@ -1,0 +1,5 @@
+.basin-access { position: fixed; z-index: 11000; bottom: 16px; left: 16px; transform: translateY(150%); }
+.basin-access:focus-within, .basin-access.is-visible { transform: none; }
+.basin-access a { display: inline-block; color: #94e6fb; background: #071c2e; padding: 9px 13px; text-decoration: underline; text-underline-offset: 3px; font: 600 13px 'TT Lakes', sans-serif; }
+@font-face { font-family: Rajdhani; font-weight: 500; font-display: swap; src: url('/reference/fonts/rajdhani-500.woff2') format('woff2'); }
+@font-face { font-family: Rajdhani; font-weight: 600; font-display: swap; src: url('/reference/fonts/rajdhani-600.woff2') format('woff2'); }

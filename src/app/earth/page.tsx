@@ -108,7 +108,7 @@ export default function Earth() {
     <main id="main" className="earth-page">
       <Map center={center} side={side} onSelect={choose} onError={setMapError} />
       <div className="earth-heading">
-        <Link className="expedition-back" href="/#expeditions">
+        <Link className="expedition-back" href="/classic#expeditions">
           ← Flood expeditions
         </Link>
         <h1>

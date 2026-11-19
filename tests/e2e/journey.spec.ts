@@ -100,7 +100,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   page,
 }) => {
   test.setTimeout(180000);
-  await page.goto('/');
+  await page.goto('/classic');
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
   const world = page.locator('.ocean-world-image');
@@ -159,7 +159,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
     } else {
       await page.getByRole('link', { name: 'All expeditions' }).click();
     }
-    await expect(page).toHaveURL(/\/#expeditions$/);
+    await expect(page).toHaveURL(/\/classic#expeditions$/);
   }
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -186,7 +186,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   expect(scan.violations).toEqual([]);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/classic');
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Pause ocean animation' })).toBeHidden();
   await expect(surface).toHaveJSProperty('paused', true);
