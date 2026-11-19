@@ -177,12 +177,13 @@ export function useOceanScroll(story: RefObject<HTMLDivElement | null>, paused: 
         scene.style.setProperty('--visibility', String(visibility));
         scene.style.setProperty('--rise', `${(1 - entering) * 7 - leaving * 7}%`);
         const video = videos[index];
-        const approaching = index === 0 || y > stops[index - 1] - viewportHeight * 0.95;
+        const approaching = index === 0 || y > stops[index - 1] - viewportHeight * 0.64;
+        const enteringFrame = index === 0 || y > stops[index - 1] - viewportHeight * 0.42;
         if (inView && approaching && leaving < 1 && !still && !video.hasAttribute('src')) {
           video.preload = 'auto';
           video.src = video.dataset.source!;
         }
-        const shouldPlay = inView && approaching && leaving < 1 && !still && !document.hidden;
+        const shouldPlay = inView && enteringFrame && leaving < 1 && !still && !document.hidden;
         if (playback[index] !== shouldPlay) {
           playback[index] = shouldPlay;
           if (shouldPlay) void video.play().catch(() => {});

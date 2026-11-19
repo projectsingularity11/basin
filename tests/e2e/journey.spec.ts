@@ -115,7 +115,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.screenshot({ path: '/tmp/basin-final-hero.png' });
   await page.locator('.dive-reef').evaluate((section) => {
     window.scrollTo({
-      top: window.scrollY + section.getBoundingClientRect().top + 60,
+      top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
       behavior: 'instant',
     });
   });
@@ -130,7 +130,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.screenshot({ path: '/tmp/basin-final-under.png' });
   await page.locator('.dive-floor').evaluate((section) => {
     window.scrollTo({
-      top: window.scrollY + section.getBoundingClientRect().top + 60,
+      top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
       behavior: 'instant',
     });
   });
