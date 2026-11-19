@@ -5324,25 +5324,52 @@ footer > span {
 .water-pointer { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 95; }
 .flood-home { background: #020c15; }
 .ocean-descent { position: relative; isolation: isolate; overflow-x: clip; }
-.ocean-backdrop { position: sticky; top: 0; height: 100svh; z-index: -1; overflow: hidden; background: #020c15; }
-.ocean-scene, .ocean-film, .ocean-surface-glare, .ocean-silt { position: absolute; inset: 0; pointer-events: none; }
-.ocean-scene { opacity: var(--visibility, 0); overflow: hidden; }
-.ocean-surface { --visibility: 1; }
-.ocean-scene video { display: block; width: 100%; height: 100%; object-fit: cover; transform: translateY(var(--rise, 0%)) scale(1.18); }
-.ocean-surface video { filter: saturate(1.18); }
-.ocean-reef { mask-image: linear-gradient(to bottom, transparent calc(var(--waterline, 126%) - 18%), #000 calc(var(--waterline, 126%) + 18%)); }
-.ocean-reef video { filter: saturate(1.18) contrast(1.05); }
-.ocean-whale video { filter: saturate(1.16) brightness(.86); }
-.ocean-shark video { filter: saturate(1.2) brightness(.74); }
-.ocean-deep video { filter: saturate(1.05) brightness(.72); }
-.ocean-floor video { filter: saturate(.78) brightness(.49); }
-.ocean-surface-glare { opacity: var(--glare, 0); background: linear-gradient(to bottom, transparent calc(var(--waterline, 126%) - 22%), #65d8fb20 calc(var(--waterline, 126%) - 4%), #b4efff70 var(--waterline, 126%), transparent calc(var(--waterline, 126%) + 21%)); mix-blend-mode: screen; }
-.ocean-film { background: linear-gradient(90deg, #0013219e, transparent 70%), linear-gradient(0deg, #00101ce8, transparent 66%, #00182c58); }
-.ocean-silt { opacity: var(--silt, 0); background-image: radial-gradient(circle at 24% 31%, #c6efff8a 0 1px, transparent 2px), radial-gradient(circle at 75% 60%, #bae7f861 0 1px, transparent 2px); background-size: 167px 233px, 343px 279px; animation: ocean-current 22s linear infinite; }
-@keyframes ocean-current { to { background-position: 167px -233px, -343px -279px; } }
-.flood-hero, .dive-section { min-height: 118svh; display: grid; align-items: center; position: relative; padding: 105px clamp(22px, 9vw, 160px) 76px; }
+.ocean-world {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(#28688c 0%, #075679 17%, #07334f 41%, #051a32 67%, #020c15 100%);
+}
+.ocean-world-image { object-fit: fill; }
+.ocean-backdrop { position: sticky; top: 0; height: 100svh; z-index: -1; overflow: hidden; pointer-events: none; }
+.ocean-life { display: block; width: 100%; height: 100%; }
+.ocean-world-shade { position: absolute; inset: 0; background: linear-gradient(180deg, #00122520, transparent 17%, #02142316 60%, transparent 86%, #020c15 100%); }
+.ocean-current {
+  position: absolute;
+  inset: 4% -15% auto;
+  height: 28%;
+  background: repeating-conic-gradient(from -43deg at 52% 0%, transparent 0 5deg, #9af8fe30 8deg, transparent 12deg 17deg);
+  mask-image: linear-gradient(transparent, #000 37%, #0006 66%, transparent);
+  mix-blend-mode: screen;
+  transform-origin: 50% 0;
+  animation: ocean-caustics 13s ease-in-out infinite alternate;
+}
+@keyframes ocean-caustics {
+  from { transform: translateX(-4%) skewX(-6deg); opacity: .27; }
+  to { transform: translateX(4%) skewX(7deg); opacity: .72; }
+}
+.dive-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 10%, #10364d, #03131f 72%);
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.dive-loader[data-loading='false'] { opacity: 0; visibility: hidden; pointer-events: none; }
+.dive-loader-content { display: grid; gap: 16px; justify-items: center; color: #e6f9ff; }
+.dive-loader-content p { margin: 0; font-size: 14px; }
+.dive-loader-content button { color: #b7dae8; border: 0; background: none; padding: 8px; font: inherit; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.dive-loader-track { display: block; width: 126px; height: 2px; background: #427185; overflow: hidden; }
+.dive-loader-track::after { content: ''; display: block; width: 45%; height: 100%; background: #b5f5ff; animation: loading-current .8s ease-in-out infinite alternate; }
+.dive-loader[data-loading='false'] .dive-loader-track::after { animation: none; }
+@keyframes loading-current { from { transform: translateX(-60%); } to { transform: translateX(185%); } }
+.flood-hero, .dive-section { min-height: 103svh; display: grid; align-items: center; position: relative; padding: 105px clamp(22px, 9vw, 160px) 76px; }
 .flood-hero { min-height: 100svh; margin-top: -100svh; text-align: center; justify-items: center; }
-.flood-hero h1 { font: 400 clamp(110px, 25vw, 365px)/.8 'Instrument Serif', Georgia, serif; letter-spacing: -.045em; margin: 0 0 24px; text-shadow: 0 6px 54px #0322359c; color: #f5fcff; }
+.flood-hero h1 { font: 500 clamp(82px, 18vw, 278px)/.85 'Manrope', sans-serif; letter-spacing: -.065em; margin: 0 0 24px; padding-right: .065em; text-shadow: 0 6px 54px #0322359c; color: #f5fcff; }
 .flood-hero p, .dive-section p { font: 500 clamp(15px, 1.55vw, 20px)/1.7 'Manrope', sans-serif; color: #e8f7ff; margin: 0 0 24px; }
 .flood-action, .dive-section a { display: inline-flex; align-items: center; gap: 10px; border: 1px solid #c0efff9e; border-radius: 30px; padding: 11px 16px; background: #031b2bde; color: #f1fbff; font-size: 13px; font-weight: 600; transition: background .2s, border-color .2s; }
 .flood-action:hover, .dive-section a:hover { background: #12405a; border-color: #d8fbff; }
@@ -5353,35 +5380,40 @@ footer > span {
 .dive-section p { max-width: 46ch; }
 .dive-right { justify-items: end; text-align: right; }
 .dive-right p { margin-left: auto; }
-.dive-floor { min-height: 138svh; }
-.dive-final { min-height: 100svh; background: linear-gradient(transparent 10%, #020c15); }
+.dive-floor { min-height: 106svh; }
+.dive-final { min-height: 94svh; background: linear-gradient(transparent 50%, #020c15); }
 .dive-controls { position: sticky; bottom: 18px; margin: -36px 22px 0 auto; display: flex; align-items: center; gap: 10px; width: fit-content; z-index: 2; }
 .dive-controls button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #ccf0ff67; color: #e7f9ff; background: #031b2be8; border-radius: 50%; cursor: pointer; }
-.dive-progress { width: 55px; height: 2px; background: #c4efff55; }
+.dive-instrument {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 6px 12px;
+  align-items: center;
+  padding: 9px 11px;
+  border: 1px solid #c4efff50;
+  border-radius: 8px;
+  background: #031b2bed;
+  color: #ebf9ff;
+  font: 11px var(--mono);
+}
+.dive-percent { text-align: right; min-width: 4ch; font-variant-numeric: tabular-nums; }
+.dive-progress { grid-column: 1 / -1; height: 2px; background: #c4efff55; }
 .dive-progress div { height: 100%; background: #bcfaff; transform: scaleX(var(--dive-progress, 0)); transform-origin: left; }
-.dive-credits { padding: 16px clamp(22px, 9vw, 160px); color: #bbd3e1; font-size: 13px; }
-.dive-credits summary { cursor: pointer; }
-.dive-credits a { text-decoration: underline; text-underline-offset: 3px; }
-.angler-rig { position: absolute; width: clamp(180px, 30vw, 480px); aspect-ratio: 1.6; right: 6%; bottom: 17%; animation: angler-hover 10s ease-in-out infinite alternate; }
-.angler-wildlife, .angler-lure, .angler-spill { position: absolute; pointer-events: none; }
-.angler-wildlife { inset: 0; background: url(/wildlife-angler.webp) center / contain no-repeat; filter: brightness(.69) contrast(1.06); animation: angler-fin 2.9s ease-in-out infinite alternate; transform-origin: 58% 55%; }
-.angler-lure { left: 5%; top: 14%; width: 1%; aspect-ratio: 1; border-radius: 50%; background: #e4fffb; box-shadow: 0 0 8px 3px #b5fff5, 0 0 34px 14px #68e2e68f; animation: angler-glimmer 4s ease-in-out infinite alternate; }
-.angler-spill { inset: 14% -19% -35% -48%; background: radial-gradient(ellipse at 35% 78%, #a3ffe866, #52c8d129 28%, transparent 52%), conic-gradient(from 149deg at 34% 0%, transparent, #8df5ec20 23deg, transparent 52deg); mask-image: linear-gradient(#0008, #000 42%, transparent); mix-blend-mode: screen; animation: angler-glimmer 4s ease-in-out infinite alternate; }
-@keyframes angler-hover { from { transform: translate(-5%, 4%) rotate(2deg); } to { transform: translate(8%, -5%) rotate(-3deg); } }
-@keyframes angler-fin { from { transform: skewY(-1deg) scaleX(.985); } to { transform: skewY(1deg) scaleX(1.01); } }
-@keyframes angler-glimmer { from { opacity: .67; } to { opacity: 1; } }
-.ocean-descent[data-paused='true'] :is(.ocean-silt, .angler-rig, .angler-wildlife, .angler-lure, .angler-spill) { animation-play-state: paused; }
+.ocean-descent[data-paused='true'] .ocean-current { animation-play-state: paused; }
 @media (max-width: 700px) {
   .dive-right { text-align: left; justify-items: start; }
   .dive-right p { margin-left: 0; }
-  .dive-section h2 { font-size: clamp(51px, 11vw, 80px); }
+  .dive-section { align-items: end; padding-bottom: 14svh; }
+  .dive-section h2 { font-size: clamp(47px, 11vw, 80px); }
   .dive-copy::before { inset-inline: -12%; }
-  .angler-rig { right: 8%; bottom: 13%; }
+  .dive-controls { margin-right: 12px; }
+  .dive-link { bottom: 70px; }
+  .ocean-world-image { width: 140% !important; max-width: none; left: -20% !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .water-pointer, .dive-controls button { display: none; }
-  .ocean-scene video { transform: none; }
-  .ocean-silt, .angler-rig, .angler-wildlife, .angler-lure, .angler-spill { animation: none; }
+  .ocean-current, .dive-loader-track::after { animation: none; }
+  .dive-loader { transition: none; }
 }
 
 .study-layout{display:grid;grid-template-columns:minmax(250px,330px) minmax(0,1fr);align-items:start;gap:40px;padding-bottom:72px}

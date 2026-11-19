@@ -1,7 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Pause, Play } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { Mark } from '@/components/logo';
+import { OceanLife } from '@/components/ocean-life';
 import { Footer } from '@/components/shell';
 import { useOceanScroll } from '@/components/water-motion';
 
@@ -43,41 +46,44 @@ const chapters = [
   },
 ] as const;
 
-const clips = ['surface', ...chapters.map(({ clip }) => clip)];
-
 export default function Home() {
   const story = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
-  useOceanScroll(story, paused);
+  const [loading, setLoading] = useState(true);
+  useOceanScroll(story);
+
+  useEffect(() => {
+    const fallback = window.setTimeout(() => setLoading(false), 1500);
+    return () => window.clearTimeout(fallback);
+  }, []);
 
   return (
     <main id="main" className="flood-home">
-      <div ref={story} className="ocean-descent">
+      <div className="dive-loader" data-loading={loading} aria-hidden={!loading} inert={!loading}>
+        <div className="dive-loader-content">
+          <Mark size={52} />
+          <p role="status">Loading ocean</p>
+          <span className="dive-loader-track" aria-hidden="true" />
+          <button onClick={() => setLoading(false)}>Continue to BASIN</button>
+        </div>
+      </div>
+      <div ref={story} className="ocean-descent" data-paused={paused}>
+        <div className="ocean-world" aria-hidden="true">
+          <Image
+            className="ocean-world-image"
+            src="/ocean-world.webp"
+            alt=""
+            fill
+            unoptimized
+            fetchPriority="high"
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
+          />
+          <div className="ocean-current" />
+          <div className="ocean-world-shade" />
+        </div>
         <div className="ocean-backdrop" aria-hidden="true">
-          {clips.map((clip, index) => (
-            <div className={`ocean-scene ocean-${clip}`} data-ocean-scene key={clip}>
-              <video
-                muted
-                loop
-                playsInline
-                poster={`/dive/${clip}.webp`}
-                src={index === 0 ? '/dive/surface.mp4' : undefined}
-                data-source={`/dive/${clip}.mp4`}
-                preload={index === 0 ? 'metadata' : 'none'}
-                disablePictureInPicture
-              />
-              {clip === 'floor' && (
-                <div className="angler-rig">
-                  <div className="angler-spill" />
-                  <div className="angler-wildlife" />
-                  <div className="angler-lure" />
-                </div>
-              )}
-            </div>
-          ))}
-          <div className="ocean-surface-glare" />
-          <div className="ocean-film" />
-          <div className="ocean-silt" />
+          <OceanLife story={story} paused={paused} />
         </div>
         <section className="flood-hero">
           <div>
@@ -95,7 +101,7 @@ export default function Home() {
           <section
             id={index === 0 ? 'runoff' : undefined}
             className={`dive-section dive-${clip}${index % 2 ? ' dive-right' : ''}`}
-            data-dive-chapter
+            data-dive-chapter=""
             key={clip}
           >
             <div className="dive-copy">
@@ -120,62 +126,23 @@ export default function Home() {
           </div>
         </section>
         <div className="dive-controls">
-          <div className="dive-progress" aria-hidden="true">
-            <div />
+          <div className="dive-instrument" aria-hidden="true">
+            <span>Dive progress</span>
+            <span className="dive-percent" data-dive-percent>
+              0%
+            </span>
+            <div className="dive-progress">
+              <div />
+            </div>
           </div>
           <button
             onClick={() => setPaused((value) => !value)}
-            aria-label={paused ? 'Play ocean footage' : 'Pause ocean footage'}
+            aria-label={paused ? 'Resume ocean animation' : 'Pause ocean animation'}
           >
             {paused ? <Play size={15} /> : <Pause size={15} />}
           </button>
         </div>
       </div>
-      <section className="dive-credits" aria-label="Ocean footage credits">
-        <details>
-          <summary>Ocean footage credits</summary>
-          <ul>
-            <li>
-              <a href="https://commons.wikimedia.org/wiki/File:Waves_of_the_sea_(Video).webm">
-                Ocean waves · Amada44
-              </a>
-              {' · '}
-              <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
-            </li>
-            <li>
-              <a href="https://www.pexels.com/video/underwater-school-of-fish-swimming-in-coral-reef-33009956/">
-                Coral reef · JUN HO LEE
-              </a>
-            </li>
-            <li>
-              <a href="https://www.pexels.com/video/view-from-above-on-humpbacks-11279748/">
-                Humpbacks · Stockfilm.com
-              </a>
-            </li>
-            <li>
-              <a href="https://commons.wikimedia.org/wiki/File:Swimming_with_a_whale_shark_(Rhincodon_typus)_(no_audio).webm">
-                Whale shark · David Rojo
-              </a>{' '}
-              · <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>
-            </li>
-            <li>
-              <a href="https://commons.wikimedia.org/wiki/File:Jellyfish_-_Deepwater_Exploration_of_the_Marianas_expedition_-_April_24,_2016.webm">
-                Mariana Islands jellyfish · NOAA Ocean Exploration
-              </a>
-            </li>
-            <li>
-              <a href="https://commons.wikimedia.org/wiki/File:Poisson_et_fonds_abyssaux_(Ifremer_00701-81286).webm">
-                Abyssal footage · Ifremer
-              </a>{' '}
-              · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
-            </li>
-          </ul>
-          <p>
-            Footage excerpts are trimmed, muted and color graded. The anglerfish and its light are
-            animated illustrations composited over seabed footage.
-          </p>
-        </details>
-      </section>
       <Footer />
     </main>
   );

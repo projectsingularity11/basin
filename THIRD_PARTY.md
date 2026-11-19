@@ -58,3 +58,7 @@ The homepage uses these trimmed, muted 1920×1080 excerpts. Color and framing ar
 - [Poisson et fonds abyssaux](https://commons.wikimedia.org/wiki/File:Poisson_et_fonds_abyssaux_(Ifremer_00701-81286).webm) from Ifremer, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 The anglerfish and its illumination are an animated composite. Pointer waves adapt the traveling-wave shader from the project owner's Sakuga site.
+
+## Continuous ocean scene
+
+The current homepage uses original generated ocean and wildlife artwork composited and animated in the browser. The earlier video excerpts listed above were used by the previous homepage.

@@ -139,126 +139,69 @@ export function WaterMotion() {
   return <canvas className="water-pointer" ref={surface} aria-hidden="true" />;
 }
 
-const clamp = (value: number) => Math.max(0, Math.min(1, value));
-const ease = (value: number) => {
-  const t = clamp(value);
-  return t * t * (3 - 2 * t);
-};
-
-export function useOceanScroll(story: RefObject<HTMLDivElement | null>, paused: boolean) {
-  const controller = useRef<(paused: boolean) => void>(null);
+export function useOceanScroll(story: RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     const element = story.current;
     if (!element) return;
-    const scenes = Array.from(element.querySelectorAll<HTMLElement>('[data-ocean-scene]'));
-    const videos = scenes.map((scene) => scene.querySelector('video')!);
-    const chapters = Array.from(element.querySelectorAll<HTMLElement>('[data-dive-chapter]'));
+    const readout = element.querySelector('[data-dive-percent]');
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
-    const playback = videos.map(() => false);
     let lenis: Lenis | undefined;
-    let scrollFrame = 0;
     let animationFrame = 0;
-    let isPaused = false;
-    let viewportHeight = innerHeight;
-    let stops: number[] = [];
+    let scrollFrame = 0;
+    let storyTop = 0;
+    let travel = 1;
+    let previousPercent = -1;
 
     const update = () => {
       scrollFrame = 0;
-      const bounds = element.getBoundingClientRect();
-      const y = -bounds.top;
-      const inView = bounds.bottom > 0 && bounds.top < viewportHeight;
-      const still = isPaused || preference.matches;
-      const transitions = stops.map((stop) => ease((y - stop) / (viewportHeight * 0.8) + 0.5));
-
-      scenes.forEach((scene, index) => {
-        const entering = index === 0 ? 1 : transitions[index - 1];
-        const leaving = transitions[index] ?? 0;
-        const visibility = leaving >= 1 ? 0 : entering;
-        scene.style.setProperty('--visibility', String(visibility));
-        scene.style.setProperty('--rise', `${(1 - entering) * 7 - leaving * 7}%`);
-        const video = videos[index];
-        const approaching = index === 0 || y > stops[index - 1] - viewportHeight * 0.64;
-        const enteringFrame = index === 0 || y > stops[index - 1] - viewportHeight * 0.42;
-        if (inView && approaching && leaving < 1 && !still && !video.hasAttribute('src')) {
-          video.preload = 'auto';
-          video.src = video.dataset.source!;
-        }
-        const shouldPlay = inView && enteringFrame && leaving < 1 && !still && !document.hidden;
-        if (playback[index] !== shouldPlay) {
-          playback[index] = shouldPlay;
-          if (shouldPlay) void video.play().catch(() => {});
-          else video.pause();
-        }
-      });
-
-      const surface = transitions[0] ?? 0;
-      const depth = clamp(y / Math.max(1, bounds.height - viewportHeight));
-      element.style.setProperty('--waterline', `${126 - surface * 152}%`);
-      element.style.setProperty('--glare', String(Math.sin(surface * Math.PI) * 0.8));
-      element.style.setProperty('--silt', String(surface * (0.08 + depth * 0.2)));
+      const depth = Math.min(1, Math.max(0, (scrollY - storyTop) / travel));
+      const percent = Math.round(depth * 100);
       element.style.setProperty('--dive-progress', String(depth));
-      element.dataset.paused = String(still);
+      if (readout && percent !== previousPercent) readout.textContent = `${percent}%`;
+      previousPercent = percent;
     };
-
     const schedule = () => {
       if (!scrollFrame) scrollFrame = requestAnimationFrame(update);
     };
     const measure = () => {
-      viewportHeight = innerHeight;
-      const top = element.getBoundingClientRect().top;
-      stops = chapters.map(
-        (chapter) => chapter.getBoundingClientRect().top - top - viewportHeight * 0.26,
-      );
+      storyTop = element.getBoundingClientRect().top + scrollY;
+      travel = Math.max(1, element.offsetHeight - innerHeight);
       schedule();
     };
     const configureScroll = () => {
       cancelAnimationFrame(animationFrame);
       lenis?.destroy();
-      lenis = preference.matches
-        ? undefined
-        : new Lenis({
-            lerp: 0.052,
-            wheelMultiplier: 0.84,
-            smoothWheel: true,
-            anchors: true,
-            prevent: (node) => Boolean(node.closest('dialog')),
-          });
-      if (lenis) {
-        const tick = (time: number) => {
-          lenis?.raf(time);
-          animationFrame = requestAnimationFrame(tick);
-        };
+      lenis = undefined;
+      if (preference.matches) return;
+      lenis = new Lenis({
+        lerp: 0.075,
+        wheelMultiplier: 0.88,
+        smoothWheel: true,
+        anchors: true,
+        prevent: (node) => Boolean(node.closest('dialog')),
+      });
+      const tick = (time: number) => {
+        lenis?.raf(time);
         animationFrame = requestAnimationFrame(tick);
-      }
-      measure();
+      };
+      animationFrame = requestAnimationFrame(tick);
     };
 
-    controller.current = (value) => {
-      isPaused = value;
-      schedule();
-    };
     configureScroll();
+    measure();
     const observer = new ResizeObserver(measure);
     observer.observe(element);
     addEventListener('scroll', schedule, { passive: true });
     addEventListener('resize', measure);
-    document.addEventListener('visibilitychange', schedule);
     preference.addEventListener('change', configureScroll);
     return () => {
-      controller.current = null;
       cancelAnimationFrame(animationFrame);
       cancelAnimationFrame(scrollFrame);
       lenis?.destroy();
       observer.disconnect();
-      videos.forEach((video) => video.pause());
       removeEventListener('scroll', schedule);
       removeEventListener('resize', measure);
-      document.removeEventListener('visibilitychange', schedule);
       preference.removeEventListener('change', configureScroll);
     };
   }, [story]);
-
-  useEffect(() => {
-    controller.current?.(paused);
-  }, [paused]);
 }

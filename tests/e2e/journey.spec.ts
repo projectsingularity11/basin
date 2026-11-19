@@ -103,38 +103,30 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'BASIN', exact: true })).toBeVisible();
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  const surface = page.locator('.ocean-surface video');
-  const expectPlayback = async (clip: string) => {
-    const video = page.locator(`.ocean-${clip} video`);
-    await expect
-      .poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentTime), {
-        timeout: 25_000,
-      })
-      .toBeGreaterThan(0);
-    await expect(video).toHaveJSProperty('videoWidth', 1920);
-    await expect(video).toHaveJSProperty('videoHeight', 1080);
-  };
-  const scrollToChapter = async (clip: string) => {
-    await page.locator(`.dive-${clip}`).evaluate((section) => {
-      window.scrollTo({
-        top: window.scrollY + section.getBoundingClientRect().top + innerHeight * 0.22,
-        behavior: 'instant',
-      });
-    });
-  };
-  await expectPlayback('surface');
-  await page.getByRole('button', { name: 'Pause ocean footage' }).click();
-  await expect(surface).toHaveJSProperty('paused', true);
-  await page.getByRole('button', { name: 'Play ocean footage' }).click();
-  await expect(surface).toHaveJSProperty('paused', false);
-  await page.screenshot({ path: '/tmp/basin-final-hero.png' });
-  await scrollToChapter('reef');
-  await expectPlayback('reef');
-  await expect(surface).toHaveJSProperty('paused', true);
-  await page.screenshot({ path: '/tmp/basin-final-under.png' });
-  await scrollToChapter('floor');
-  await expectPlayback('floor');
-  await page.screenshot({ path: '/tmp/basin-final-deep.png' });
+  const world = page.locator('.ocean-world-image');
+  const progress = page.locator('[data-dive-percent]');
+  const story = page.locator('.ocean-descent');
+  await expect(world).toHaveJSProperty('complete', true);
+  await expect(page.getByText('Loading ocean', { exact: true })).toBeHidden();
+  await expect(progress).toHaveText('0%');
+  await page.getByRole('button', { name: 'Pause ocean animation' }).click();
+  await expect(story).toHaveAttribute('data-paused', 'true');
+  await page.getByRole('button', { name: 'Resume ocean animation' }).click();
+  await expect(story).toHaveAttribute('data-paused', 'false');
+  const offsets = [];
+  for (const fraction of [0.2, 0.55, 0.83, 1]) {
+    const travel = await story.evaluate((element, position) => {
+      const top = element.getBoundingClientRect().top + scrollY;
+      const travel = element.clientHeight - innerHeight;
+      window.scrollTo({ top: top + travel * position, behavior: 'instant' });
+      return travel;
+    }, fraction);
+    await expect(progress).toHaveText(`${Math.round(fraction * 100)}%`);
+    const offset = await world.evaluate((element) => element.getBoundingClientRect().top);
+    expect(Math.abs(offset + fraction * travel)).toBeLessThan(3);
+    offsets.push(offset);
+  }
+  expect(offsets).toEqual([...offsets].sort((a, b) => b - a));
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');
@@ -162,8 +154,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await expect(page.locator('.ocean-backdrop')).toBeVisible();
-  await expect(surface).toHaveJSProperty('paused', true);
-  await expect(page.getByRole('button', { name: 'Pause ocean footage' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Pause ocean animation' })).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '/tmp/v02-mobile-hero.png' });
   expect((await page.request.get('/icon.svg')).status()).toBe(200);
