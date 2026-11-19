@@ -7,35 +7,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Mark } from '@/components/logo';
 import { OceanLife } from '@/components/ocean-life';
 import { OceanSound } from '@/components/ocean-sound';
-import { Footer } from '@/components/shell';
+import { expeditions } from '@/data/expeditions';
 import { useOceanScroll } from '@/components/water-motion';
-
-const expeditions = [
-  {
-    title: 'Follow the runoff',
-    label: 'Terrain study',
-    text: 'Pick a real location, load elevation, and use a storm scenario to see where water might collect or flow.',
-    href: '/earth',
-    action: 'Open the terrain map',
-    art: 'terrain',
-  },
-  {
-    title: 'Hurricane Harvey',
-    label: 'Spring, Texas · 2017',
-    text: 'Follow the evidence behind the flooding that closed the Barbara Bush Branch Library and see what a local mitigation study would need.',
-    href: '/case-study',
-    action: 'Investigate Harvey',
-    art: 'harvey',
-  },
-  {
-    title: 'Make room for water',
-    label: 'Stormwater mitigation',
-    text: 'Compare a baseline storm with options that temporarily store runoff. See which options lower the modeled peak flow.',
-    href: '/study',
-    action: 'Test mitigation options',
-    art: 'mitigation',
-  },
-] as const;
 
 export default function Home() {
   const story = useRef<HTMLDivElement>(null);
@@ -73,6 +46,8 @@ export default function Home() {
             onError={() => setLoading(false)}
           />
           <div className="ocean-current" />
+          <div className="ocean-coral ocean-coral-left" />
+          <div className="ocean-coral ocean-coral-right" />
           <div className="ocean-world-shade" />
           <video
             className="ocean-surface-film"
@@ -80,8 +55,8 @@ export default function Home() {
             loop
             playsInline
             preload="none"
-            poster="/dive/surface.webp"
-            data-source="/dive/surface-1080.mp4"
+            poster="/dive/open-horizon.webp"
+            data-source="/dive/open-horizon.mp4"
             disablePictureInPicture
           />
         </div>
@@ -141,16 +116,20 @@ export default function Home() {
           <p>Start with a place, a documented flood, or a mitigation scenario.</p>
         </header>
         <div className="expedition-grid">
-          {expeditions.map(({ title, label, text, href, action, art }) => (
-            <article key={href} className={`expedition-card expedition-${art} dive-reveal`}>
-              <Link href={href} className="expedition-link" aria-label={action}>
+          {expeditions.map(({ slug, title, label, text, art }) => (
+            <article key={slug} className={`expedition-card expedition-${art} dive-reveal`}>
+              <Link
+                href={`/expeditions/${slug}`}
+                className="expedition-link"
+                aria-label={`Explore ${title}`}
+              >
                 <div className="expedition-image" aria-hidden="true" />
                 <div className="expedition-copy">
                   <p className="expedition-type">{label}</p>
                   <h3>{title}</h3>
                   <p>{text}</p>
                   <span className="expedition-action">
-                    {action} <ArrowUpRight size={16} />
+                    Explore expedition <ArrowUpRight size={16} />
                   </span>
                 </div>
               </Link>
@@ -164,7 +143,6 @@ export default function Home() {
           Media credits <ArrowUpRight size={13} />
         </Link>
       </section>
-      <Footer />
     </main>
   );
 }

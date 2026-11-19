@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { LibraryStudy } from '@/components/library-study';
-import { Footer } from '@/components/shell';
 import { sources } from '@/data/sources';
 import library from '@/data/library-usgs.json';
 import { DEFAULT } from '@/engine/model';
@@ -141,7 +140,6 @@ export default function CaseStudy() {
           </ul>
         </article>
       </section>
-      <Footer />
     </main>
   );
 }

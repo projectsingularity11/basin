@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type RefObject } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { oceanSubmersion } from './water-motion';
 
-const recordings = ['/dive/waves.mp3', '/dive/hydrophone.mp3'];
+const recordings = ['/dive/waves.mp3', '/dive/underwater.mp3'];
 
 type SoundGraph = {
   context: AudioContext;

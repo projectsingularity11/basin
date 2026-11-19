@@ -113,7 +113,7 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   await expect(surface).toHaveJSProperty('videoWidth', 1920, { timeout: 20_000 });
   const soundRequests = [
     page.waitForResponse('**/dive/waves.mp3'),
-    page.waitForResponse('**/dive/hydrophone.mp3'),
+    page.waitForResponse('**/dive/underwater.mp3'),
   ];
   await page.getByRole('button', { name: 'Enable ocean sound' }).click();
   for (const response of await Promise.all(soundRequests)) expect(response.ok()).toBe(true);
@@ -138,19 +138,29 @@ test('ocean, keyboard navigation, reduced motion, responsive layouts and accessi
   }
   expect(offsets).toEqual([...offsets].sort((a, b) => b - a));
   await expect(surface).toHaveJSProperty('paused', true);
+  await expect(page.locator('footer')).toHaveCount(0);
   const expeditions = page.getByRole('region', { name: 'Choose an expedition' });
-  await expect(expeditions.getByRole('link', { name: 'Open the terrain map' })).toHaveAttribute(
-    'href',
-    '/earth',
-  );
-  await expect(expeditions.getByRole('link', { name: 'Investigate Harvey' })).toHaveAttribute(
-    'href',
-    '/case-study',
-  );
-  await expect(expeditions.getByRole('link', { name: 'Test mitigation options' })).toHaveAttribute(
-    'href',
-    '/study',
-  );
+  for (const [title, slug, destination, details] of [
+    ['Follow the runoff', 'runoff', '/earth', 'Open the terrain map'],
+    ['Hurricane Harvey', 'harvey', '/case-study', 'Read the case study'],
+    ['Where could water be held?', 'detention', '/study', 'Open watershed tools'],
+  ]) {
+    await expeditions.getByRole('link', { name: `Explore ${title}` }).click();
+    await expect(page).toHaveURL(new RegExp(`/expeditions/${slug}$`));
+    await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: details })).toHaveAttribute('href', destination);
+    if (slug === 'detention') {
+      await page.getByRole('link', { name: 'Reproduce the library study' }).click();
+      await expect(page).toHaveURL(/\/study$/);
+      await expect(
+        page.getByText('Barbara Bush Branch Library', { exact: true }).first(),
+      ).toBeVisible();
+      await page.getByRole('link', { name: 'Flood expeditions' }).click();
+    } else {
+      await page.getByRole('link', { name: 'All expeditions' }).click();
+    }
+    await expect(page).toHaveURL(/\/#expeditions$/);
+  }
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');

@@ -5,7 +5,6 @@ import { ArrowUpRight, ArrowRight, SlidersHorizontal, Play, Check, Download } fr
 import { useBasin, download } from '@/components/provider';
 import type { SearchResult } from '@/engine/model';
 import { Chart } from '@/components/chart';
-import { Footer } from '@/components/shell';
 export default function Optimize() {
   const { scenario, setScenario, setRun, notify } = useBasin(),
     [budget, setBudget] = useState(15000),
@@ -253,7 +252,6 @@ export default function Optimize() {
           </Link>
         </p>
       </div>
-      <Footer />
     </main>
   );
 }

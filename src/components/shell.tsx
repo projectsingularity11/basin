@@ -6,13 +6,15 @@ import { ArrowUpRight, X, Plus } from 'lucide-react';
 import { Mark } from './logo';
 const links = [
   ['/', 'Home'],
+  ['/#expeditions', 'Flood expeditions'],
   ['/earth', 'Earth'],
   ['/lab', 'Laboratory'],
   ['/compare', 'Compare'],
   ['/optimize', 'Optimize'],
   ['/study', 'Watershed study'],
   ['/case-study', 'Harvey'],
-  ['/methodology', 'Method'],
+  ['/methodology', 'Methods'],
+  ['/about', 'About'],
 ];
 export function Header() {
   const path = usePathname(),
@@ -98,19 +100,3 @@ export function Header() {
 }
 export const disclaimer =
   'Experimental runoff model. Not validated for flood forecasting, emergency decisions, or engineering design.';
-export function Footer() {
-  return (
-    <footer>
-      <Link className="footer-brand" href="/">
-        <Mark size={26} />
-        BASIN
-      </Link>
-      <Link href="/methodology">Methods & limitations ↗</Link>
-      <Link href="/experiments">Experiments ↗</Link>
-      <a href="https://github.com/projectsingularity11/basin" target="_blank" rel="noreferrer">
-        Source code ↗
-      </a>
-      <span>v0.2</span>
-    </footer>
-  );
-}

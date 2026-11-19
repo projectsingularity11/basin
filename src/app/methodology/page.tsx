@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, FlaskConical } from 'lucide-react';
-import { Footer, disclaimer } from '@/components/shell';
+import { disclaimer } from '@/components/shell';
 export const metadata = { title: 'Methods & limitations' };
 const sections = [
   ['purpose', '01', 'A model you can inspect'],
@@ -292,7 +292,6 @@ export default function Methodology() {
           </section>
         </article>
       </section>
-      <Footer />
     </main>
   );
 }

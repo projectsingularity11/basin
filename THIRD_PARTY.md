@@ -68,3 +68,9 @@ The current homepage uses original generated ocean and wildlife artwork composit
 The surface footage reuses the Amada44 recording listed above. BASIN uses trimmed and re-encoded footage, re-looped surf audio, and a submerged mix that blends filtered surf with the [NOAA PMEL American Samoa damselfish hydrophone recording](https://www.pmel.noaa.gov/acoustics/multimedia.html). The surface media and derived mixes are available under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 The [August 31, 2017 Houston flood photograph](https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg) is a U.S. Air Force public-domain image by Tech. Sgt. Larry E. Reid Jr. The other expedition images are a visualization of the USGS elevation fixture and a crop of a BASIN watershed screening result.
+
+## Open-ocean horizon and current sound
+
+The current hero uses a cropped and trimmed excerpt of [Beautiful Ocean Horizon with Blue Sky by Marianna Sigov](https://www.pexels.com/video/beautiful-ocean-horizon-with-blue-sky-34863578/) under the Pexels License.
+
+The current surf loop derives from [Luftrum's Kalundborg Fjord recording as distributed by OpenAlarm](https://github.com/gretzke/open-alarm/blob/main/OpenAlarm/Resources/Ringtones/SOURCES.md) under CC BY 3.0. The underwater loop uses [Tim_Verberne's Underwater Ambience](https://freesound.org/s/482167/) under CC0, discovered in the CozyWave GitHub credits. Both were trimmed, leveled, and crossfaded for looping.

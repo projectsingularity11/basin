@@ -25,14 +25,14 @@ void main() {
     if (drops[i].w > 0. && age >= 0. && age < 2.2) {
       float envelope = exp(-age * 2.) * exp(-abs(d - age * 100.) * .018);
       float wave = sin(d * .09 - age * 11.) * envelope * drops[i].w;
-      shift += normalize(offset + vec2(.01)) * wave * 18.;
+      shift += normalize(offset + vec2(.01)) * wave * 7.;
       light += wave;
     }
   }
   vec2 uv = (p + shift) / size;
   float glint = .65 + .35 * sin(uv.x * 25. - uv.y * 32.);
   vec3 color = light > 0. ? vec3(.61, .88, 1.) : vec3(.02, .13, .23);
-  gl_FragColor = vec4(color, min(abs(light) * .27 * glint, .24));
+  gl_FragColor = vec4(color, min(abs(light) * .092 * glint, .078));
 }`;
 
 export function WaterMotion() {

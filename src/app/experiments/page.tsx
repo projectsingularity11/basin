@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { FlaskConical, Plus, Download, Trash2 } from 'lucide-react';
 import { useBasin, download } from '@/components/provider';
 import { useLocalArray } from '@/lib/local-store';
-import { Footer } from '@/components/shell';
 import { simulate, type Run } from '@/engine/model';
 type Experiment = {
   id: string;
@@ -278,7 +277,6 @@ export default function Experiments() {
           )}
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

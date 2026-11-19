@@ -5,7 +5,6 @@ import { ArrowUpRight, GitCompareArrows, Download, Play, Info, Trash2 } from 'lu
 import { useBasin, download } from '@/components/provider';
 import { simulate, type Run } from '@/engine/model';
 import { Chart } from '@/components/chart';
-import { Footer } from '@/components/shell';
 export default function Compare() {
   const { scenario, saved, remove } = useBasin(),
     [a, setA] = useState('baseline'),
@@ -236,7 +235,6 @@ export default function Compare() {
           </section>
         )}
       </section>
-      <Footer />
     </main>
   );
 }

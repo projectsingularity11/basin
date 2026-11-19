@@ -1,21 +1,14 @@
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
-import { Footer } from '@/components/shell';
 export const metadata = { title: 'About the research' };
 export default function About() {
   return (
     <main id="main">
       <section className="page-heading">
-        <div className="eyebrow">06 / AN OPEN RESEARCH PROJECT</div>
-        <h1>
-          A laboratory for
-          <br />
-          <span>better questions.</span>
-        </h1>
+        <h1>About BASIN</h1>
         <p>
-          BASIN · Stormwater Intelligence Laboratory
-          <br />
-          v0.2 — Geographic research prototype
+          A student research project for exploring flood mitigation with measurable terrain and
+          repeatable storm scenarios.
         </p>
       </section>
       <section className="article-layout content-width">
@@ -27,7 +20,7 @@ export default function About() {
           </p>
         </aside>
         <article className="prose">
-          <h2>Engineering curiosity into a tool.</h2>
+          <h2>What BASIN does</h2>
           <p>
             BASIN is a student research prototype being developed toward Samsung Solve for Tomorrow.
             Its purpose is to make the relationship between rainfall, terrain, and stormwater
@@ -40,7 +33,7 @@ export default function About() {
             It invites users to make a hypothesis, change the landscape, and inspect the calculated
             consequences.
           </p>
-          <h2>A clear path from prototype to evidence.</h2>
+          <h2>What still needs testing</h2>
           <div className="roadmap-row">
             <span className="mono">01</span>
             <div>
@@ -80,18 +73,23 @@ export default function About() {
           <h2 id="media">Media credits</h2>
           <ul>
             <li>
-              <a href="https://commons.wikimedia.org/wiki/File:Waves_of_the_sea_(Video).webm">
-                Waves of the sea by Amada44
+              <a href="https://www.pexels.com/video/beautiful-ocean-horizon-with-blue-sky-34863578/">
+                Ocean horizon by Marianna Sigov
               </a>
-              . BASIN uses a trimmed video, a looped surf track, and filtered surf in the underwater
-              mix. These adaptations are licensed under{' '}
-              <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+              , Pexels. Cropped and trimmed.
             </li>
             <li>
-              <a href="https://www.pmel.noaa.gov/acoustics/multimedia.html">
-                American Samoa hydrophone recording, NOAA Pacific Marine Environmental Laboratory
+              <a href="https://github.com/gretzke/open-alarm/blob/main/OpenAlarm/Resources/Ringtones/SOURCES.md">
+                Ocean waves, Kalundborg Fjord by Luftrum
               </a>
-              . The damselfish recording is edited and mixed into the underwater ambience.
+              , <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Trimmed,
+              leveled and looped.
+            </li>
+            <li>
+              <a href="https://freesound.org/s/482167/">Underwater Ambience by Tim_Verberne</a>,
+              CC0. Found through the{' '}
+              <a href="https://github.com/EssekerDev/cozywave-assets">CozyWave GitHub credits</a>{' '}
+              and edited into a loop.
             </li>
             <li>
               <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
@@ -119,7 +117,6 @@ export default function About() {
           </div>
         </article>
       </section>
-      <Footer />
     </main>
   );
 }

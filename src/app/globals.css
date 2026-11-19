@@ -5332,7 +5332,7 @@ footer > span {
   pointer-events: none;
   background: linear-gradient(#28688c 0%, #075679 17%, #07334f 41%, #051a32 67%, #020c15 100%);
 }
-.ocean-world-image { object-fit: fill; }
+.ocean-world-image { object-fit: cover; object-position: center top; }
 .ocean-backdrop { position: sticky; top: 0; height: 100svh; z-index: -1; overflow: hidden; pointer-events: none; }
 .ocean-life { display: block; width: 100%; height: 100%; opacity: var(--submerged-visibility, 0); }
 .ocean-world-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 28%, #00132229 50%, #00081582 71%, #00040bc9 87%, #020b12 100%); }
@@ -5344,8 +5344,8 @@ footer > span {
   object-fit: cover;
   object-position: 50% 32%;
   opacity: var(--surface-visibility, 1);
-  mask-image: linear-gradient(#000 63%, #000d 78%, transparent 100%);
-  filter: saturate(1.22) brightness(.83);
+  mask-image: linear-gradient(#000 88%, #000d 94%, transparent 100%);
+  filter: saturate(1.13) contrast(1.06) brightness(.79);
 }
 .ocean-immersion { position: absolute; inset: 0; opacity: var(--waterline-glow, 0); background: radial-gradient(ellipse at 50% 0%, #c9faff94, #49c9e148 39%, transparent 73%); mix-blend-mode: screen; }
 .ocean-current {
@@ -5358,6 +5358,20 @@ footer > span {
   transform-origin: 50% 0;
   animation: ocean-caustics 13s ease-in-out infinite alternate;
 }
+.ocean-coral {
+  position: absolute;
+  top: 20%;
+  width: clamp(104px, 25vw, 430px);
+  height: 25%;
+  background: url(/dive/reef-edge.webp) left center / cover no-repeat;
+  opacity: .56;
+  mask-image: radial-gradient(ellipse at 3% 51%, #000 22%, #000b 38%, transparent 72%);
+  transform-origin: left bottom;
+  animation: reef-sway 9s ease-in-out infinite alternate;
+}
+.ocean-coral-left { left: -3%; }
+.ocean-coral-right { right: -5%; top: 25%; scale: -1 1; opacity: .35; animation-delay: -4s; }
+@keyframes reef-sway { from { transform: skewX(-1.2deg); } to { transform: skewX(1.6deg) translateX(1%); } }
 @keyframes ocean-caustics {
   from { transform: translateX(-4%) skewX(-6deg); opacity: .27; }
   to { transform: translateX(4%) skewX(7deg); opacity: .72; }
@@ -5404,7 +5418,7 @@ footer > span {
 .dive-controls button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #ccf0ff82; color: #f1fbff; background: #031827e8; border-radius: 50%; cursor: pointer; transition: background .2s, border-color .2s; }
 .dive-controls button:hover { background: #15516a; border-color: #d2f4ff; }
 .ocean-sound-status { position: absolute; right: 0; bottom: calc(100% + 8px); width: max-content; color: #f1fbff; background: #031625; padding: 8px 12px; border-radius: 6px; }
-.ocean-descent[data-paused='true'] .ocean-current { animation-play-state: paused; }
+.ocean-descent[data-paused='true'] :is(.ocean-current,.ocean-coral) { animation-play-state: paused; }
 
 .expeditions { position: relative; isolation: isolate; padding: clamp(52px, 9vw, 150px) clamp(22px, 7.5vw, 124px) clamp(65px, 8vw, 120px); background: radial-gradient(ellipse at 51% 77%, #0a2c3b, transparent 62%), #020b12; }
 .expeditions-heading { margin: 0 auto 42px; text-align: center; }
@@ -5448,11 +5462,10 @@ footer > span {
   .dive-copy::before { inset-inline: -12%; }
   .dive-controls { margin-right: 12px; }
   .dive-skip { bottom: 76px; }
-  .ocean-world-image { width: 140% !important; max-width: none; left: -20% !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .water-pointer, .dive-controls .dive-motion-toggle { display: none; }
-  .ocean-current, .dive-loader-mark::before, .dive-loader-mark::after { animation: none; }
+  .ocean-current, .ocean-coral, .dive-loader-mark::before, .dive-loader-mark::after { animation: none; }
   .dive-loader[data-loading='true'] { animation-duration: .01s; }
   .dive-loader, .expedition-image { transition: none; }
 }
@@ -5469,3 +5482,61 @@ footer > span {
 .region-upload input{max-width:100%}
 .earth-page .region-card{max-height:calc(100% - 150px);overflow:auto}
 @media(max-width:700px){.earth-page .region-card{max-height:475px}}
+
+/* Expedition landings and shared route rhythm */
+.route-entry { min-height: 100svh; animation: route-arrival .36s ease-out both; }
+@keyframes route-arrival { from { opacity: .52; } to { opacity: 1; } }
+.expedition-landing { background: #05141e; }
+.expedition-opening {
+  position: relative;
+  display: grid;
+  align-items: end;
+  padding: clamp(105px, 15vh, 180px) clamp(24px, 8vw, 156px) clamp(50px, 10vh, 116px);
+  min-height: 83svh;
+  isolation: isolate;
+  overflow: hidden;
+}
+.expedition-opening::before {
+  content: ''; position: absolute; z-index: -2; inset: 0;
+  background: var(--expedition-art) center / cover no-repeat;
+  animation: expedition-arrival 1.2s cubic-bezier(.24,.72,.36,1) both;
+}
+.expedition-opening::after {
+  content: ''; position: absolute; z-index: -1; inset: 0;
+  background: linear-gradient(90deg,#041623ed,#04162345 82%), linear-gradient(0deg,#05141e,transparent 52%);
+}
+.expedition-landing.expedition-harvey .expedition-opening::before { background-position: 60% 30%; }
+.expedition-landing.expedition-harvey .expedition-opening::after { background: linear-gradient(90deg,#07111bec,#07111b36 87%), linear-gradient(0deg,#05141e,transparent 70%); }
+.expedition-landing.expedition-mitigation .expedition-opening::before { background-size: min(66vw, 760px) auto; background-position: 100% 45%; }
+@keyframes expedition-arrival { from { transform: scale(1.045); opacity: .5; } to { transform: scale(1); opacity: 1; } }
+.expedition-opening-content { max-width: min(800px, 100%); }
+.expedition-opening .expedition-back { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 clamp(38px, 10vh, 102px); }
+.expedition-opening .expedition-type { color: #bef5fd; font: 13px var(--mono); margin: 0 0 14px; }
+.expedition-opening h1 { margin: 0 0 20px; font: 400 clamp(62px, 10vw, 156px)/.9 'Instrument Serif', Georgia, serif; text-wrap: balance; }
+.expedition-lead { color: #e6f6ff; max-width: 43ch; font: 500 clamp(16px, 2vw, 23px)/1.55 'Manrope', sans-serif; margin: 0 0 25px; }
+.expedition-guide { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(35px, 9vw, 140px); padding: clamp(50px, 9vw, 124px) clamp(24px, 8vw, 156px); max-width: 1700px; margin: auto; }
+.expedition-guide h2 { font: 400 clamp(48px, 6vw, 78px)/.92 'Instrument Serif', Georgia, serif; margin: 0 0 20px; }
+.expedition-guide p { color: #bedbe8; line-height: 1.65; margin: 0 0 22px; }
+.expedition-guide-intro > a { margin: 0 8px 10px 0; max-width: 100%; }
+.expedition-steps { display: grid; gap: 0; margin: 0; padding-left: 1.35em; }
+.expedition-steps li { padding: 0 0 14px 12px; margin-bottom: 17px; border-bottom: 1px solid #79b8cf40; }
+.expedition-steps li::marker { color: #99dceb; font: 12px var(--mono); }
+.expedition-steps h3 { margin: 0 0 8px; color: #edfaff; font: 600 20px 'Manrope', sans-serif; }
+.expedition-steps p { margin-bottom: 0; }
+.route-entry main:has(> .page-heading), .route-entry main:has(> .case-hero) { min-height: 100svh; padding-bottom: 65px; background: radial-gradient(ellipse at 88% 0, #14506475, transparent 43%), #081d29; }
+.route-entry main > :is(.page-heading, .case-hero) { padding-inline: clamp(22px, 7vw, 122px); }
+.route-entry main > :is(.page-heading, .case-hero) h1 { font: 400 clamp(48px, 7.5vw, 113px)/.92 'Instrument Serif', Georgia, serif; text-wrap: balance; }
+.route-entry main > :is(.page-heading, .case-hero) > p { max-width: 62ch; line-height: 1.6; color: #c0dce8; }
+.route-entry .article-layout { gap: clamp(25px, 6vw, 96px); }
+.route-entry .article-layout .prose { min-width: 0; }
+.nav-overlay nav > a { font-family: 'Manrope', sans-serif; }
+@media (max-width: 700px) {
+  .expedition-opening { min-height: 77svh; }
+  .expedition-opening h1 { font-size: clamp(57px, 13vw, 86px); }
+  .expedition-guide { grid-template-columns: 1fr; }
+  .expedition-landing.expedition-mitigation .expedition-opening::before { background-size: cover; }
+  .nav-overlay nav > a { font-size: 24px; padding-block: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-entry, .expedition-opening::before { animation: none; }
+}

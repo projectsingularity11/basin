@@ -18,6 +18,24 @@ type Creature = {
 const inhabitants: Creature[] = [
   {
     image: '/wildlife-school.webp',
+    x: 0.18,
+    y: 0.295,
+    width: 0.14,
+    opacity: 0.21,
+    flow: 0.14,
+    faceRight: true,
+  },
+  {
+    image: '/wildlife-school.webp',
+    x: 0.67,
+    y: 0.342,
+    width: 0.097,
+    opacity: 0.16,
+    flow: 0.1,
+    faceRight: true,
+  },
+  {
+    image: '/wildlife-school.webp',
     x: 0.7,
     y: 0.2,
     width: 0.38,
@@ -177,7 +195,10 @@ export function OceanLife({
       inhabitants.forEach((animal, index) => {
         const cruise = swimTimes[index];
         const glide = cruise * (animal.cetacean ? 0.36 : 0.62) + index;
-        const y = animal.y * worldHeight - offset + Math.sin(glide) * (animal.cetacean ? 28 : 11);
+        const y =
+          animal.y * worldHeight -
+          offset +
+          Math.sin(glide) * (animal.lure ? 45 : animal.cetacean ? 28 : 11);
         if (y < -height * 0.7 || y > height * 2.1) return;
 
         let image = images.get(animal.image);
@@ -196,11 +217,12 @@ export function OceanLife({
         if (y > -tall && y < height + tall) swimTimes[index] += elapsed;
         const margin = length / width / 2 + 0.07;
         const span = 1 + margin * 2;
-        const pace = animal.flow * (cruise * 0.28 + Math.sin(cruise * 0.6) * 0.11);
+        const pace =
+          animal.flow * (animal.lure ? 1.95 : 1) * (cruise * 0.28 + Math.sin(cruise * 0.6) * 0.11);
         const track = (animal.x + margin + pace) % span;
         const heading = ((track + span) % span) - margin;
         const drift = animal.x + Math.sin(glide * 0.46) * 0.04;
-        const x = (animal.pulse || animal.lure ? drift : heading) * width - length / 2;
+        const x = (animal.pulse ? drift : heading) * width - length / 2;
         const top = y - tall / 2;
         context.globalAlpha = animal.opacity;
         if (x + length < -4 || x > width + 4) return;
@@ -209,23 +231,6 @@ export function OceanLife({
           const lightX = x + length * 0.055;
           const lightY = top + tall * 0.15;
           const glow = 0.88 + Math.sin(time * 1.72) * 0.12;
-          const pool = context.createRadialGradient(
-            lightX,
-            y + tall * 0.56,
-            0,
-            lightX,
-            y + tall * 0.56,
-            size * 0.65,
-          );
-          pool.addColorStop(0, 'rgba(124,255,221,.56)');
-          pool.addColorStop(0.28, 'rgba(71,182,185,.18)');
-          pool.addColorStop(1, 'rgba(41,127,160,0)');
-          context.save();
-          context.globalCompositeOperation = 'screen';
-          context.globalAlpha = glow;
-          context.fillStyle = pool;
-          context.fillRect(lightX - size, y - tall, size * 2, size * 2);
-          context.restore();
           context.filter = 'brightness(.58) saturate(.9)';
           drawAnimal();
           context.filter = 'none';

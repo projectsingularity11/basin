@@ -5,7 +5,6 @@ import { useBasin, download } from '@/components/provider';
 import { parseRainCsv, type RainSeries } from '@/engine/rainfall';
 import { validateScenario, type Scenario } from '@/engine/model';
 import type { Investigation, StudyOptions } from '@/engine/watershed';
-import { Footer } from '@/components/shell';
 import proj4 from 'proj4';
 import { gridBounds } from '@/lib/geo/grid';
 
@@ -430,7 +429,6 @@ export default function Study() {
           )}
         </section>
       </div>
-      <Footer />
     </main>
   );
 }
