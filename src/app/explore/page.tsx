@@ -11,19 +11,14 @@ export default function Explore() {
     <main id="main">
       <ResearchScene
         title={['Flood', 'expeditions']}
-        image="/dive/open-horizon.webp"
+        image="/dive/surface.webp"
         description="Follow runoff, investigate Hurricane Harvey, and test ways to hold stormwater."
         action="Choose an expedition"
       />
       <section className="content-width route-expeditions" aria-label="Choose an expedition">
         {expeditions.map(({ slug, title, text, art }) => (
           <Link key={slug} href={`/explore/${slug}`} className="route-expedition">
-            <Image
-              src={`/expeditions/${art}.webp`}
-              alt=""
-              fill
-              sizes="(max-width: 720px) 90vw, 32vw"
-            />
+            <Image src={`/expeditions/${art}.webp`} alt="" fill unoptimized />
             <div>
               <h2>{title}</h2>
               <p>{text}</p>

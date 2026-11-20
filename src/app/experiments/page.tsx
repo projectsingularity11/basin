@@ -88,7 +88,8 @@ export default function Experiments() {
     <main id="main">
       <ResearchScene
         title={['Experiment', 'records']}
-        image="/dive/reef.webp"
+        image="/research/elevation.webp"
+        caption="USGS 3DEP elevation · Spring, Texas"
         description="Record physical measurements and compare them with the current model run."
         action="Open records"
       />

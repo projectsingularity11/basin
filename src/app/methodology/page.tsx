@@ -18,7 +18,8 @@ export default function Methodology() {
     <main id="main">
       <ResearchScene
         title={['Model', 'methods']}
-        image="/dive/floor.webp"
+        image="/research/elevation.webp"
+        caption="USGS 3DEP elevation · Spring, Texas"
         description="Read the equations, assumptions, and validation limits behind BASIN’s results."
         action="Read the methods"
       />

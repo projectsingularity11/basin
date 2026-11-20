@@ -113,7 +113,8 @@ export default function Earth() {
     <main id="main" className="earth-page">
       <ResearchScene
         title={['Choose', 'terrain']}
-        image="/expeditions/terrain.webp"
+        image="/research/elevation.webp"
+        caption="USGS 3DEP elevation · Spring, Texas"
         description="Find a place and load its elevation into the experiment runner."
         action="Open the terrain map"
       />

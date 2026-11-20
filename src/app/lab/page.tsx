@@ -208,7 +208,8 @@ export default function Lab() {
     <main id="main" className="new-lab">
       <ResearchScene
         title={['Experiment', 'runner']}
-        image="/dive/deep.webp"
+        image="/research/runoff.webp"
+        caption="Simulated surface water · Spring, Texas"
         description="Set a storm, watch water move across the terrain, and test what changes the flow."
         action="Open experiment controls"
       />

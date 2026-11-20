@@ -44,6 +44,7 @@ export default function EarthMap({
     }
     map.current = m;
     m.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'bottom-right');
+    m.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
     m.on('idle', () => {
       const count = m.queryRenderedFeatures().filter((f) => f.source !== 'selection').length;
       if (host.current) host.current.dataset.mapFeatures = String(count);

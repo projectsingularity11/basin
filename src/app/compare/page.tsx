@@ -51,7 +51,8 @@ export default function Compare() {
     <main id="main">
       <ResearchScene
         title={['Compare', 'scenarios']}
-        image="/dive/whale.webp"
+        image="/research/runoff.webp"
+        caption="Example model output · Spring, Texas"
         description="Run two scenarios side by side with the same model."
         action="Choose scenarios"
       />

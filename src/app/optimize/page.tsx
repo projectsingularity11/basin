@@ -42,7 +42,8 @@ export default function Optimize() {
     <main id="main">
       <ResearchScene
         title={['Detention', 'search']}
-        image="/expeditions/mitigation.webp"
+        image="/research/siting.webp"
+        caption="BASIN screening example · Spring, Texas"
         description="Set budget and space limits to find which tested design reduces peak outflow most."
         action="Set search limits"
       />

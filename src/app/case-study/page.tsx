@@ -24,6 +24,7 @@ export default function CaseStudy() {
       <ResearchScene
         title={['Hurricane Harvey', 'and the Barbara Bush Branch Library']}
         image="/expeditions/harvey.webp"
+        caption="Houston, August 31, 2017 · U.S. Air Force"
         description="Spring, Texas · August 2017"
         action="Read the case"
         back="/journeys"
@@ -53,7 +54,7 @@ export default function CaseStudy() {
               alt="Aerial view of floodwater surrounding buildings in Houston after Hurricane Harvey"
               width={2160}
               height={1438}
-              sizes="(max-width: 700px) 92vw, 700px"
+              unoptimized
             />
             <figcaption>
               Houston, August 31, 2017.{' '}

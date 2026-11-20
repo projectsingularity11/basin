@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown } from 'lucide-react';
 
@@ -5,6 +6,7 @@ export function ResearchScene({
   title,
   description,
   image,
+  caption,
   action,
   headingId,
   back,
@@ -12,6 +14,7 @@ export function ResearchScene({
   title: [string, string];
   description: string;
   image: string;
+  caption?: string;
   action: string;
   headingId?: string;
   back?: string;
@@ -19,11 +22,12 @@ export function ResearchScene({
   return (
     <>
       <section className="research-scene">
-        <div
-          className="research-scene-art"
-          style={{ backgroundImage: 'url(' + image + ')' }}
-          aria-hidden="true"
-        />
+        <figure className="research-scene-media">
+          <div className="research-scene-art">
+            <Image alt="" src={image} fill unoptimized loading="eager" fetchPriority="high" />
+          </div>
+          {caption && <figcaption>{caption}</figcaption>}
+        </figure>
         {back && (
           <Link href={back} className="research-scene-back">
             ← All expeditions
@@ -34,13 +38,13 @@ export function ResearchScene({
             <span>{title[0]}</span> <span>{title[1]}</span>
           </h1>
           <p>{description}</p>
+          <a className="research-scene-cue" href="#scene-content">
+            {action}
+            <span>
+              <ArrowDown size={18} aria-hidden />
+            </span>
+          </a>
         </div>
-        <a className="research-scene-cue" href="#scene-content">
-          {action}
-          <span>
-            <ArrowDown size={19} aria-hidden />
-          </span>
-        </a>
       </section>
       <div id="scene-content" tabIndex={-1} />
     </>

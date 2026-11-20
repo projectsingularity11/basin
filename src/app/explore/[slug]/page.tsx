@@ -25,7 +25,7 @@ export default async function Expedition({ params }: Props) {
       <main id="main">
         <ResearchScene
           title={['About', 'BASIN']}
-          image="/dive/open-horizon.webp"
+          image="/dive/surface.webp"
           description="A student research project that explores flood mitigation using elevation data and repeatable storm scenarios."
           action="Read about BASIN"
         />

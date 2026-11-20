@@ -1028,3 +1028,131 @@
   font-family: var(--display);
   font-size: 13px;
 }
+
+/* Pair the expedition's evidence frame with an editorial title column. */
+.research-scene {
+  grid-template: auto / minmax(0, 1.4fr) minmax(0, 1fr);
+  align-content: center;
+  justify-items: stretch;
+  align-items: center;
+  gap: clamp(28px, 5vw, 100px);
+  padding-inline: max(var(--gutter), calc((100vw - 1640px) / 2));
+  text-align: left;
+}
+.research-scene::after {
+  background:
+    radial-gradient(ellipse at 7% 50%, #0c4664aa 0%, transparent 66%),
+    linear-gradient(160deg, #041524, #061c2d 72%, #072237);
+}
+.research-scene-media {
+  margin: 0;
+  min-width: 0;
+  position: relative;
+  padding: 10px;
+  border: 1px solid #94e6fb70;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 20px) 0,
+    100% 20px,
+    100% 100%,
+    20px 100%,
+    0 calc(100% - 20px)
+  );
+  background: linear-gradient(145deg, #184961, #081e2e 65%);
+}
+.research-scene-art {
+  position: relative;
+  z-index: 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #102c41;
+  animation: none;
+}
+.research-scene-art img {
+  object-fit: cover;
+  animation: research-scene-arrive 1.25s cubic-bezier(0.2, 0.65, 0.28, 1) both;
+}
+.research-scene-media figcaption {
+  color: #c4e4ef;
+  padding: 10px 8px 4px;
+  font: 500 12px / 1.35 var(--font);
+}
+.research-scene h1 {
+  font-size: clamp(43px, 6.8vw, 128px);
+  text-wrap: pretty;
+}
+.research-scene-copy p {
+  margin-inline: 0;
+  text-wrap: pretty;
+}
+.research-scene-cue {
+  display: inline-flex;
+  padding: 7px 7px 7px 14px;
+  border: 1px solid #94e6fb8f;
+  align-items: center;
+  gap: 13px;
+  background: #092a3f;
+}
+.research-scene-cue > span {
+  width: 34px;
+  height: 34px;
+}
+.basin-app
+  :is(
+    .compare-controls,
+    .optimization-controls,
+    .experiment-records > article,
+    .region-card,
+    .lab-drawer,
+    .lab-bottom
+  ) {
+  background-color: #081d2d;
+  border-color: #628eaa78;
+  border-radius: 0;
+}
+.new-lab .task-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 126px), 1fr));
+  gap: 5px;
+}
+.new-lab .task-rail > :is(a, button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0b2a40;
+}
+.basin-app .table-wrap {
+  border: 1px solid #548ba783;
+}
+.basin-app .table-wrap thead {
+  background: #154259;
+}
+.basin-app .table-wrap tbody tr:nth-child(even) {
+  background: #0b2a40;
+}
+.basin-app .table-wrap tbody tr:hover {
+  background: #13374c;
+}
+.basin-app .article-layout .article-aside {
+  border-inline-start: 1px solid #6090a788;
+  padding-inline-start: 16px;
+}
+@media (max-width: 740px) {
+  .research-scene {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: calc(var(--header-height) + 58px);
+    gap: 22px;
+  }
+  .research-scene-art {
+    aspect-ratio: 16 / 9;
+    max-height: 32svh;
+  }
+  .research-scene h1 {
+    font-size: clamp(36px, 9.5vw, 72px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .research-scene-art img {
+    animation: none;
+  }
+}

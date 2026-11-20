@@ -41,8 +41,8 @@ export default function Credits() {
             </li>
           </ul>
           <p>
-            The terrain image uses USGS 3DEP elevation data. The mitigation image shows a BASIN
-            screening result.
+            Terrain frames use USGS 3DEP elevation around the Barbara Bush Branch Library. The
+            runoff and siting frames show BASIN’s example simulations for that same area.
           </p>
         </article>
       </section>

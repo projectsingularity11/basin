@@ -111,7 +111,8 @@ export default function Study() {
     <main id="main">
       <ResearchScene
         title={['Watershed', 'study']}
-        image="/expeditions/terrain.webp"
+        image="/research/siting.webp"
+        caption="BASIN screening example · Spring, Texas"
         description="Choose an area, set your limits, and test where a basin or a permeable surface could slow runoff in two storms."
         action="Set study limits"
         back="/journeys"
