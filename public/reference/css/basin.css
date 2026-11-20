@@ -119,3 +119,7 @@ body:has(#modal-container:not(.d-none))::before {
     to { opacity: 1; transform: translateX(0); }
   }
 }
+
+body:has(main[data-router-view='about']) .js-header {
+  background: linear-gradient(180deg, #031725ec 0%, #031725b0 62%, transparent 100%);
+}
