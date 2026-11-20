@@ -243,6 +243,21 @@ export default function Methodology() {
               optimization, or claim of globally optimal infrastructure.
             </p>
           </section>
+          <section>
+            <h2>Rank flood-relief sites</h2>
+            <p>
+              The watershed study traces drainage across the selected square and simulates two
+              storms without added mitigation. It uses upstream area and modeled ponding to screen
+              locations, rejects steep cells and oversized footprints, then tests up to 12 spaced
+              sites. It compares two basin capacities and, when selected, an infiltration treatment.
+            </p>
+            <p>
+              The strongest candidate is the tested option with the largest minimum reduction in
+              peak outflow across both storms. The study withholds a recommendation when none
+              improves both. Confirm drainage, soil, available land, and downstream impacts before
+              using a candidate for design.
+            </p>
+          </section>
           <section id="provenance">
             <span className="eyebrow">08 / PROVENANCE & NEXT STEPS</span>
             <h2>Keep the evidence attached.</h2>

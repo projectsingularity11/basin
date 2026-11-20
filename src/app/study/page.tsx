@@ -19,6 +19,8 @@ export default function Study() {
   const [multiplier, setMultiplier] = useState(1.25),
     [cost, setCost] = useState(''),
     [budget, setBudget] = useState('');
+  const [includePermeable, setIncludePermeable] = useState(true);
+  const [patchInfiltration, setPatchInfiltration] = useState(40);
   const [rain, setRain] = useState<RainSeries | null>(null),
     [rainSource, setRainSource] = useState(''),
     [notice, setNotice] = useState('');
@@ -55,6 +57,19 @@ export default function Study() {
       setError('The saved investigation could not be opened.');
     }
   }
+  function siteLocation(value: Investigation, cell: number) {
+    const g = value.scenario.geographic;
+    if (!g) return null;
+    const { projection } = gridBounds(...g.center, g.cellSize * g.size);
+    const [lon, lat] = proj4(projection, 'EPSG:4326', [
+      g.projectedBounds[0] + ((cell % g.size) + 0.5) * g.cellSize,
+      g.projectedBounds[3] - (Math.floor(cell / g.size) + 0.5) * g.cellSize,
+    ]);
+    return { lon: lon.toFixed(6), lat: lat.toFixed(6) };
+  }
+  const recommendedLocation = result?.recommended
+    ? siteLocation(result, result.recommended.cell)
+    : null;
   function geojson(value: Investigation) {
     const g = value.scenario.geographic;
     if (!g) return;
@@ -98,7 +113,10 @@ export default function Study() {
           ← Flood expeditions
         </Link>
         <h1>Watershed study</h1>
-        <p>Trace drainage paths and test detention sites under two rainfall scenarios.</p>
+        <p>
+          Choose an area, set your limits, and test where a basin or a permeable surface could slow
+          runoff in two storms.
+        </p>
       </section>
       <div className="content-width study-layout">
         <form
@@ -114,6 +132,8 @@ export default function Study() {
                   }
                 : scenario,
               {
+                includePermeable,
+                patchInfiltration,
                 maxFootprint: footprint,
                 maxCapacity: capacity,
                 stormMultiplier: multiplier,
@@ -178,6 +198,32 @@ export default function Study() {
               onChange={(e) => setBudget(e.target.value)}
             />
           </label>
+          <label className="study-check">
+            <input
+              type="checkbox"
+              checked={includePermeable}
+              disabled={cost !== '' && budget !== ''}
+              onChange={(e) => setIncludePermeable(e.target.checked)}
+            />
+            Test permeable surfaces too
+          </label>
+          {cost !== '' && budget !== '' ? (
+            <p>The budget applies to basins. Clear it to compare unpriced permeable surfaces.</p>
+          ) : (
+            includePermeable && (
+              <label className="field">
+                New surface infiltration (mm/h)
+                <input
+                  type="number"
+                  min={0}
+                  max={200}
+                  value={patchInfiltration}
+                  onChange={(e) => setPatchInfiltration(+e.target.value)}
+                  required
+                />
+              </label>
+            )
+          )}
           <details>
             <summary>Use a rainfall CSV</summary>
             <p>
@@ -301,22 +347,41 @@ export default function Study() {
                     width=".94"
                     height=".94"
                     fill={
-                      i === result.grid.outlet
-                        ? '#fff5a5'
-                        : result.candidates.some((c) => c.cell === i)
-                          ? '#f3bd8f'
-                          : result.grid.outlets[i] === result.grid.outlet
-                            ? '#67cdd9'
-                            : '#203f51'
+                      i === result.recommended?.cell
+                        ? '#ffffff'
+                        : i === result.grid.outlet
+                          ? '#fff5a5'
+                          : result.candidates.some((c) => c.cell === i)
+                            ? '#f3bd8f'
+                            : result.grid.outlets[i] === result.grid.outlet
+                              ? '#67cdd9'
+                              : '#203f51'
                     }
                   />
                 ))}
               </svg>
               <p>
-                Blue shows the selected catchment, orange shows screened sites, and yellow marks the
-                outlet.
+                Blue shows the largest catchment, orange shows tested sites, yellow marks its
+                outlet, and white marks the best tested option.
               </p>
               <h3>Detention tradeoffs</h3>
+              <p className="comparison-status">
+                {result.recommended
+                  ? `Best tested option: ${result.recommended.intervention.kind === 'detention' ? 'detention basin' : 'permeable surface'} at cell ${result.recommended.cell}. It reduced the modeled peak by at least ${result.recommended.worstPeakReduction.toPrecision(3)} m³/s across both storms.`
+                  : 'No tested option reduced the modeled peak in both storms.'}
+              </p>
+              {recommendedLocation && (
+                <p>
+                  <a
+                    className="text-link"
+                    href={`https://www.openstreetmap.org/?mlat=${recommendedLocation.lat}&mlon=${recommendedLocation.lon}#map=17/${recommendedLocation.lat}/${recommendedLocation.lon}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    See the recommended cell on the map ↗
+                  </a>
+                </p>
+              )}
               <p>
                 Baseline peak discharge:{' '}
                 {result.baseline.map((r) => r.peakDischarge.toFixed(3)).join(' / ')} m³/s. The table
@@ -332,7 +397,7 @@ export default function Study() {
                   <table>
                     <thead>
                       <tr>
-                        <th>Cell</th>
+                        <th scope="col">Site and treatment</th>
                         <th>Storage (m³)</th>
                         <th>Footprint (m²)</th>
                         <th>Peak reduction (m³/s)</th>
@@ -342,9 +407,12 @@ export default function Study() {
                     </thead>
                     <tbody>
                       {result.pareto.map((c) => (
-                        <tr key={c.cell + ':' + c.capacity}>
-                          <td>{c.cell}</td>
-                          <td>{c.capacity}</td>
+                        <tr key={c.cell + ':' + c.intervention.kind + ':' + c.capacity}>
+                          <td>
+                            {c.cell} ·{' '}
+                            {c.intervention.kind === 'detention' ? 'Basin' : 'Permeable surface'}
+                          </td>
+                          <td>{c.intervention.kind === 'detention' ? c.capacity : '—'}</td>
                           <td>{c.footprintArea}</td>
                           <td>{c.peakReduction.map((v) => v.toFixed(3)).join(' / ')}</td>
                           <td>{c.cost?.toFixed(0) ?? 'Unpriced'}</td>

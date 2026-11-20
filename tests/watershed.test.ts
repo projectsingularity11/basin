@@ -56,6 +56,28 @@ describe('drainage and mitigation screening', () => {
       ),
     ).toBe(true);
   });
+  it('compares both treatments and recommends only improvements in both storms', () => {
+    const result = investigate(DEFAULT, {
+      maxFootprint: 2500,
+      maxCapacity: 400,
+      stormMultiplier: 1.25,
+      includePermeable: true,
+      patchInfiltration: 65,
+    });
+    expect(new Set(result.candidates.map((c) => c.intervention.kind))).toEqual(
+      new Set(['detention', 'permeable']),
+    );
+    expect(result.recommended?.worstPeakReduction).toBeGreaterThan(0);
+    expect(result.recommended?.worstPeakReduction).toBe(
+      Math.max(...result.candidates.map((c) => c.worstPeakReduction)),
+    );
+  });
+  it('projects polar regions and names the wrapped dateline tile', () => {
+    expect(gridBounds(0, 89, 960).epsg).toBe(32661);
+    expect(gridBounds(0, -89, 960).epsg).toBe(32761);
+    expect(gridBounds(180, 0, 960).extent.every(Number.isFinite)).toBe(true);
+    expect(tileUrl(180, 0)).toContain('W180');
+  });
   it('selects the southern UTM zone and correctly names southwest tile coordinates', () => {
     expect(gridBounds(151.2, -33.8, 960).epsg).toBe(32756);
     expect(tileUrl(-1.5, -33.8)).toContain('S34_00_W002_00');

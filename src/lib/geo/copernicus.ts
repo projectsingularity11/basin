@@ -5,8 +5,8 @@ import type { ElevationProvider } from './contracts';
 
 export const copernicusCatalog = 'https://registry.opendata.aws/copernicus-dem/';
 export function tileUrl(lon: number, lat: number) {
-  const x = Math.floor(lon),
-    y = Math.floor(lat);
+  const x = Math.floor(lon === 180 ? -180 : lon),
+    y = Math.min(89, Math.floor(lat));
   const name = `Copernicus_DSM_COG_10_${y < 0 ? 'S' : 'N'}${String(Math.abs(y)).padStart(2, '0')}_00_${x < 0 ? 'W' : 'E'}${String(Math.abs(x)).padStart(3, '0')}_00_DEM`;
   return `https://copernicus-dem-30m.s3.amazonaws.com/${name}/${name}.tif`;
 }
@@ -18,20 +18,22 @@ export const copernicus: ElevationProvider = {
         'Copernicus screening requires model cells of at least 30 m. Choose a larger region or fewer cells.',
       );
     const grid = gridBounds(...center, side);
-    if (grid.bounds[2] - grid.bounds[0] > 1)
-      throw Error('Selections crossing the antimeridian are unavailable.');
     const groups = new Map<string, { index: number; lon: number; lat: number }[]>();
     for (let index = 0; index < size * size; index++) {
-      const [lon, lat] = proj4(grid.projection, 'EPSG:4326', [
+      const [longitude, lat] = proj4(grid.projection, 'EPSG:4326', [
         grid.extent[0] + (((index % size) + 0.5) * side) / size,
         grid.extent[3] - ((Math.floor(index / size) + 0.5) * side) / size,
       ]);
+      const lon = ((longitude + 540) % 360) - 180;
       const url = tileUrl(lon, lat);
       const group = groups.get(url) ?? [];
       group.push({ index, lon, lat });
       groups.set(url, group);
     }
-    if (groups.size > 4) throw Error('Selection spans too many source tiles.');
+    if (groups.size > 12)
+      throw Error(
+        'This region spans too many elevation tiles. Choose a smaller area or move farther from the pole.',
+      );
     const elevations = Array<number>(size * size).fill(NaN);
     await Promise.all(
       [...groups].map(async ([url, points]) => {
@@ -88,7 +90,7 @@ export const copernicus: ElevationProvider = {
         units: 'm',
         verticalDatum: 'EGM2008 (EPSG:3855)',
         resolution: `Nominal 30 m input spacing, longitude spacing varies with latitude. ${side / size} m output cells.`,
-        processing: `Nearest source sample to each UTM cell center. Tile sources: ${[...groups.keys()].join(' ')}`,
+        processing: `Nearest source sample to each projected cell center. Tile sources: ${[...groups.keys()].join(' ')}`,
         license:
           'Contains modified Copernicus DEM data. © DLR e.V. 2010–2014 and © Airbus Defence and Space GmbH 2014–2018. Distribution by ESA. Copernicus DEM license.',
         limitations:

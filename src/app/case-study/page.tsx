@@ -50,8 +50,8 @@ export default function CaseStudy() {
             <Image
               src="/expeditions/harvey.webp"
               alt="Aerial view of floodwater surrounding buildings in Houston after Hurricane Harvey"
-              width={1200}
-              height={760}
+              width={2160}
+              height={1438}
               sizes="(max-width: 700px) 92vw, 700px"
             />
             <figcaption>

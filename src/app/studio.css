@@ -803,3 +803,17 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+.study-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-block: 14px;
+}
+.study-check input {
+  flex: none;
+  accent-color: var(--glow);
+}
+.study-layout .comparison-status {
+  padding: 14px;
+}

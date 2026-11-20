@@ -240,6 +240,9 @@ export default function Lab() {
         >
           <Droplets size={16} /> Intervene
         </button>
+        <Link href="/study">
+          Find relief sites <ArrowUpRight size={12} />
+        </Link>
         <Link href="/compare">
           Compare
           <ArrowUpRight size={12} />

@@ -99,8 +99,10 @@ export type StudyOptions = {
   unitCost?: number;
   budget?: number;
   stormMultiplier: number;
+  includePermeable?: boolean;
+  patchInfiltration?: number;
 };
-export const STUDY_MODEL = 'BASIN surface routing v1 / screening v1';
+export const STUDY_MODEL = 'BASIN surface routing v1 / screening v2';
 export function investigate(input: Scenario, options: StudyOptions) {
   const scenario = validateScenario(input);
   const { maxFootprint, maxCapacity, unitCost, budget, stormMultiplier } = options;
@@ -119,38 +121,6 @@ export function investigate(input: Scenario, options: StudyOptions) {
   )
     throw Error('Check the footprint, capacity, storm multiplier and optional cost inputs.');
   const grid = drainage(terrain(scenario), scenario.size, scenario.cellSize);
-  const ranked = grid.catchment
-    .filter((i) => grid.receiver[i] >= 0)
-    .sort(
-      (a, b) =>
-        grid.accumulation[b] - grid.accumulation[a] || grid.slope[a] - grid.slope[b] || a - b,
-    );
-  const sites: number[] = [];
-  const rejected = { footprint: 0, slope: 0, spacing: 0, budget: 0 };
-  for (const i of ranked) {
-    if (patchCells(scenario, i).length * scenario.cellSize ** 2 > maxFootprint) {
-      rejected.footprint++;
-      continue;
-    }
-    if (grid.slope[i] > 0.15) {
-      rejected.slope++;
-      continue;
-    }
-    if (
-      sites.some(
-        (j) =>
-          Math.hypot(
-            (i % scenario.size) - (j % scenario.size),
-            Math.floor(i / scenario.size) - Math.floor(j / scenario.size),
-          ) < 3,
-      )
-    ) {
-      rejected.spacing++;
-      continue;
-    }
-    sites.push(i);
-    if (sites.length === 4) break;
-  }
   const stronger = {
     ...scenario,
     rain: scenario.rain * stormMultiplier,
@@ -187,19 +157,68 @@ export function investigate(input: Scenario, options: StudyOptions) {
       hydrograph: run.frames.map((f) => ({ seconds: f.time, discharge: f.rate })),
     };
   };
-  const baseline = baselineInputs.map((s) => summarize(simulate(s)));
+  const baselineRuns = baselineInputs.map((input) => simulate(input));
+  const baseline = baselineRuns.map(summarize);
+  const maxDepth = grid.receiver.map((_, cell) =>
+    Math.max(...baselineRuns.flatMap((run) => run.frames.map((frame) => frame.depths[cell]))),
+  );
+  const deepest = Math.max(...maxDepth) || 1;
+  const largest = Math.max(...grid.accumulation);
+  const score = maxDepth.map(
+    (depth, cell) => Math.sqrt(grid.accumulation[cell] / largest) + Math.sqrt(depth / deepest),
+  );
+  const ranked = grid.receiver
+    .map((_, cell) => cell)
+    .filter((i) => grid.receiver[i] >= 0)
+    .sort((a, b) => score[b] - score[a] || grid.slope[a] - grid.slope[b] || a - b);
+  const sites: number[] = [];
+  const rejected = { footprint: 0, slope: 0, spacing: 0, budget: 0 };
+  for (const i of ranked) {
+    if (patchCells(scenario, i).length * scenario.cellSize ** 2 > maxFootprint) {
+      rejected.footprint++;
+      continue;
+    }
+    if (grid.slope[i] > 0.15) {
+      rejected.slope++;
+      continue;
+    }
+    if (
+      sites.some(
+        (j) =>
+          Math.hypot(
+            (i % scenario.size) - (j % scenario.size),
+            Math.floor(i / scenario.size) - Math.floor(j / scenario.size),
+          ) < 3,
+      )
+    ) {
+      rejected.spacing++;
+      continue;
+    }
+    sites.push(i);
+    if (sites.length === 12) break;
+  }
+  const patchInfiltration = options.patchInfiltration ?? 40;
+  if (!Number.isFinite(patchInfiltration) || patchInfiltration < 0 || patchInfiltration > 200)
+    throw Error('Enter an infiltration rate from 0 to 200 mm/h.');
+  const designs = [
+    ...[maxCapacity / 2, maxCapacity].map((capacity) => ({ kind: 'detention' as const, capacity })),
+    ...(options.includePermeable && budget === undefined
+      ? [{ kind: 'permeable' as const, capacity: 0 }]
+      : []),
+  ];
   const candidates = sites.flatMap((cell) =>
-    [maxCapacity / 2, maxCapacity].flatMap((capacity) => {
-      const cost = unitCost === undefined ? null : capacity * unitCost;
+    designs.flatMap(({ kind, capacity }) => {
+      const cost = kind === 'permeable' || unitCost === undefined ? null : capacity * unitCost;
       if (budget !== undefined && cost !== null && cost > budget) {
         rejected.budget++;
         return [];
       }
-      const footprint = patchCells(scenario, cell),
-        intervention = {
-          ...makeIntervention(scenario, cell, 'detention', capacity),
-          cost: cost ?? 0,
-        };
+      const footprint = patchCells(scenario, cell);
+      const intervention = {
+        ...makeIntervention(scenario, cell, kind, capacity),
+        infiltration: patchInfiltration,
+        cost: cost ?? 0,
+      };
       const runs = baselineInputs.map((s) =>
         summarize(simulate({ ...s, interventions: [intervention] })),
       );
@@ -225,6 +244,7 @@ export function investigate(input: Scenario, options: StudyOptions) {
     (c) =>
       !candidates.some(
         (other) =>
+          other.intervention.kind === c.intervention.kind &&
           other.worstPeakReduction >= c.worstPeakReduction &&
           other.capacity <= c.capacity &&
           (other.worstPeakReduction > c.worstPeakReduction || other.capacity < c.capacity),
@@ -238,6 +258,16 @@ export function investigate(input: Scenario, options: StudyOptions) {
     baseline,
     baselineInputs,
     candidates,
+    recommended:
+      [...candidates]
+        .filter((c) => c.worstPeakReduction > 1e-7)
+        .sort(
+          (a, b) =>
+            b.worstPeakReduction - a.worstPeakReduction ||
+            a.footprintArea - b.footprintArea ||
+            a.capacity - b.capacity ||
+            a.cell - b.cell,
+        )[0] ?? null,
     pareto,
     rejected,
     evaluatedRuns: 2 + 2 * candidates.length,
@@ -255,7 +285,7 @@ export function investigate(input: Scenario, options: StudyOptions) {
       'Drainage paths terminate at the study boundary. The largest in-grid catchment is a screening result.',
       'The solver runs on the full selected square using original elevations. Depression filling only informs site screening.',
       'Peak discharge combines all open edge cells. Neither storm is calibrated and sensitivity runs are not probability intervals.',
-      'Footprints are treatment areas. Land ownership, wetlands, construction, culverts and downstream connectivity are unverified.',
+      'The search ranks tested designs by the smaller peak reduction across both storms. Footprints are treatment areas. Land ownership, wetlands, construction, culverts and downstream connectivity are unverified.',
     ],
   };
 }

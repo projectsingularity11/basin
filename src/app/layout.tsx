@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Provider } from '@/components/provider';
-import { WaterMotion } from '@/components/water-motion';
 import { Header } from '@/components/shell';
 import './globals.css';
 import './studio.css';
@@ -18,7 +17,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="basin-app">
         <Provider>
           <Header />
-          <WaterMotion />
           {children}
         </Provider>
       </body>

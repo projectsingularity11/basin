@@ -31,3 +31,43 @@ body.home .central-text .section__inner { width: min(92vw, 42rem); }
 body.home .central-text h1 { font-size: clamp(3.6rem, 13vw, 10rem); line-height: .95; }
 body.home .central-text .js-narration-text { text-wrap: balance; }
 .basin-access { bottom: max(16px, env(safe-area-inset-bottom)); max-width: calc(100vw - 32px); }
+
+.basin-scene-controls {
+  position: fixed;
+  z-index: 11050;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  max-width: min(72vw, 420px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem .85rem;
+  background: #041a2ce8;
+  border: 1px solid #94e6fb70;
+  color: #e5faff;
+  padding: .5rem .7rem;
+  font: 500 clamp(11px, 1vw, 14px)/1.4 'TT Lakes', sans-serif;
+}
+.basin-scene-controls[hidden], .basin-scene-controls span:empty { display: none; }
+.basin-scene-controls button {
+  border: 0;
+  background: transparent;
+  color: #94e6fb;
+  font: inherit;
+  padding: .35rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.basin-scene-controls button:focus-visible { outline: 2px solid #fff; }
+body:has(#modal-container:not(.d-none) .js-modal-close) .basin-scene-controls {
+  bottom: auto;
+  top: max(14px, env(safe-area-inset-top));
+}
+@media (max-width: 600px) {
+  .basin-scene-controls { max-width: 65vw; gap: .15rem .5rem; }
+  .js-site-loader-enter-alt h2 { max-width: min(84vw, 26rem); }
+  .js-site-loader-enter-alt h2 .t-nowrap { white-space: normal; width: 100%; }
+}
+@media (max-width: 700px) {
+  body:has(.basin-scene-controls:not([hidden])) .scroll-prompt-container { opacity: 0; }
+}
