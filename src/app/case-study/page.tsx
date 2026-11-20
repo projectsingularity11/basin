@@ -19,7 +19,7 @@ export default function CaseStudy() {
     { maxFootprint: 40000, maxCapacity: 600, stormMultiplier: 1.25 },
   );
   return (
-    <main id="main">
+    <main id="main" className="basin-case-file">
       <ResearchScene
         title={['Hurricane Harvey', 'and the Barbara Bush Branch Library']}
         image="/expeditions/harvey.webp"

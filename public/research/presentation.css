@@ -1,0 +1,185 @@
+@font-face {
+  font-family: 'BASIN Editorial';
+  src: url('/research/fonts/newsreader-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --basin-surface: #0a2028;
+  --basin-edge: #85b9ab;
+  --basin-ink: #e9f4ee;
+  --basin-caption: #b8cdc5;
+  --basin-enter: 400ms cubic-bezier(0, 0.2, 0.38, 0.9);
+  --basin-display: 'BASIN Editorial', Georgia, serif;
+}
+
+body .t-title,
+body .basin-about-intro h2,
+.basin-home-intro h1,
+.basin-app .research-scene h1,
+.basin-app .article-layout .prose h2,
+.basin-app :is(.lab-title, .earth-heading, .optimization-empty) h2 {
+  font-family: var(--basin-display) !important;
+  text-transform: none;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+}
+body .t-title .t-outline {
+  -webkit-text-fill-color: #dceae3 !important;
+}
+.basin-app .research-scene h1 {
+  line-height: 0.98;
+  font-size: clamp(45px, 6.2vw, 105px);
+}
+.basin-app .research-scene h1 span:first-child {
+  font-weight: 500;
+}
+.basin-app .research-scene h1 span:last-child,
+.basin-home-intro h1 em {
+  color: #b5dccb;
+}
+.basin-home-intro h1 {
+  line-height: 0.88;
+}
+.basin-app .research-scene-media figcaption {
+  color: var(--basin-caption);
+}
+
+/* A single edge color and directional entrance for content frames. */
+.basin-app
+  :is(
+    .research-scene-media,
+    .optimization-controls,
+    .lab-drawer,
+    .region-card,
+    .experiment-records > article
+  ),
+body .basin-about-intro {
+  border-color: #85b9ab80;
+  background-color: var(--basin-surface);
+}
+.basin-app :is(.research-scene-media, .optimization-controls, .lab-drawer, .region-card),
+body .basin-about-intro span {
+  transition:
+    border-color var(--basin-enter),
+    background-color var(--basin-enter);
+}
+.basin-app
+  :is(.research-scene-media, .optimization-controls, .lab-drawer, .region-card):focus-within,
+.basin-app .research-scene-media:hover {
+  border-color: var(--basin-edge);
+}
+.basin-app .research-scene-cue,
+body .basin-home-secondary {
+  border-color: #85b9ab90;
+}
+.basin-app .research-scene-cue > span {
+  border-color: var(--basin-edge);
+}
+.basin-app .research-scene-art img {
+  animation: none;
+}
+
+body:has(#modal-container:not(.d-none))::before {
+  z-index: 10399;
+  backdrop-filter: blur(34px) saturate(0.65);
+  background: #06151c9c;
+}
+#modal-container .js-modal-content {
+  color: var(--basin-ink);
+}
+.basin-case-file {
+  position: relative;
+  isolation: isolate;
+}
+.basin-app .basin-case-file::before {
+  content: '';
+  position: absolute;
+  inset: 100svh 0 0;
+  background:
+    linear-gradient(#071a23aa, #071a23e9),
+    url('/expeditions/harvey.webp') center top / cover;
+  filter: blur(26px) saturate(0.55);
+  z-index: -1;
+  pointer-events: none;
+}
+.basin-app .basin-case-file > .article-layout {
+  border: 1px solid #85b9ab80;
+  background: #0a2028f5;
+  width: calc(100% - 2 * var(--gutter));
+  padding: clamp(18px, 4vw, 62px);
+}
+body .about-accordion__button {
+  transition: background-color var(--basin-enter);
+}
+body .about-accordion__button:is(:hover, :focus-visible, [aria-expanded='true']) {
+  background-color: #12313bcf;
+}
+body .about-accordion__img {
+  display: none !important;
+}
+
+body .site-loader__background {
+  background: #173b40;
+}
+body .site-loader__progress__fill {
+  stroke: #a5cbb8;
+}
+body .site-loader__progress__text,
+body .page-loader__text {
+  color: var(--basin-ink);
+  letter-spacing: 0.085em;
+}
+body .site-loader__square {
+  opacity: 0.14;
+}
+body .page-loader {
+  background: radial-gradient(ellipse at center, #193740, #091a23 67%);
+}
+body .page-loader__logo {
+  animation: none;
+  width: 3.4rem;
+  height: 3.4rem;
+}
+body .page-loader__dot {
+  background: #a5cbb8;
+  height: 1px;
+  width: 64px;
+  animation-duration: 1.7s;
+}
+@media (max-width: 740px) {
+  .basin-app .research-scene h1 {
+    font-size: clamp(35px, 9.1vw, 68px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  .basin-app :is(.research-scene-media, .research-scene-copy, .lab-drawer),
+  body:has(.site-loader[style*='visibility: hidden']) .basin-home-copy {
+    animation: basin-present var(--basin-enter) both;
+  }
+  .basin-app .research-scene-copy {
+    animation-delay: 35ms;
+  }
+}
+@keyframes basin-present {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body .page-loader__dot {
+    animation: none;
+  }
+}

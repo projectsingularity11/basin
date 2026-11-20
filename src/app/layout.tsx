@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { Provider } from '@/components/provider';
 import { Header } from '@/components/shell';
+import { SmoothScroll } from '@/components/smooth-scroll';
 import './globals.css';
 import './studio.css';
+import '../../public/research/presentation.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://basin-sigma.vercel.app'),
   title: { default: 'BASIN — Flood mitigation studies', template: '%s · BASIN' },
@@ -17,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="basin-app">
         <Provider>
           <Header />
+          <SmoothScroll />
           {children}
         </Provider>
       </body>
