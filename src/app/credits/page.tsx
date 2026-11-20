@@ -33,7 +33,7 @@ export default function Credits() {
               <a href="https://github.com/EssekerDev/cozywave-assets">CozyWave GitHub credits</a>{' '}
               and edited into a loop.
             </li>
-            <li>
+            <li id="harvey-photo">
               <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
                 Hurricane Harvey flooding in Houston, August 31, 2017
               </a>

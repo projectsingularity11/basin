@@ -25,8 +25,9 @@ export default async function Expedition({ params }: Props) {
       <main id="main">
         <ResearchScene
           title={['About', 'BASIN']}
-          image="/reference/uploads/2021/06/about-page-background.jpg"
+          image="/research/about-flood.webp"
           description="A student research project that explores flood mitigation using elevation data and repeatable storm scenarios."
+          caption="Houston after Hurricane Harvey · August 31, 2017"
           action="Read about BASIN"
         />
         <section className="article-layout content-width">

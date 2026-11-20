@@ -87,3 +87,35 @@ body:has(#modal-container:not(.d-none))::before {
 #modal-container .basin-single-image { display: none !important; }
 .basin-source-row { margin: .65em 0; }
 .basin-source-row a { color: #bceefd; text-decoration: underline; text-underline-offset: .25em; }
+
+@font-face {
+  font-family: 'BASIN Display';
+  src: url('/research/fonts/syne-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+.basin-about-intro {
+  background: linear-gradient(125deg, #051b2be8, #112a35d4);
+  border-color: #d2ece764;
+  text-align: left;
+}
+.basin-about-intro h1 .js-h1 { color: #edd1a0; }
+.basin-about-intro h2 {
+  font-family: 'BASIN Display', 'TT Lakes', sans-serif !important;
+  font-size: clamp(22px, 4vw, 62px);
+  line-height: 1.12;
+  letter-spacing: -.035em;
+}
+.basin-about-intro h2 .t-600 { color: #d1f6ed; }
+.basin-about-photo-credit { margin: 14px 0 0; color: #f3dcb4; font-size: 12px; }
+.basin-about-photo-credit a { color: inherit; text-underline-offset: .25em; }
+.basin-scene-controls { border-color: #d9b77b80; }
+.basin-scene-controls button:hover { color: #ffe3b0; }
+@media (prefers-reduced-motion: no-preference) {
+  .basin-about-photo-credit { animation: basin-credit-in .8s .35s both; }
+  @keyframes basin-credit-in {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+}
