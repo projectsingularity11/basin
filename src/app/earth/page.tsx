@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -110,9 +111,15 @@ export default function Earth() {
   }
   return (
     <main id="main" className="earth-page">
+      <ResearchScene
+        title={['Choose', 'terrain']}
+        image="/expeditions/terrain.webp"
+        description="Find a place and load its elevation into the experiment runner."
+        action="Open the terrain map"
+      />
       <div className="earth-heading">
         <div>
-          <h1>Choose terrain</h1>
+          <h2>Study area</h2>
           <p>Search for a place or position the region directly on the map.</p>
         </div>
         <div className="earth-search-tools">

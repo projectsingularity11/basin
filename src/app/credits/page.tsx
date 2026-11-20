@@ -1,12 +1,16 @@
+import { ResearchScene } from '@/components/research-scene';
 export const metadata = { title: 'Media credits' };
 
 export default function Credits() {
   return (
     <main id="main">
-      <section className="page-heading">
-        <h1 id="media">Media credits</h1>
-        <p>Imagery, elevation and sound used in BASIN’s flood studies.</p>
-      </section>
+      <ResearchScene
+        title={['Media', 'credits']}
+        image="/dive/surface.webp"
+        description="Imagery, elevation and sound used in BASIN’s flood studies."
+        action="See credits"
+        headingId="media"
+      />
       <section className="article-layout content-width">
         <article className="prose">
           <ul>

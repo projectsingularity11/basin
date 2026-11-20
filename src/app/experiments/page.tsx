@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import { useState } from 'react';
 import { FlaskConical, Plus, Download, Trash2 } from 'lucide-react';
 import { useBasin, download } from '@/components/provider';
@@ -85,10 +86,12 @@ export default function Experiments() {
   }
   return (
     <main id="main">
-      <section className="page-heading">
-        <h1>Experiment records</h1>
-        <p>Record physical measurements and compare them with the current model run.</p>
-      </section>
+      <ResearchScene
+        title={['Experiment', 'records']}
+        image="/dive/reef.webp"
+        description="Record physical measurements and compare them with the current model run."
+        action="Open records"
+      />
       <section className="content-width">
         <div className="section-toolbar">
           <div>

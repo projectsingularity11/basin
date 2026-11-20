@@ -1,3 +1,4 @@
+import { ResearchScene } from '@/components/research-scene';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, FlaskConical } from 'lucide-react';
 import { disclaimer } from '@/components/shell';
@@ -15,10 +16,12 @@ const sections = [
 export default function Methodology() {
   return (
     <main id="main">
-      <section className="page-heading">
-        <h1>Model methods</h1>
-        <p>Read the equations, assumptions, and validation limits behind BASIN’s results.</p>
-      </section>
+      <ResearchScene
+        title={['Model', 'methods']}
+        image="/dive/floor.webp"
+        description="Read the equations, assumptions, and validation limits behind BASIN’s results."
+        action="Read the methods"
+      />
       <section className="article-layout content-width">
         <aside className="article-aside method-toc">
           <span className="eyebrow">IN THIS DOCUMENT</span>

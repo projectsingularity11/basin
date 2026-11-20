@@ -1,3 +1,4 @@
+import { ResearchScene } from '@/components/research-scene';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LibraryStudy } from '@/components/library-study';
@@ -20,13 +21,13 @@ export default function CaseStudy() {
   );
   return (
     <main id="main">
-      <section className="case-hero">
-        <Link className="expedition-back" href="/journeys">
-          ← Flood expeditions
-        </Link>
-        <h1>Hurricane Harvey and the Barbara Bush Branch Library</h1>
-        <p>Spring, Texas · August 2017</p>
-      </section>
+      <ResearchScene
+        title={['Hurricane Harvey', 'and the Barbara Bush Branch Library']}
+        image="/expeditions/harvey.webp"
+        description="Spring, Texas · August 2017"
+        action="Read the case"
+        back="/journeys"
+      />
       <section className="article-layout content-width">
         <aside className="article-aside">
           <a href="#analysis">Runoff study ↗</a>

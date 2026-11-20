@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
@@ -205,10 +206,15 @@ export default function Lab() {
   }
   return (
     <main id="main" className="new-lab">
+      <ResearchScene
+        title={['Experiment', 'runner']}
+        image="/dive/deep.webp"
+        description="Set a storm, watch water move across the terrain, and test what changes the flow."
+        action="Open experiment controls"
+      />
       <div className="lab-title">
         <div>
-          <p className="workspace-label">Experiment runner</p>
-          <h1>{s.name}</h1>
+          <h2>{s.name}</h2>
         </div>
         <button
           className="source-chip"

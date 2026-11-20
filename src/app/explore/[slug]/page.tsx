@@ -1,3 +1,4 @@
+import { ResearchScene } from '@/components/research-scene';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
@@ -22,13 +23,12 @@ export default async function Expedition({ params }: Props) {
   if (slug === 'about') {
     return (
       <main id="main">
-        <section className="page-heading">
-          <h1>About BASIN</h1>
-          <p>
-            BASIN is a student research project that explores flood mitigation using elevation data
-            and repeatable storm scenarios.
-          </p>
-        </section>
+        <ResearchScene
+          title={['About', 'BASIN']}
+          image="/dive/open-horizon.webp"
+          description="A student research project that explores flood mitigation using elevation data and repeatable storm scenarios."
+          action="Read about BASIN"
+        />
         <section className="article-layout content-width">
           <article className="prose">
             <h2>What can the model help us test?</h2>
@@ -55,13 +55,13 @@ export default async function Expedition({ params }: Props) {
 
   return (
     <main id="main">
-      <section className={`page-heading study-hero study-hero-${expedition.art}`}>
-        <Link className="expedition-back" href="/explore">
-          ← All expeditions
-        </Link>
-        <h1>{expedition.title}</h1>
-        <p>{expedition.lead}</p>
-      </section>
+      <ResearchScene
+        title={[expedition.title.split(' ')[0], expedition.title.split(' ').slice(1).join(' ')]}
+        image={'/expeditions/' + expedition.art + '.webp'}
+        description={expedition.lead}
+        action="Read the expedition"
+        back="/explore"
+      />
       <section className="article-layout content-width">
         <aside className="article-aside">
           <Link href={expedition.href} className="button primary">

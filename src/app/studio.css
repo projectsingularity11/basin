@@ -817,3 +817,214 @@
 .study-layout .comparison-status {
   padding: 14px;
 }
+
+.basin-app .route-entry main:has(> .research-scene) {
+  color: var(--ink);
+  background: radial-gradient(ellipse at 50% 0%, #103b57 0%, #041729 42rem, #041421 100%);
+  padding-bottom: 72px;
+}
+.research-scene {
+  min-height: 100svh;
+  isolation: isolate;
+  position: relative;
+  display: grid;
+  place-items: center;
+  grid-template-rows: 1fr auto;
+  text-align: center;
+  padding: calc(var(--header-height) + 34px) var(--gutter) clamp(26px, 7svh, 82px);
+  overflow: hidden;
+}
+.research-scene::after,
+.research-scene-art {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.research-scene-art {
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  animation: research-scene-arrive 1.7s cubic-bezier(0.2, 0.65, 0.28, 1) both;
+}
+.research-scene::after {
+  z-index: -1;
+  background:
+    linear-gradient(180deg, #0419288c, #06304b7d 33%, #03182bb5 71%, #072237),
+    radial-gradient(ellipse at center, #092f4488, transparent 74%);
+}
+@keyframes research-scene-arrive {
+  from {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.research-scene-copy {
+  max-width: min(1100px, 100%);
+}
+.research-scene h1 {
+  margin: 0;
+  color: #94e6fb;
+  font: 600 clamp(42px, 9vw, 146px)/0.91 var(--display);
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.research-scene h1 span {
+  display: block;
+}
+.research-scene h1 span:first-child {
+  color: #e5faff;
+  -webkit-text-stroke: 1px #e5faff;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.1em;
+}
+.research-scene h1 span:last-child {
+  font-size: 0.86em;
+}
+.research-scene-copy p {
+  margin: clamp(19px, 4vh, 38px) auto;
+  color: #e5faff;
+  max-width: 55ch;
+  font-size: clamp(13px, 1.4vw, 20px);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.research-scene-cue {
+  display: grid;
+  justify-items: center;
+  gap: 11px;
+  color: #e5faff;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+}
+.research-scene-cue > span {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  border: 1px dashed #94e6fb;
+  border-radius: 50%;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+.research-scene-cue:hover > span {
+  background: #146189;
+  transform: translateY(3px);
+}
+#scene-content {
+  margin-bottom: clamp(22px, 5vw, 62px);
+}
+.new-lab:has(> .research-scene),
+.earth-page:has(> .research-scene) {
+  padding-top: 0;
+}
+.basin-app :is(.new-lab, .earth-page) > .research-scene {
+  max-width: none;
+  margin-inline: calc(-1 * var(--gutter));
+}
+.basin-app :is(.lab-title, .earth-heading) h2 {
+  margin: 0;
+  font: 600 clamp(28px, 4vw, 62px)/1 var(--display);
+  text-transform: uppercase;
+}
+.basin-app .floating-header {
+  background: linear-gradient(#041727ee, #0417279c);
+  border-bottom: 0;
+}
+.basin-app .nav-toggle {
+  border-style: dashed;
+}
+.basin-app .primary-nav a[href='/lab'] {
+  padding: 0.65em 0.85em;
+  border: 1px solid #94e6fb91;
+}
+.basin-app :is(.button.primary, .run-button) {
+  --corner: 8px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--corner)) 0,
+    100% var(--corner),
+    100% 100%,
+    var(--corner) 100%,
+    0 calc(100% - var(--corner))
+  );
+}
+.basin-app :is(.button.primary, .run-button):focus-visible {
+  outline-offset: -4px;
+  outline-color: #061e31;
+}
+@media (max-width: 500px) {
+  .research-scene h1 {
+    font-size: clamp(35px, 11vw, 62px);
+  }
+  .basin-app .floating-header {
+    gap: 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .research-scene-art {
+    animation: none;
+  }
+  .research-scene-cue > span {
+    transition: none;
+  }
+}
+
+.research-scene-back {
+  position: absolute;
+  top: calc(var(--header-height) + 13px);
+  left: var(--gutter);
+  z-index: 1;
+  color: #d6f7ff;
+  font-size: 12px;
+}
+.basin-app .route-entry main:has(> .research-scene) {
+  background:
+    radial-gradient(ellipse at 80% 45%, #12435c63, transparent 52rem),
+    linear-gradient(180deg, #072237, #041421 62%);
+}
+.basin-app
+  :is(
+    .compare-controls,
+    .optimization-controls,
+    .experiment-records > article,
+    .region-card,
+    .lab-drawer,
+    .lab-bottom
+  ) {
+  background-image: linear-gradient(145deg, #11385155, transparent 56%);
+}
+.basin-app .article-layout .prose > section {
+  padding-block: clamp(17px, 3vw, 42px);
+  border-bottom: 1px solid #4b849b55;
+}
+
+@font-face {
+  font-family: Rajdhani;
+  src: url('/reference/fonts/rajdhani-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: Rajdhani;
+  src: url('/reference/fonts/rajdhani-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+.research-scene h1 {
+  font-family: Rajdhani, var(--display);
+}
+.research-scene h1 span:first-child {
+  font-weight: 500;
+}
+.research-scene-cue {
+  font-family: var(--display);
+  font-size: 13px;
+}

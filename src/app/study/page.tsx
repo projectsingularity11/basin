@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useBasin, download } from '@/components/provider';
@@ -108,16 +109,13 @@ export default function Study() {
   }
   return (
     <main id="main">
-      <section className="page-heading">
-        <Link className="expedition-back" href="/journeys">
-          ← Flood expeditions
-        </Link>
-        <h1>Watershed study</h1>
-        <p>
-          Choose an area, set your limits, and test where a basin or a permeable surface could slow
-          runoff in two storms.
-        </p>
-      </section>
+      <ResearchScene
+        title={['Watershed', 'study']}
+        image="/expeditions/terrain.webp"
+        description="Choose an area, set your limits, and test where a basin or a permeable surface could slow runoff in two storms."
+        action="Set study limits"
+        back="/journeys"
+      />
       <div className="content-width study-layout">
         <form
           className="optimization-controls study-controls"

@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, GitCompareArrows, Download, Play, Info, Trash2 } from 'lucide-react';
@@ -48,10 +49,12 @@ export default function Compare() {
   ];
   return (
     <main id="main">
-      <section className="page-heading">
-        <h1>Compare scenarios</h1>
-        <p>Run two scenarios side by side with the same model.</p>
-      </section>
+      <ResearchScene
+        title={['Compare', 'scenarios']}
+        image="/dive/whale.webp"
+        description="Run two scenarios side by side with the same model."
+        action="Choose scenarios"
+      />
       <section className="content-width">
         <div className="compare-controls">
           <label className="field">

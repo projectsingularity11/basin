@@ -1,4 +1,5 @@
 'use client';
+import { ResearchScene } from '@/components/research-scene';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, SlidersHorizontal, Play, Check, Download } from 'lucide-react';
@@ -39,10 +40,12 @@ export default function Optimize() {
       : 0;
   return (
     <main id="main">
-      <section className="page-heading">
-        <h1>Detention search</h1>
-        <p>Set budget and space limits to find which tested design reduces peak outflow most.</p>
-      </section>
+      <ResearchScene
+        title={['Detention', 'search']}
+        image="/expeditions/mitigation.webp"
+        description="Set budget and space limits to find which tested design reduces peak outflow most."
+        action="Set search limits"
+      />
       <section className="content-width optimize-layout">
         <aside className="optimization-controls">
           <div className="panel-heading">

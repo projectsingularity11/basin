@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
-import { ArrowUpRight, X, Plus } from 'lucide-react';
+import { ArrowUpRight, X, Menu } from 'lucide-react';
 import { Mark } from './logo';
 const primary = [
   ['/journeys', 'Expeditions'],
@@ -56,7 +56,7 @@ export function Header() {
             aria-expanded={open}
             onClick={() => setOpen(true)}
           >
-            <Plus size={22} />
+            <Menu size={19} />
           </button>
         </div>
       </header>
