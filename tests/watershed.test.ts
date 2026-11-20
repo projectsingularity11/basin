@@ -72,6 +72,25 @@ describe('drainage and mitigation screening', () => {
       Math.max(...result.candidates.map((c) => c.worstPeakReduction)),
     );
   });
+  it('tests affordable intermediate storage and counts contributing area only once', () => {
+    const result = investigate(DEFAULT, {
+      maxFootprint: 2500,
+      maxCapacity: 600,
+      stormMultiplier: 1.25,
+      unitCost: 10,
+      budget: 1250,
+    });
+    expect(new Set(result.candidates.map((candidate) => candidate.capacity))).toEqual(
+      new Set([62.5, 125]),
+    );
+    for (const candidate of result.candidates) {
+      expect(candidate.contributingArea).toBeGreaterThanOrEqual(candidate.footprintArea);
+      expect(candidate.contributingArea).toBeLessThanOrEqual(
+        DEFAULT.size ** 2 * DEFAULT.cellSize ** 2,
+      );
+      expect(candidate.cost).toBeLessThanOrEqual(1250);
+    }
+  });
   it('projects polar regions and names the wrapped dateline tile', () => {
     expect(gridBounds(0, 89, 960).epsg).toBe(32661);
     expect(gridBounds(0, -89, 960).epsg).toBe(32761);

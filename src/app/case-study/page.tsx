@@ -1,6 +1,5 @@
 import { ResearchScene } from '@/components/research-scene';
 import Link from 'next/link';
-import Image from 'next/image';
 import { LibraryStudy } from '@/components/library-study';
 import { sources } from '@/data/sources';
 import library from '@/data/library-usgs.json';
@@ -39,30 +38,21 @@ export default function CaseStudy() {
           <h2>Flooding interrupted library services</h2>
           <p>
             Harvey flooded parts of the Houston region and damaged the Barbara Bush Branch Library.
-            The branch reopened in May 2018. Harris County libraries also provided internet access
-            and helped residents find recovery information. A closure can interrupt the services
-            people depend on after a storm.
+            The branch reopened in May 2018. BASIN uses the site to illustrate how detention
+            candidates can be compared on measured terrain.
           </p>
           <p>
             <a href={sources[0].url}>KPRC, May 2018 ↗</a> ·{' '}
-            <a href={sources[1].url}>Library recovery coverage ↗</a> ·{' '}
+            <a href={sources[3].url}>NOAA storm report ↗</a> ·{' '}
             <a href={sources[2].url}>NOAA rainfall archive ↗</a>
           </p>
-          <figure className="case-flood-photo">
-            <Image
-              src="/expeditions/harvey.webp"
-              alt="Aerial view of floodwater surrounding buildings in Houston after Hurricane Harvey"
-              width={2160}
-              height={1438}
-              unoptimized
-            />
-            <figcaption>
-              Houston, August 31, 2017.{' '}
-              <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
-                U.S. Air Force photo by Tech. Sgt. Larry E. Reid Jr.
-              </a>
-            </figcaption>
-          </figure>
+          <p className="tiny">
+            The cover photo shows flooding in the wider Houston area on August 31, 2017.
+            <a href="https://commons.wikimedia.org/wiki/File:170831-F-KA253-0647_(36959990702).jpg">
+              {' '}
+              U.S. Air Force photo credit ↗
+            </a>
+          </p>
           <h2 id="analysis">Screening detention near the library</h2>
           <p>
             The study uses 576 USGS 3DEP elevation samples on a 960 m square around 6817 Cypresswood

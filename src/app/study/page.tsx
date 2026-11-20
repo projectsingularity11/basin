@@ -151,7 +151,7 @@ export default function Study() {
             Change study area ↗
           </Link>
           <label className="field">
-            Maximum treatment area (m²)
+            Available treatment area (m²)
             <input
               type="number"
               min={1}
@@ -172,7 +172,7 @@ export default function Study() {
             />
           </label>
           <label className="field">
-            Second storm intensity multiplier
+            Second storm intensity (times the first)
             <input
               type="number"
               min={1}
@@ -332,61 +332,72 @@ export default function Study() {
                 {result.grid.catchment.length} cells drain to boundary cell {result.grid.outlet}.{' '}
                 {result.evaluatedRuns} simulations evaluated.
               </p>
-              <svg
-                className="study-grid"
-                viewBox={`0 0 ${result.scenario.size} ${result.scenario.size}`}
-                role="img"
-                aria-label="Drainage screening grid with the largest catchment and candidate sites highlighted"
-              >
-                {result.grid.receiver.map((_, i) => (
-                  <rect
-                    key={i}
-                    x={i % result.scenario.size}
-                    y={Math.floor(i / result.scenario.size)}
-                    width=".94"
-                    height=".94"
-                    fill={
-                      i === result.recommended?.cell
-                        ? '#ffffff'
-                        : i === result.grid.outlet
-                          ? '#fff5a5'
-                          : result.candidates.some((c) => c.cell === i)
-                            ? '#f3bd8f'
-                            : result.grid.outlets[i] === result.grid.outlet
-                              ? '#67cdd9'
-                              : '#203f51'
-                    }
-                  />
-                ))}
-              </svg>
-              <p>
-                Blue shows the largest catchment, orange shows tested sites, yellow marks its
-                outlet, and white marks the best tested option.
-              </p>
-              <h3>Detention tradeoffs</h3>
-              <p className="comparison-status">
-                {result.recommended
-                  ? `Best tested option: ${result.recommended.intervention.kind === 'detention' ? 'detention basin' : 'permeable surface'} at cell ${result.recommended.cell}. It reduced the modeled peak by at least ${result.recommended.worstPeakReduction.toPrecision(3)} m³/s across both storms.`
-                  : 'No tested option reduced the modeled peak in both storms.'}
-              </p>
-              {recommendedLocation && (
-                <p>
-                  <a
-                    className="text-link"
-                    href={`https://www.openstreetmap.org/?mlat=${recommendedLocation.lat}&mlon=${recommendedLocation.lon}#map=17/${recommendedLocation.lat}/${recommendedLocation.lon}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    See the recommended cell on the map ↗
-                  </a>
-                </p>
-              )}
-              <p>
-                Baseline peak discharge:{' '}
-                {result.baseline.map((r) => r.peakDischarge.toFixed(3)).join(' / ')} m³/s. The table
-                shows alternatives that trade storage against the smaller reduction across both
-                storms.
-              </p>
+              <div className="study-evidence">
+                <svg
+                  className="study-grid"
+                  viewBox={`0 0 ${result.scenario.size} ${result.scenario.size}`}
+                  role="img"
+                  aria-label="Drainage screening grid with the largest catchment and candidate sites highlighted"
+                >
+                  {result.grid.receiver.map((_, i) => (
+                    <rect
+                      key={i}
+                      x={i % result.scenario.size}
+                      y={Math.floor(i / result.scenario.size)}
+                      width=".94"
+                      height=".94"
+                      fill={
+                        i === result.recommended?.cell
+                          ? '#ffffff'
+                          : i === result.grid.outlet
+                            ? '#fff5a5'
+                            : result.candidates.some((c) => c.cell === i)
+                              ? '#f3bd8f'
+                              : result.grid.outlets[i] === result.grid.outlet
+                                ? '#67cdd9'
+                                : '#203f51'
+                      }
+                    />
+                  ))}
+                </svg>
+                <div className="study-evidence-notes">
+                  <p>
+                    Blue shows the largest catchment, orange shows tested sites, yellow marks its
+                    outlet, and white marks the best tested option.
+                  </p>
+                  <h3>Detention tradeoffs</h3>
+                  <p className="comparison-status">
+                    {result.recommended
+                      ? `Best tested option: ${result.recommended.intervention.kind === 'detention' ? 'detention basin' : 'permeable surface'} at cell ${result.recommended.cell}. It reduced the modeled peak by at least ${result.recommended.worstPeakReduction.toPrecision(3)} m³/s across both storms.`
+                      : 'No tested option reduced the modeled peak in both storms.'}
+                  </p>
+                  {recommendedLocation && (
+                    <p>
+                      <a
+                        className="text-link"
+                        href={`https://www.openstreetmap.org/?mlat=${recommendedLocation.lat}&mlon=${recommendedLocation.lon}#map=17/${recommendedLocation.lat}/${recommendedLocation.lon}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        See the recommended cell on the map ↗
+                      </a>
+                    </p>
+                  )}
+                  <p>
+                    Baseline peak discharge:{' '}
+                    {result.baseline.map((r) => r.peakDischarge.toFixed(3)).join(' / ')} m³/s. The
+                    table shows alternatives that trade storage against the smaller reduction across
+                    both storms.
+                  </p>
+                  {result.recommended && (
+                    <p>
+                      About {(result.recommended.contributingArea / 10000).toFixed(2)} hectares of
+                      this grid drain toward the treatment footprint. BASIN counts each contributing
+                      cell once and tests whether the option lowers peak flow in both storms.
+                    </p>
+                  )}
+                </div>
+              </div>
               {result.pareto.length === 0 ? (
                 <p>
                   No sites passed the selected constraints. Check the treatment area and budget.
@@ -435,7 +446,14 @@ export default function Study() {
                   </table>
                 </div>
               )}
-              <p>{result.warnings.join(' ')}</p>
+              <details className="study-limits">
+                <summary>What to check before using these results</summary>
+                <ul>
+                  {result.warnings.map((warning) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </details>
               <div className="button-row">
                 <button
                   className="button"

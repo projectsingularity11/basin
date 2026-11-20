@@ -41,21 +41,21 @@ export default function Optimize() {
   return (
     <main id="main">
       <ResearchScene
-        title={['Detention', 'search']}
+        title={['Basin', 'comparison']}
         image="/research/siting.webp"
-        caption="BASIN screening example · Spring, Texas"
-        description="Set budget and space limits to find which tested design reduces peak outflow most."
+        caption="Terrain-based screening example · Spring, Texas"
+        description="Compare basin sizes at three preset locations using the current lab storm."
         action="Set search limits"
       />
       <section className="content-width optimize-layout">
         <aside className="optimization-controls">
           <div className="panel-heading">
             <SlidersHorizontal size={16} />
-            SEARCH CONSTRAINTS
+            Set your limits
           </div>
           <div className="section-body">
             <label className="field">
-              Hypothetical budget · USD
+              Spending limit (USD)
               <input
                 type="number"
                 min="0"
@@ -69,7 +69,7 @@ export default function Optimize() {
               />
             </label>
             <label className="field">
-              Maximum footprint · m²
+              Available treatment area (m²)
               <input
                 type="number"
                 min="0"
@@ -82,33 +82,14 @@ export default function Optimize() {
                 }}
               />
             </label>
-            <div className="data-list">
-              <div>
-                <span>Objective</span>
-                <b>Min. peak outflow</b>
-              </div>
-              <div>
-                <span>Strategy</span>
-                <b>Exhaustive search</b>
-              </div>
-              <div>
-                <span>Locations</span>
-                <b>3 centerline cells</b>
-              </div>
-              <div>
-                <span>Capacities</span>
-                <b>100 / 300 / 600 m³</b>
-              </div>
-              <div>
-                <span>Cost assumption</span>
-                <b>$50 / m³</b>
-              </div>
-            </div>
-            <p className="tiny">
-              One basin per candidate, with a clipped 5 × 5-cell capture footprint and no outlet.
-              Baseline excludes existing interventions. All other current laboratory inputs are
-              retained. Footprint is a model assumption, not an engineered basin design.
-            </p>
+            <details className="optimization-assumptions">
+              <summary>What BASIN will test</summary>
+              <p>
+                Three preset cells, each with 100, 300, or 600 m³ of storage. The comparison uses
+                one basin with no outlet and assumes $50 per cubic meter. The baseline uses the
+                current lab storm with existing interventions removed.
+              </p>
+            </details>
             <button className="button primary full" disabled={busy} onClick={search}>
               <Play size={15} />
               {busy ? 'Evaluating candidates…' : 'Run search'}
@@ -134,19 +115,20 @@ export default function Optimize() {
           )}
           {!result ? (
             <div className="empty-state optimization-empty">
-              <span className="search-symbol">∑</span>
-              <h2>Evaluate feasible candidates.</h2>
+              <h2>See which basin lowers the peak</h2>
               <p>
-                Set a budget and space constraint. BASIN will enumerate feasible detention
-                alternatives and compare their simulated peak boundary outflow.
+                Start by setting the available area and spending limit. BASIN will show how much the
+                strongest tested option changes peak runoff and what the assumed cost would be.
               </p>
-              <span className="badge">DETERMINISTIC · NO AI REQUIRED</span>
+              <Link className="button" href="/study">
+                Screen real locations <ArrowUpRight size={15} />
+              </Link>
             </div>
           ) : (
             <>
               <div className="result-banner">
                 <div>
-                  <span className="eyebrow">BEST IN THE ENUMERATED SET</span>
+                  <span className="eyebrow">BEST TESTED OPTION</span>
                   <h2 className="mono">
                     {reduction.toFixed(2)}
                     <small>%</small>
@@ -217,7 +199,7 @@ export default function Optimize() {
                   className="button primary"
                   href="/lab"
                   onClick={() => {
-                    setScenario({ ...result.best.scenario, name: 'Optimized synthetic catchment' });
+                    setScenario({ ...result.best.scenario, name: 'Selected basin scenario' });
                     setRun(null);
                     notify('Selected scenario loaded in the laboratory. Run to inspect.');
                   }}
@@ -237,11 +219,11 @@ export default function Optimize() {
         </div>
       </section>
       <div className="content-width text-callout">
-        <h3>Optimal is a statement about a search space.</h3>
+        <h3>What the result can tell you</h3>
         <p>
-          This search does not consider all locations, multiple basins, uncertain soil properties,
-          construction feasibility, or real prices. A computed improvement is a hypothesis to
-          investigate, not a design recommendation.{' '}
+          The results compare one basin at a time under the selected storm. Use the watershed study
+          to screen locations on measured terrain and compare two storms. Confirm land, drainage and
+          construction costs before choosing a design.{' '}
           <Link href="/methodology">
             Read the assumptions <ArrowUpRight size={13} />
           </Link>

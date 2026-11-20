@@ -102,7 +102,7 @@ export type StudyOptions = {
   includePermeable?: boolean;
   patchInfiltration?: number;
 };
-export const STUDY_MODEL = 'BASIN surface routing v1 / screening v2';
+export const STUDY_MODEL = 'BASIN surface routing v1 / screening v3';
 export function investigate(input: Scenario, options: StudyOptions) {
   const scenario = validateScenario(input);
   const { maxFootprint, maxCapacity, unitCost, budget, stormMultiplier } = options;
@@ -159,29 +159,57 @@ export function investigate(input: Scenario, options: StudyOptions) {
   };
   const baselineRuns = baselineInputs.map((input) => simulate(input));
   const baseline = baselineRuns.map(summarize);
-  const maxDepth = grid.receiver.map((_, cell) =>
-    Math.max(...baselineRuns.flatMap((run) => run.frames.map((frame) => frame.depths[cell]))),
-  );
-  const deepest = Math.max(...maxDepth) || 1;
-  const largest = Math.max(...grid.accumulation);
-  const score = maxDepth.map(
-    (depth, cell) => Math.sqrt(grid.accumulation[cell] / largest) + Math.sqrt(depth / deepest),
-  );
-  const ranked = grid.receiver
-    .map((_, cell) => cell)
-    .filter((i) => grid.receiver[i] >= 0)
-    .sort((a, b) => score[b] - score[a] || grid.slope[a] - grid.slope[b] || a - b);
-  const sites: number[] = [];
   const rejected = { footprint: 0, slope: 0, spacing: 0, budget: 0 };
-  for (const i of ranked) {
-    if (patchCells(scenario, i).length * scenario.cellSize ** 2 > maxFootprint) {
+  const area = scenario.cellSize ** 2;
+  const candidatesByScore = grid.receiver.flatMap((receiver, cell) => {
+    if (receiver < 0) return [];
+    const footprint = patchCells(scenario, cell);
+    if (footprint.length * area > maxFootprint) {
       rejected.footprint++;
-      continue;
+      return [];
     }
-    if (grid.slope[i] > 0.15) {
+    if (grid.slope[cell] > 0.15) {
       rejected.slope++;
-      continue;
+      return [];
     }
+    // Count each upslope cell once, even when its flow crosses several footprint cells.
+    const reaches = new Int8Array(grid.receiver.length).fill(-1);
+    for (const index of footprint) reaches[index] = 1;
+    for (let i = 0; i < reaches.length; i++) {
+      let index = i;
+      const path: number[] = [];
+      while (index >= 0 && reaches[index] < 0) {
+        path.push(index);
+        index = grid.receiver[index];
+      }
+      const value = index < 0 ? 0 : reaches[index];
+      for (const member of path) reaches[member] = value;
+    }
+    const upstream = reaches.reduce((sum, value) => sum + value, 0) * area;
+    const wetVolume = Math.max(
+      ...baselineRuns.flatMap((run) =>
+        run.frames.map((frame) =>
+          footprint.reduce((sum, index) => sum + frame.depths[index] * area, 0),
+        ),
+      ),
+    );
+    return [{ cell, upstream, wetVolume }];
+  });
+  const largest = Math.max(1, ...candidatesByScore.map((site) => site.upstream));
+  const wettest = Math.max(0.001, ...candidatesByScore.map((site) => site.wetVolume));
+  const score = (site: (typeof candidatesByScore)[number]) =>
+    Math.sqrt(site.upstream / largest) + Math.sqrt(site.wetVolume / wettest);
+  candidatesByScore.sort((a, b) => score(b) - score(a) || a.cell - b.cell);
+  const leadingOutlets = new Set<number>();
+  const diversified = candidatesByScore.filter(({ cell }) => {
+    if (leadingOutlets.size >= 4 || leadingOutlets.has(grid.outlets[cell])) return false;
+    leadingOutlets.add(grid.outlets[cell]);
+    return true;
+  });
+  const ranked = [...new Set([...diversified, ...candidatesByScore])];
+  const sites: number[] = [];
+  const upstreamArea = new Map(ranked.map((site) => [site.cell, site.upstream]));
+  for (const { cell: i } of ranked) {
     if (
       sites.some(
         (j) =>
@@ -200,8 +228,13 @@ export function investigate(input: Scenario, options: StudyOptions) {
   const patchInfiltration = options.patchInfiltration ?? 40;
   if (!Number.isFinite(patchInfiltration) || patchInfiltration < 0 || patchInfiltration > 200)
     throw Error('Enter an infiltration rate from 0 to 200 mm/h.');
+  const capacityLimit =
+    budget !== undefined && unitCost ? Math.min(maxCapacity, budget / unitCost) : maxCapacity;
+  if (capacityLimit < 1 && budget !== undefined && unitCost) rejected.budget = sites.length;
+  const capacities =
+    budget !== undefined && capacityLimit < 1 ? [] : [capacityLimit / 2, capacityLimit];
   const designs = [
-    ...[maxCapacity / 2, maxCapacity].map((capacity) => ({ kind: 'detention' as const, capacity })),
+    ...capacities.map((capacity) => ({ kind: 'detention' as const, capacity })),
     ...(options.includePermeable && budget === undefined
       ? [{ kind: 'permeable' as const, capacity: 0 }]
       : []),
@@ -209,7 +242,7 @@ export function investigate(input: Scenario, options: StudyOptions) {
   const candidates = sites.flatMap((cell) =>
     designs.flatMap(({ kind, capacity }) => {
       const cost = kind === 'permeable' || unitCost === undefined ? null : capacity * unitCost;
-      if (budget !== undefined && cost !== null && cost > budget) {
+      if (budget !== undefined && cost !== null && cost - budget > 1e-8) {
         rejected.budget++;
         return [];
       }
@@ -230,7 +263,7 @@ export function investigate(input: Scenario, options: StudyOptions) {
           cost,
           footprint,
           footprintArea: footprint.length * scenario.cellSize ** 2,
-          contributingArea: grid.accumulation[cell],
+          contributingArea: upstreamArea.get(cell)!,
           slope: grid.slope[cell],
           intervention,
           runs,

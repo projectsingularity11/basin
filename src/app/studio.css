@@ -1156,3 +1156,82 @@
     animation: none;
   }
 }
+
+.basin-app {
+  --gutter: clamp(18px, 3.2vw, 64px);
+}
+.basin-app .content-width {
+  max-width: 1880px;
+}
+.research-scene {
+  padding-inline: max(var(--gutter), calc((100vw - 1850px) / 2));
+}
+.basin-app .article-layout:not(:has(.article-aside)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.basin-app .article-layout .prose {
+  max-width: none;
+}
+.basin-app .article-layout .prose > :is(p, ul, ol) {
+  max-width: 90ch;
+}
+.basin-app :is(.optimize-layout, .study-layout) {
+  gap: clamp(24px, 4vw, 72px);
+  grid-template-columns: minmax(278px, 0.75fr) minmax(0, 1.75fr);
+}
+.basin-app .optimization-controls > .section-body {
+  padding: clamp(20px, 3vw, 40px);
+}
+.optimization-assumptions {
+  margin-block: 25px;
+  color: #d0eaf4;
+  line-height: 1.6;
+}
+.optimization-assumptions summary {
+  cursor: pointer;
+  color: var(--glow);
+}
+.basin-app .optimization-empty {
+  min-height: 320px;
+}
+@media (max-width: 760px) {
+  .basin-app :is(.optimize-layout, .study-layout) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.basin-app :is(.new-lab, .earth-page) > :not(.research-scene) {
+  max-width: 1770px;
+}
+.study-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  margin-block: 26px;
+}
+.study-evidence .study-grid {
+  margin: 0;
+  width: 100%;
+  max-width: 560px;
+}
+.study-evidence-notes > p:first-child {
+  margin-top: 0;
+}
+.study-limits {
+  margin-block: 24px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.study-limits summary {
+  cursor: pointer;
+  color: var(--glow);
+}
+.study-limits li + li {
+  margin-top: 6px;
+}
+@media (max-width: 1050px) {
+  .study-evidence {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

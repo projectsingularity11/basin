@@ -251,9 +251,11 @@ export default function Methodology() {
             <h2>Rank flood-relief sites</h2>
             <p>
               The watershed study traces drainage across the selected square and simulates two
-              storms without added mitigation. It uses upstream area and modeled ponding to screen
-              locations, rejects steep cells and oversized footprints, then tests up to 12 spaced
-              sites. It compares two basin capacities and, when selected, an infiltration treatment.
+              storms without added mitigation. It estimates the land that drains into each entire
+              treatment footprint and the water that collects within it. It rejects steep cells and
+              oversized footprints, then tests up to 12 spaced sites, giving several drainage
+              outlets a chance to be represented. It compares two basin capacities and, when
+              selected, an infiltration treatment.
             </p>
             <p>
               The strongest candidate is the tested option with the largest minimum reduction in
