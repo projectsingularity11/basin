@@ -48,17 +48,14 @@
   const modal = () => document.querySelector('#modal-container:not(.d-none) .js-modal-close');
   const scene = () => document.querySelector('main[data-router-view]')?.dataset.routerView;
   const skip = () => {
-    if (scene() === 'home') document.querySelector('.js-home-enter-btn')?.click();
-    else {
-      const current = [...document.querySelectorAll('.js-skip-section')].find(
-        (button) =>
-          button.getClientRects().length &&
-          getComputedStyle(button).visibility === 'visible' &&
-          button.closest('[data-ui-id]')?.style.opacity !== '0',
-      );
-      if (current) current.click();
-      else return false;
-    }
+    const current = [...document.querySelectorAll('.js-skip-section')].find(
+      (button) =>
+        button.getClientRects().length &&
+        getComputedStyle(button).visibility === 'visible' &&
+        button.closest('[data-ui-id]')?.style.opacity !== '0',
+    );
+    if (current) current.click();
+    else return false;
     return true;
   };
   const updateControls = () => {
@@ -67,18 +64,10 @@
     controls.hidden =
       !close &&
       (getComputedStyle(loader).visibility === 'visible' ||
-        (view !== 'home' && view !== 'journey') ||
+        view !== 'journey' ||
         menu?.getAttribute('aria-expanded') === 'true');
-    const nextHint = close
-      ? ''
-      : view === 'home'
-        ? 'A short introduction plays here'
-        : 'Scroll or swipe to explore';
-    const nextAction = close
-      ? 'Close details · Esc'
-      : view === 'home'
-        ? 'Skip intro · Z'
-        : 'Next chapter · Z';
+    const nextHint = close ? '' : 'Scroll or swipe to explore';
+    const nextAction = close ? 'Close details · Esc' : 'Next chapter · Z';
     if (hint.textContent !== nextHint) hint.textContent = nextHint;
     if (action.textContent !== nextAction) action.textContent = nextAction;
   };

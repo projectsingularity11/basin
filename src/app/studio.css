@@ -1303,3 +1303,28 @@
     }
   }
 }
+
+.basin-app {
+  --font: 'Geist', system-ui, sans-serif;
+  --display: 'Syne', 'Geist', system-ui, sans-serif;
+  --glow: #b9ead7;
+  --panel: #0b2531;
+}
+.basin-app .route-entry main:has(> .research-scene) {
+  background: radial-gradient(ellipse at 68% 0%, #16444b63, transparent 56rem), #061923;
+}
+.basin-app :is(.lab-title, .earth-heading) h2,
+.basin-app .article-layout .prose h2 {
+  font-family: var(--display);
+  text-transform: none;
+}
+.basin-app .research-scene-cue {
+  border-color: #e4bc8596;
+  border-radius: 2px;
+}
+.basin-app .research-scene-media {
+  border-color: #90beb391;
+}
+.basin-app .research-scene-media figcaption {
+  font-family: var(--mono);
+}
